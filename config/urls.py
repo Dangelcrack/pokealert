@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from cards.views import CardViewSet
+from cards.views import CardViewSet, test_pokemon_api
 from alerts.views import PriceAlertViewSet, PriceHistoryViewSet
 
 router = DefaultRouter()
@@ -29,4 +29,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/test-pokemon/', test_pokemon_api),
 ]
