@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PokeAlert - Alertas de Precios de Pokémon{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-red-600">
+                        🃏 PokeAlert
+                    </a>
+                </div>
+
+                <!-- Menu derecha -->
+                <div class="flex items-center gap-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="text-gray-700 hover:text-red-600 font-medium">
+                            Mi Dashboard
+                        </a>
+                        <a href="{% url 'search' %}" class="text-gray-700 hover:text-red-600 font-medium">
+                            Buscar Cartas
+                        </a>
+                        <div class="border-l pl-4">
+                            <span class="text-gray-700">{{ user.username }}</span>
+                            <a href="{% url 'logout' %}" class="ml-4 text-red-600 hover:text-red-800">
+                                Salir
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-red-600">
+                            Iniciar Sesión
+                        </a>
+                        <a href="{% url 'register' %}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                            Registrarse
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded bg-green-100 text-green-700">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2026 PokeAlert. Alertas de precios de Pokémon TCG en tiempo real.</p>
+        </div>
+    </footer>
+</body>
+</html>

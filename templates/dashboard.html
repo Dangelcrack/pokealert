@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Dashboard - PokeAlert{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-3xl font-bold mb-4">📊 Mi Dashboard</h2>
+    <p class="text-gray-600">Aquí verás todas tus alertas activas.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <!-- Card: Total de Alertas -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-gray-600 font-medium mb-2">Alertas Activas</h3>
+        <p class="text-3xl font-bold text-red-600">{{ alerts|length }}</p>
+    </div>
+
+    <!-- Card: Cartas Monitoreadas -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-gray-600 font-medium mb-2">Cartas Diferentes</h3>
+        <p class="text-3xl font-bold text-blue-600">{{ alerts|length }}</p>
+    </div>
+
+    <!-- Card: CTA -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <a href="{% url 'search' %}" class="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-bold">
+            + Crear Alerta
+        </a>
+    </div>
+</div>
+
+<!-- Lista de Alertas -->
+<div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-6 border-b">
+        <h3 class="text-xl font-bold">Tus Alertas</h3>
+    </div>
+
+    {% if alerts %}
+        <table class="w-full">
+            <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Carta</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Precio Objetivo</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Estado</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Creada</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in alerts %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-4">
+                                {% if alert.card.image_url %}
+                                    <img src="{{ alert.card.image_url }}" alt="{{ alert.card.name }}" class="w-12 h-16 object-cover rounded">
+                                {% endif %}
+                                <div>
+                                    <p class="font-bold">{{ alert.card.name }}</p>
+                                    <p class="text-sm text-gray-500">{{ alert.card.rarity }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 font-bold text-red-600">${{ alert.target_price }}</td>
+                        <td class="px-6 py-4">
+                            {% if alert.is_active %}
+                                <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                                    ✅ Activa
+                                </span>
+                            {% else %}
+                                <span class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                    ⏸️ Inactiva
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ alert.created_at|date:"d/m/Y" }}</td>
+                        <td class="px-6 py-4">
+                            <button class="text-red-600 hover:text-red-800 font-medium">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="p-6 text-center">
+            <p class="text-gray-600 mb-4">No tienes alertas creadas aún.</p>
+            <a href="{% url 'search' %}" class="inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 font-bold">
+                🔍 Crear tu primera alerta
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
