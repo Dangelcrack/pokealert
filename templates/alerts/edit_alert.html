@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Alerta - PokeAlert{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden border mt-8">
+    <div class="p-6 border-b bg-gray-50">
+        <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            ⚙️ Editar Alerta
+        </h2>
+        <p class="text-sm text-gray-500 mt-1">Modifica tu objetivo de precio para esta carta.</p>
+    </div>
+
+    <div class="p-6">
+        <div class="flex items-center gap-4 mb-6 p-3 bg-gray-50 rounded-lg border">
+            {% if alert.card.image_url %}
+                <img src="{{ alert.card.image_url }}" alt="{{ alert.card.name }}" class="w-16 h-22 object-cover rounded shadow-sm">
+            {% endif %}
+            <div>
+                <h3 class="font-bold text-lg text-gray-900">{{ alert.card.name }}</h3>
+                <p class="text-xs bg-yellow-100 text-yellow-800 font-semibold px-2 py-0.5 rounded inline-block mt-1">
+                    {{ alert.card.get_rarity_display }}
+                </p>
+            </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="mb-6">
+                <label for="discount_percentage" class="block text-sm font-medium text-gray-700 mb-2">
+                    ¿Cuándo quieres que te avisemos?
+                </label>
+                <select 
+                    id="discount_percentage" 
+                    name="discount_percentage" 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600 bg-white"
+                    required>
+                    <option value="10" {% if alert.discount_percentage == 10 %}selected{% endif %}>Cuando baje un 10%</option>
+                    <option value="20" {% if alert.discount_percentage == 20 %}selected{% endif %}>Cuando baje un 20%</option>
+                    <option value="30" {% if alert.discount_percentage == 30 %}selected{% endif %}>Cuando baje un 30%</option>
+                    <option value="40" {% if alert.discount_percentage == 40 %}selected{% endif %}>Cuando baje un 40%</option>
+                    <option value="50" {% if alert.discount_percentage == 50 %}selected{% endif %}>Cuando baje un 50% (¡Mitad de precio! 🔥)</option>
+                </select>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button type="submit" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 font-bold transition text-center">
+                    Guardar Cambios
+                </button>
+                <a href="{% url 'dashboard' %}" class="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-bold transition text-center border">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

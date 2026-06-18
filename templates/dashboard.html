@@ -9,19 +9,16 @@
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-    <!-- Card: Total de Alertas -->
     <div class="bg-white p-6 rounded-lg shadow">
         <h3 class="text-gray-600 font-medium mb-2">Alertas Activas</h3>
         <p class="text-3xl font-bold text-red-600">{{ alerts|length }}</p>
     </div>
 
-    <!-- Card: Cartas Monitoreadas -->
     <div class="bg-white p-6 rounded-lg shadow">
         <h3 class="text-gray-600 font-medium mb-2">Cartas Diferentes</h3>
         <p class="text-3xl font-bold text-blue-600">{{ alerts|length }}</p>
     </div>
 
-    <!-- Card: CTA -->
     <div class="bg-white p-6 rounded-lg shadow">
         <a href="{% url 'search' %}" class="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-bold">
             + Crear Alerta
@@ -29,7 +26,6 @@
     </div>
 </div>
 
-<!-- Lista de Alertas -->
 <div class="bg-white rounded-lg shadow overflow-hidden">
     <div class="p-6 border-b">
         <h3 class="text-xl font-bold">Tus Alertas</h3>
@@ -40,7 +36,7 @@
             <thead class="bg-gray-50 border-b">
                 <tr>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Carta</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Precio Objetivo</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Porcentaje / Objetivo</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Estado</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Creada</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Acciones</th>
@@ -56,11 +52,14 @@
                                 {% endif %}
                                 <div>
                                     <p class="font-bold">{{ alert.card.name }}</p>
-                                    <p class="text-sm text-gray-500">{{ alert.card.rarity }}</p>
+                                    <p class="text-sm text-gray-500">{{ alert.card.get_rarity_display }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 font-bold text-red-600">${{ alert.target_price }}</td>
+                        <td class="px-6 py-4">
+                            <span class="block text-xs text-gray-500">Baja del {{ alert.discount_percentage }}%</span>
+                            <span class="font-bold text-red-600">${{ alert.target_price }}</span>
+                        </td>
                         <td class="px-6 py-4">
                             {% if alert.is_active %}
                                 <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
@@ -74,7 +73,14 @@
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ alert.created_at|date:"d/m/Y" }}</td>
                         <td class="px-6 py-4">
-                            <button class="text-red-600 hover:text-red-800 font-medium">🗑️ Eliminar</button>
+                            <div class="flex items-center gap-4">
+                                <a href="{% url 'edit_alert' alert.id %}" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                                    ⚙️ Editar
+                                </a>
+                                <button class="text-red-600 hover:text-red-800 font-medium flex items-center gap-1">
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

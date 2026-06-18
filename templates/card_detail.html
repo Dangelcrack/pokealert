@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ card.name }} - Detalles{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto my-8">
+    <a href="javascript:history.back()" class="inline-block mb-6 text-gray-600 hover:text-red-600 font-medium transition">
+        ⬅️ Volver al listado
+    </a>
+
+    {% if error %}
+        <div class="bg-red-100 text-red-700 p-4 rounded-lg">
+            ❌ {{ error }}
+        </div>
+    {% else %}
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden md:flex gap-8 p-6 border">
+            
+            <div class="md:w-1/2 flex items-center justify-center bg-gray-50 rounded-xl p-4">
+                <img src="{{ card.images.large }}" alt="{{ card.name }}" class="w-full max-w-sm object-contain rounded-lg shadow-md hover:scale-105 transition duration-300">
+            </div>
+
+            <div class="md:w-1/2 flex flex-col justify-between mt-6 md:mt-0">
+                <div>
+                    <div class="flex items-center justify-between gap-4 mb-2">
+                        <h2 class="text-3xl font-bold text-gray-900">{{ card.name }}</h2>
+                        {% if card.rarity %}
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">
+                                ✨ {{ card.rarity }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <p class="text-gray-500 font-medium mb-6">{{ card.set.name }} ({{ card.set.series }}) - #{{ card.number }}</p>
+
+                    <div class="bg-red-50 rounded-xl p-4 mb-6 border border-red-100">
+                        <p class="text-xs text-red-500 uppercase tracking-wider font-bold">Precio de Mercado TCGPlayer</p>
+                        {% if market_price != 'N/A' %}
+                            <p class="text-4xl font-black text-red-600 mt-1">${{ market_price }}</p>
+                        {% else %}
+                            <p class="text-xl font-bold text-gray-500 mt-1">No disponible</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-4 rounded-xl text-sm text-gray-700">
+                        <div><span class="font-bold text-gray-500">Supertype:</span> {{ card.supertype }}</div>
+                        <div><span class="font-bold text-gray-500">Artista:</span> {{ card.artist|default:"Desconocido" }}</div>
+                        {% if card.types %}
+                            <div class="col-span-2">
+                                <span class="font-bold text-gray-500">Tipos:</span> 
+                                {{ card.types|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 rounded-xl p-4 border">
+                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">🔔 Configurar Alerta de Precio</h4>
+                    <form method="POST" action="{% url 'create_alert' %}" class="flex flex-col gap-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="pokemontcg_id" value="{{ card.id }}">
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Notificarme si el precio baja un:</label>
+                            <select name="discount_percentage" class="w-full px-3 py-2 bg-white border rounded-lg focus:outline-none focus:border-red-600 text-sm" required>
+                                <option value="">Selecciona un porcentaje</option>
+                                <option value="5">5% de descuento</option>
+                                <option value="10">10% de descuento</option>
+                                <option value="15">15% de descuento</option>
+                                <option value="20">20% de descuento</option>
+                                <option value="25">25% de descuento</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-bold transition text-sm shadow">
+                            Activar Alerta
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

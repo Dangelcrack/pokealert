@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from cards.views import (
-    CardViewSet, 
+    CardViewSet,
+    edit_alert, 
     home,
     importar_pokemon_pokedex, 
     register,
@@ -12,9 +13,11 @@ from cards.views import (
     dashboard, 
     search,
     test_pokemon_api,
-    create_alert
+    create_alert,
+    card_detail
 )
 from alerts.views import PriceAlertViewSet, PriceHistoryViewSet
+from tasks import views
 
 router = DefaultRouter()
 router.register(r'cards', CardViewSet)
@@ -40,4 +43,6 @@ urlpatterns = [
     path('create-alert/', create_alert, name='create_alert'),
     path('search-suggestions/', search_suggestions, name='search_suggestions'),
     path('importar-pokedex-secreta/', importar_pokemon_pokedex, name='importar_pokedex'),
+    path('card/<slug:card_name>/', card_detail, name='card_detail'),
+    path('alerts/edit/<int:alert_id>/', edit_alert, name='edit_alert'),
 ]

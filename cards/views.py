@@ -2,7 +2,8 @@ import os
 import requests
 import math
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404  # 👈 Añadido para buscar la alerta de forma segura
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -133,11 +134,9 @@ def search(request):
             if response.status_code == 200:
                 data = response.json()
                 cards_data = data.get('data', [])
-                total_count = data.get('totalCount', 0)  # 📊 El número total real en la API (ej: 1700)
+                total_count = data.get('totalCount', 0)
                 
-                # 📐 Calculamos el número total de páginas (ej: 1700 / 24 = 70.8 -> 71 páginas)
                 total_pages = math.ceil(total_count / page_size) if total_count > 0 else 1
-                
                 has_next = (current_page * page_size) < total_count
                 
                 for card in cards_data:
@@ -166,7 +165,6 @@ def search(request):
             error = f"Error conectando con la API: {str(e)}"
             
     else:
-        # Bloque de populares intacto
         top_cards = Card.objects.annotate(
             alert_count=Count('alerts')
         ).filter(alert_count__gt=0).order_by('-alert_count')[:8]
@@ -200,8 +198,6 @@ def search(request):
                 'is_popular': True
             })
 
-    # Creamos un rango de páginas en Django para iterar fácilmente en el HTML (ej: [1, 2, 3, ..., 71])
-    # Si hay demasiadas páginas (ej: más de 7), mostramos solo un bloque inteligente
     page_range = range(1, total_pages + 1)
 
     return render(request, 'search.html', {
@@ -214,10 +210,11 @@ def search(request):
         'has_previous': has_previous,
         'next_page': current_page + 1,
         'prev_page': current_page - 1,
-        'total_count': total_count,      # 👈 Enviado al HTML
-        'total_pages': total_pages,      # 👈 Enviado al HTML
-        'page_range': page_range,        # 👈 Enviado al HTML
+        'total_count': total_count,
+        'total_pages': total_pages,
+        'page_range': page_range,
     })
+
 
 @login_required(login_url='login')
 @require_http_methods(["POST"])
@@ -265,8 +262,37 @@ def create_alert(request):
         return redirect('search')
 
 
+# 🛠️ NUEVA VISTA: EDITAR ALERTA EXISTENTE
+@login_required(login_url='login')
+@require_http_methods(["GET", "POST"])
+def edit_alert(request, alert_id):
+    """Permite al usuario modificar el porcentaje de descuento de una de sus alertas"""
+    from alerts.models import PriceAlert
+    
+    # Buscamos la alerta asegurándonos de que pertenezca al usuario logueado
+    alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
+    
+    if request.method == 'POST':
+        discount_percentage = request.POST.get('discount_percentage')
+        
+        if not discount_percentage:
+            messages.error(request, '❌ Debes seleccionar un porcentaje válido.')
+            return render(request, 'alerts/edit_alert.html', {'alert': alert})
+            
+        try:
+            alert.discount_percentage = int(discount_percentage)
+            alert.save()
+            messages.success(request, '✅ Alerta actualizada correctamente.')
+            return redirect('dashboard')
+        except ValueError:
+            messages.error(request, '❌ El porcentaje introducido no es válido.')
+            return render(request, 'alerts/edit_alert.html', {'alert': alert})
+            
+    # Si entra por GET, muestra la plantilla con el formulario de edición
+    return render(request, 'alerts/edit_alert.html', {'alert': alert})
+
+
 def importar_pokemon_pokedex(request):
-    """Sincroniza los Pokémon desde PokéAPI a la Base de Datos Local"""
     import requests
     from django.http import HttpResponse
 
@@ -294,7 +320,6 @@ def importar_pokemon_pokedex(request):
 
 @login_required(login_url='login')
 def search_suggestions(request):
-    """API endpoint para autocomplete usando las Especies Únicas de la BD Local"""
     query = request.GET.get('q', '').strip().lower()
     
     if len(query) < 2:
@@ -311,3 +336,45 @@ def search_suggestions(request):
         })
         
     return JsonResponse(suggestions_list, safe=False)
+
+
+def card_detail(request, card_name):
+    if request.method == 'POST':
+        card_id = request.POST.get('card_id')
+        request.session['current_card_id'] = card_id
+    else:
+        card_id = request.session.get('current_card_id')
+
+    if not card_id:
+        return render(request, 'card_detail.html', {'error': "No se pudo identificar la carta exacta. Vuelve al buscador."})
+
+    api_key = os.getenv('POKEMON_TCG_API_KEY')
+    headers = {'X-Api-Key': api_key} if api_key else {}
+    url = f"https://api.pokemontcg.io/v2/cards/{card_id}"
+    
+    card_data = None
+    error = None
+    market_price = 'N/A'
+
+    try:
+        response = requests.get(url, headers=headers, timeout=15)
+        if response.status_code == 200:
+            card_data = response.json().get('data', {})
+            
+            tcgplayer_prices = card_data.get('tcgplayer', {}).get('prices', {})
+            if 'holofoil' in tcgplayer_prices:
+                market_price = tcgplayer_prices['holofoil'].get('market')
+            elif 'normal' in tcgplayer_prices:
+                market_price = tcgplayer_prices['normal'].get('market')
+                
+            market_price = market_price or 'N/A'
+        else:
+            error = f"No se pudo obtener la información de la carta (Código {response.status_code})"
+    except Exception as e:
+        error = f"Error de conexión: {str(e)}"
+
+    return render(request, 'card_detail.html', {
+        'card': card_data,
+        'market_price': market_price,
+        'error': error
+    })
