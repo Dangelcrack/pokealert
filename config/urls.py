@@ -3,8 +3,10 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from cards.views import (
     CardViewSet, 
-    home, 
-    register, 
+    home,
+    importar_pokemon_pokedex, 
+    register,
+    search_suggestions, 
     user_login, 
     user_logout, 
     dashboard, 
@@ -36,4 +38,6 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path('search/', search, name='search'),
     path('create-alert/', create_alert, name='create_alert'),
+    path('search-suggestions/', search_suggestions, name='search_suggestions'),
+    path('importar-pokedex-secreta/', importar_pokemon_pokedex, name='importar_pokedex'),
 ]

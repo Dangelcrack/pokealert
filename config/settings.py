@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -154,3 +155,12 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = f"PokeAlert App <{EMAIL_HOST_USER}>"
+
+# Configuración de Tareas Programadas (Celery Beat)
+CELERY_BEAT_SCHEDULE = {
+    'actualizar-pokedex-mensual': {
+        'task': 'tasks.tasks.actualizar_pokedex_automatica', # Ruta de la tarea
+        'schedule': crontab(day_of_month=1, hour=0, minute=0), # Ejecutar el día 1 de cada mes a las 00:00
+    },
+}
+CELERY_TASK_ALWAYS_EAGER = True

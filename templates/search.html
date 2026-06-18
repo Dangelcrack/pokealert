@@ -6,17 +6,88 @@
 <div class="mb-8">
     <h2 class="text-3xl font-bold mb-4">🔍 Buscar Cartas Pokémon</h2>
     
-    <form method="GET" class="flex gap-2">
-        <input type="text" name="q" placeholder="Busca una carta (ej: Charizard, Pikachu, Glaceon)..." 
-               value="{{ query }}" class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:border-red-600"
-               required>
+    <form method="GET" class="flex gap-2 relative">
+        <div class="flex-1 relative">
+            <input 
+                type="text" 
+                id="search-input"
+                name="q" 
+                placeholder="Busca una carta (ej: Charizard, Pikachu, Glaceon)..." 
+                value="{{ query }}" 
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-red-600"
+                autocomplete="off"
+                required>
+            
+            <!-- Dropdown de sugerencias -->
+            <div id="suggestions-dropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+                <!-- Las sugerencias se llenarán con JavaScript -->
+            </div>
+        </div>
+        
         <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 font-bold">
             Buscar
         </button>
     </form>
 </div>
 
-<!-- Mensajes de error -->
+<!-- Script para autocomplete -->
+<script>
+const searchInput = document.getElementById('search-input');
+const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+
+searchInput.addEventListener('input', async function() {
+    const query = this.value.trim();
+    
+    // Si la búsqueda es muy corta, ocultar el dropdown
+    if (query.length < 2) {
+        suggestionsDropdown.classList.add('hidden');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/search-suggestions/?q=${encodeURIComponent(query)}`);
+        const suggestions = await response.json();
+        
+        if (suggestions.length > 0) {
+            // Mostrar dropdown
+            suggestionsDropdown.innerHTML = '';
+            suggestionsDropdown.classList.remove('hidden');
+            
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.className = 'px-4 py-3 hover:bg-gray-100 cursor-pointer border-b flex items-center gap-3 transition';
+                item.innerHTML = `
+                    <img src="${suggestion.image}" alt="${suggestion.name}" class="w-8 h-10 object-contain">
+                    <span class="font-medium">${suggestion.name}</span>
+                `;
+                
+                item.addEventListener('click', function() {
+                    searchInput.value = suggestion.name;
+                    suggestionsDropdown.classList.add('hidden');
+                    // Enviar el formulario
+                    searchInput.closest('form').submit();
+                });
+                
+                suggestionsDropdown.appendChild(item);
+            });
+        } else {
+            suggestionsDropdown.innerHTML = '<div class="px-4 py-3 text-gray-500 text-center">No se encontraron cartas</div>';
+            suggestionsDropdown.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error en autocomplete:', error);
+        suggestionsDropdown.classList.add('hidden');
+    }
+});
+
+// Cerrar dropdown al hacer clic fuera
+document.addEventListener('click', function(e) {
+    if (e.target !== searchInput && !suggestionsDropdown.contains(e.target)) {
+        suggestionsDropdown.classList.add('hidden');
+    }
+});
+</script>
+
 {% if error %}
     <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
         ❌ {{ error }}

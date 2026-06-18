@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from django.db.models import Count
-from .models import Card
+from .models import Card, PokemonEspecie
 from .serializers import CardSerializer
 
 
@@ -235,3 +235,56 @@ def create_alert(request):
     except Exception as e:
         messages.error(request, f'❌ Error al crear la alerta: {str(e)}')
         return redirect('search')
+    
+
+
+
+
+def importar_pokemon_pokedex(request):
+    """Sincroniza los 2000 Pokémon desde PokéAPI a la Base de Datos Local"""
+    import requests
+    from django.http import HttpResponse
+
+    url = "https://pokeapi.co/api/v2/pokemon?limit=2000"
+    try:
+        response = requests.get(url, timeout=15)
+        if response.status_code == 200:
+            resultados = response.json().get('results', [])
+            contador = 0
+            for index, p in enumerate(resultados, start=1):
+                nombre = p['name']
+                # Ilustración oficial limpia en alta definición
+                url_imagen = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{index}.png"
+                
+                obj, created = PokemonEspecie.objects.get_or_create(
+                    numero_pokedex=index,
+                    defaults={'name': nombre, 'image': url_imagen}
+                )
+                if created:
+                    contador += 1
+            return HttpResponse(f"¡Éxito! Catálogo poblado con {contador} Pokémon.")
+        return HttpResponse("❌ Error con PokéAPI", status=500)
+    except Exception as e:
+        return HttpResponse(f"❌ Error: {str(e)}", status=500)
+
+
+@login_required(login_url='login')
+def search_suggestions(request):
+    """API endpoint para autocomplete usando las Especies Únicas de la BD Local"""
+    query = request.GET.get('q', '').strip().lower()
+    
+    if len(query) < 2:
+        return JsonResponse([], safe=False)
+    
+    # Buscamos instantáneamente en nuestro SQLite local
+    sugerencias = PokemonEspecie.objects.filter(name__icontains=query)[:10]
+    
+    suggestions_list = []
+    for pokemon in sugerencias:
+        suggestions_list.append({
+            'name': pokemon.name.capitalize(),
+            'id': pokemon.numero_pokedex,
+            'image': pokemon.image
+        })
+        
+    return JsonResponse(suggestions_list, safe=False)

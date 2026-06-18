@@ -1,7 +1,7 @@
 import requests
 from celery import shared_task
 from django.core.mail import send_mail
-from cards.models import Card
+from cards.models import Card, PokemonEspecie
 from alerts.models import PriceAlert, PriceHistory
 
 TCG_API_URL = "https://api.pokemontcg.io/v2/cards/"
@@ -50,3 +50,36 @@ def check_pokemon_prices():
                         # Desactivamos la alerta para no hacer spam
                         alert.is_active = False
                         alert.save()
+            
+@shared_task
+def actualizar_pokedex_automatica():
+    # Ponemos un límite alto (1500) para asegurar que pesque las futuras generaciones
+    url = "https://pokeapi.co/api/v2/pokemon?limit=1500"
+    
+    try:
+        response = requests.get(url, timeout=15)
+        if response.status_code == 200:
+            resultados = response.json().get('results', [])
+            nuevos_count = 0
+            
+            for index, p in enumerate(resultados, start=1):
+                nombre = p['name']
+                url_imagen = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{index}.png"
+                
+                # get_or_create evita duplicados: si ya existe el ID, lo ignora
+                obj, created = PokemonEspecie.objects.get_or_create(
+                    numero_pokedex=index,
+                    defaults={
+                        'name': nombre,
+                        'image': url_imagen
+                    }
+                )
+                if created:
+                    nuevos_count += 1
+                    
+            return f"Sincronización completada. Se detectaron y añadieron {nuevos_count} Pokémon nuevos."
+        else:
+            return f"No se pudo sincronizar. PokéAPI respondió con código {response.status_code}"
+            
+    except Exception as e:
+        return f"Error en la tarea de automatización: {str(e)}"

@@ -21,3 +21,17 @@ class Card(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+
+
+class PokemonEspecie(models.Model):
+    numero_pokedex = models.IntegerField(unique=True)
+    name = models.CharField(max_length=100, db_index=True)
+    image = models.URLField()
+
+    def __str__(self):
+        return f"#{self.numero_pokedex} - {self.name.capitalize()}"
+    
+    class Meta:
+        verbose_name = "Especie Pokémon"
+        verbose_name_plural = "Especies Pokémon"
+        ordering = ['numero_pokedex']
