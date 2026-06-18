@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
-
+from django.db.models import Count
 from .models import Card
 from .serializers import CardSerializer
 
@@ -98,6 +98,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', {'alerts': alerts})
 
 
+
 @login_required(login_url='login')
 def search(request):
     query = request.GET.get('q', '').strip()
@@ -106,7 +107,6 @@ def search(request):
 
     if query:
         try:
-            # Consultar API de Pokémon TCG por nombre
             url = f"https://api.pokemontcg.io/v2/cards"
             api_key = os.getenv('POKEMON_TCG_API_KEY')
             headers = {'X-Api-Key': api_key}
@@ -118,8 +118,7 @@ def search(request):
                 data = response.json()
                 cards_data = data.get('data', [])
                 
-                # Procesar cada carta encontrada
-                for card in cards_data[:20]:  # Máximo 20 resultados
+                for card in cards_data[:20]:
                     tcgplayer_prices = card.get('tcgplayer', {}).get('prices', {})
                     market_price = None
                     
@@ -141,11 +140,51 @@ def search(request):
         
         except Exception as e:
             error = f"Error conectando con la API: {str(e)}"
+    else:
+        # Si no hay búsqueda, mostrar cartas más buscadas (con más alertas)
+        top_cards = Card.objects.annotate(
+            alert_count=Count('alerts')
+        ).filter(alert_count__gt=0).order_by('-alert_count')[:8]
+        
+        api_key = os.getenv('POKEMON_TCG_API_KEY')
+        
+        for card in top_cards:
+            market_price = 'N/A'
+            
+            # Consultar la API para obtener el precio actual
+            try:
+                url = f"https://api.pokemontcg.io/v2/cards/{card.pokemontcg_id}"
+                headers = {'X-Api-Key': api_key}
+                response = requests.get(url, headers=headers, timeout=10)
+                
+                if response.status_code == 200:
+                    api_data = response.json().get('data', {})
+                    tcgplayer_prices = api_data.get('tcgplayer', {}).get('prices', {})
+                    
+                    if 'holofoil' in tcgplayer_prices:
+                        market_price = tcgplayer_prices['holofoil'].get('market')
+                    elif 'normal' in tcgplayer_prices:
+                        market_price = tcgplayer_prices['normal'].get('market')
+                    
+                    market_price = market_price or 'N/A'
+            except Exception as e:
+                market_price = 'N/A'
+            
+            results.append({
+                'id': card.pokemontcg_id,
+                'name': card.name,
+                'image': card.image_url,
+                'rarity': card.get_rarity_display(),
+                'price': market_price,
+                'set_name': 'Popular',
+                'is_popular': True
+            })
 
     return render(request, 'search.html', {
         'query': query,
         'results': results,
-        'error': error
+        'error': error,
+        'is_popular': not query and results
     })
 
 
