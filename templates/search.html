@@ -18,10 +18,8 @@
                 autocomplete="off"
                 required>
             
-            <!-- Dropdown de sugerencias -->
             <div id="suggestions-dropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
-                <!-- Las sugerencias se llenarán con JavaScript -->
-            </div>
+                </div>
         </div>
         
         <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 font-bold">
@@ -30,7 +28,6 @@
     </form>
 </div>
 
-<!-- Script para autocomplete -->
 <script>
 const searchInput = document.getElementById('search-input');
 const suggestionsDropdown = document.getElementById('suggestions-dropdown');
@@ -38,7 +35,6 @@ const suggestionsDropdown = document.getElementById('suggestions-dropdown');
 searchInput.addEventListener('input', async function() {
     const query = this.value.trim();
     
-    // Si la búsqueda es muy corta, ocultar el dropdown
     if (query.length < 2) {
         suggestionsDropdown.classList.add('hidden');
         return;
@@ -49,7 +45,6 @@ searchInput.addEventListener('input', async function() {
         const suggestions = await response.json();
         
         if (suggestions.length > 0) {
-            // Mostrar dropdown
             suggestionsDropdown.innerHTML = '';
             suggestionsDropdown.classList.remove('hidden');
             
@@ -64,7 +59,6 @@ searchInput.addEventListener('input', async function() {
                 item.addEventListener('click', function() {
                     searchInput.value = suggestion.name;
                     suggestionsDropdown.classList.add('hidden');
-                    // Enviar el formulario
                     searchInput.closest('form').submit();
                 });
                 
@@ -80,7 +74,6 @@ searchInput.addEventListener('input', async function() {
     }
 });
 
-// Cerrar dropdown al hacer clic fuera
 document.addEventListener('click', function(e) {
     if (e.target !== searchInput && !suggestionsDropdown.contains(e.target)) {
         suggestionsDropdown.classList.add('hidden');
@@ -94,13 +87,18 @@ document.addEventListener('click', function(e) {
     </div>
 {% endif %}
 
-<!-- Resultados -->
 {% if results %}
-    <div class="mb-4">
+    <div class="mb-6">
         {% if query %}
-            <p class="text-gray-600">
-                Se encontraron <strong>{{ results|length }}</strong> resultado(s) para "<strong>{{ query }}</strong>"
-            </p>
+            {% if current_page == 1 %}
+                <p class="text-lg text-gray-700">
+                    🔍 Se encontraron un total de <strong class="text-red-600">{{ total_count }}</strong> cartas para "<strong>{{ query }}</strong>"
+                </p>
+            {% else %}
+                <p class="text-sm text-gray-500">
+                    Viendo resultados de la página {{ current_page }} para "{{ query }}"
+                </p>
+            {% endif %}
         {% else %}
             <p class="text-gray-600">
                 🔥 <strong>Cartas más buscadas</strong> (con más alertas creadas)
@@ -111,7 +109,6 @@ document.addEventListener('click', function(e) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for card in results %}
             <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-                <!-- Imagen -->
                 <div class="bg-gray-100 h-48 flex items-center justify-center overflow-hidden relative">
                     {% if card.is_popular %}
                         <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -126,7 +123,6 @@ document.addEventListener('click', function(e) {
                     {% endif %}
                 </div>
 
-                <!-- Info -->
                 <div class="p-4">
                     <h3 class="font-bold text-lg mb-1">{{ card.name }}</h3>
                     <p class="text-sm text-gray-600 mb-2">{{ card.set_name }}</p>
@@ -139,7 +135,6 @@ document.addEventListener('click', function(e) {
                         {% endif %}
                     </div>
 
-                    <!-- Precio -->
                     <div class="mb-4 pb-4 border-b">
                         {% if card.price != 'N/A' %}
                             <p class="text-2xl font-bold text-red-600">${{ card.price }}</p>
@@ -149,7 +144,6 @@ document.addEventListener('click', function(e) {
                         {% endif %}
                     </div>
 
-                    <!-- Botón crear alerta -->
                     <form method="POST" action="{% url 'create_alert' %}" class="flex flex-col gap-2">
                         {% csrf_token %}
                         <input type="hidden" name="pokemontcg_id" value="{{ card.id }}">
@@ -177,6 +171,38 @@ document.addEventListener('click', function(e) {
         {% endfor %}
     </div>
 
+    {% if query and total_pages > 1 %}
+    <div class="flex justify-center items-center gap-2 mt-10 mb-6 flex-wrap">
+        
+        {% if has_previous %}
+            <a href="?q={{ query }}&page={{ prev_page }}" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-bold">«</a>
+        {% endif %}
+
+        {% for i in page_range %}
+            {% if i == 1 or i == total_pages or i >= current_page|add:"-2" and i <= current_page|add:"2" %}
+                
+                {% if current_page == i %}
+                    <span class="px-4 py-2 bg-blue-900 text-white font-bold rounded-lg shadow">
+                        {{ i }}
+                    </span>
+                {% else %}
+                    <a href="?q={{ query }}&page={{ i }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                        {{ i }}
+                    </a>
+                {% endif %}
+
+            {% elif i == current_page|add:"-3" or i == current_page|add:"3" %}
+                <span class="text-gray-400 px-1">...</span>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next %}
+            <a href="?q={{ query }}&page={{ next_page }}" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-bold">»</a>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
 {% elif query %}
     <div class="bg-yellow-100 text-yellow-700 p-4 rounded-lg text-center">
         😕 No se encontraron cartas con el término "<strong>{{ query }}</strong>". Intenta con otro nombre.
@@ -188,5 +214,4 @@ document.addEventListener('click', function(e) {
         <p class="text-gray-500 text-sm mt-2">Por ejemplo: Charizard, Pikachu, Blastoise, Venusaur...</p>
     </div>
 {% endif %}
-
 {% endblock %}
