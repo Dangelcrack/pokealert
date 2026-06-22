@@ -18,7 +18,7 @@
                 autocomplete="off"
                 required>
             
-            <div id="suggestions-dropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+            <div id="suggestions-dropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
             </div>
         </div>
         
@@ -44,13 +44,14 @@ searchInput.addEventListener('input', async function() {
         const response = await fetch(`/search-suggestions/?q=${encodeURIComponent(query)}`);
         const suggestions = await response.json();
         
+        // CORRECCIÓN: Si hay elementos, los mostramos siempre. La altura máxima (max-h-48) se encarga del scroll de forma nativa.
         if (suggestions.length > 0) {
             suggestionsDropdown.innerHTML = '';
             suggestionsDropdown.classList.remove('hidden');
             
             suggestions.forEach(suggestion => {
                 const item = document.createElement('div');
-                item.className = 'px-4 py-3 hover:bg-gray-100 cursor-pointer border-b flex items-center gap-3 transition';
+                item.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer border-b flex items-center gap-3 transition text-sm';
                 item.innerHTML = `
                     <img src="${suggestion.image}" alt="${suggestion.name}" class="w-8 h-10 object-contain">
                     <span class="font-medium">${suggestion.name}</span>

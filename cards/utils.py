@@ -1,0 +1,21 @@
+POKEMON_ES_TO_TCG = {
+    "colmilargo": "Great Tusk",
+    "colagrito": "Scream Tail",
+    "furioseta": "Brute Bonnet",
+    "melenaleteo": "Flutter Mane",
+    "reptalada": "Slither Wing",
+    "pelarena": "Sandy Shocks",
+    "bramaluna": "Roaring Moon",
+    "ondulagua": "Walking Wake",
+
+    "ferrodada": "Iron Treads",
+    "ferrosaco": "Iron Bundle",
+    "ferropalmas": "Iron Hands",
+    "ferrocuello": "Iron Jugulis",
+    "ferropolilla": "Iron Moth",
+    "ferropúas": "Iron Thorns",
+    "ferropaladín": "Iron Valiant",
+    "ferroverdor": "Iron Leaves",
+    "ferromole": "Iron Boulder",
+    "ferrotesta": "Iron Crown",
+}

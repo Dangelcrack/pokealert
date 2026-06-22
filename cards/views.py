@@ -3,7 +3,6 @@ import requests
 import math
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.shortcuts import get_object_or_404  # 👈 Añadido para buscar la alerta de forma segura
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -11,9 +10,12 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from django.db.models import Count
+from alerts.models import PriceAlert
+from alerts.serializers import PriceAlertSerializer
+from cards.utils import POKEMON_ES_TO_TCG
 from .models import Card, PokemonEspecie
 from .serializers import CardSerializer
-
+from django.db.models import Q
 
 class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
@@ -97,7 +99,24 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def search(request):
-    query = request.GET.get('q', '').strip()
+    # 1. Obtenemos lo que el usuario escribió (ej: "colmilargo" o "colmi")
+    query_raw = request.GET.get('q', '').strip().lower()
+    
+    # 2. Buscamos la traducción al inglés exacta usando el diccionario global de utils
+    # Si encuentra el término en español (ej: "colmilargo"), lo cambia por el inglés ("Great Tusk").
+    # Si no existe en el diccionario, mantiene lo que escribió el usuario.
+    query = POKEMON_ES_TO_TCG.get(query_raw, query_raw)
+    
+    # Si el usuario escribió un término incompleto (ej: "colmi"), buscamos una coincidencia parcial en el diccionario
+    if query == query_raw:
+        for es_name, en_name in POKEMON_ES_TO_TCG.items():
+            if query_raw in es_name.lower():
+                query = en_name
+                break
+
+    # Limpieza estándar requerida por la API externa
+    query = query.replace("-", " ").strip()
+    
     results = []
     error = None
     
@@ -123,12 +142,13 @@ def search(request):
             if api_key:
                 headers['X-Api-Key'] = api_key
                 
+            # Enviamos la query ya traducida correctamente (ej: name:"Great Tusk")
             params = {
-                'q': f'name:{query}',
+                'q': f'name:"{query}"',
                 'page': current_page,
                 'pageSize': page_size
             }
-            
+                                
             response = requests.get(url, params=params, headers=headers, timeout=25)
             
             if response.status_code == 200:
@@ -162,7 +182,7 @@ def search(request):
         except requests.exceptions.Timeout:
             error = "⏱️ El servidor externo de Pokémon TCG tardó demasiado en responder. Vuelve a intentarlo ahora."
         except Exception as e:
-            error = f"Error conectando con la API: {str(e)}"
+            error = f"Error con la API externa: {str(e)}"
             
     else:
         top_cards = Card.objects.annotate(
@@ -200,11 +220,12 @@ def search(request):
 
     page_range = range(1, total_pages + 1)
 
+    # Devolvemos el texto original capitalizado para que el buscador mantenga la coherencia visual
     return render(request, 'search.html', {
-        'query': query,
+        'query': query_raw.title(), 
         'results': results,
         'error': error,
-        'is_popular': not query and results,
+        'is_popular': not query_raw and results,
         'current_page': current_page,
         'has_next': has_next,
         'has_previous': has_previous,
@@ -215,13 +236,9 @@ def search(request):
         'page_range': page_range,
     })
 
-
 @login_required(login_url='login')
 @require_http_methods(["POST"])
 def create_alert(request):
-    from alerts.models import PriceAlert
-    from alerts.serializers import PriceAlertSerializer
-    
     pokemontcg_id = request.POST.get('pokemontcg_id')
     discount_percentage = request.POST.get('discount_percentage')
 
@@ -262,14 +279,12 @@ def create_alert(request):
         return redirect('search')
 
 
-# 🛠️ NUEVA VISTA: EDITAR ALERTA EXISTENTE
 @login_required(login_url='login')
 @require_http_methods(["GET", "POST"])
 def edit_alert(request, alert_id):
     """Permite al usuario modificar el porcentaje de descuento de una de sus alertas"""
     from alerts.models import PriceAlert
     
-    # Buscamos la alerta asegurándonos de que pertenezca al usuario logueado
     alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
     
     if request.method == 'POST':
@@ -288,7 +303,6 @@ def edit_alert(request, alert_id):
             messages.error(request, '❌ El porcentaje introducido no es válido.')
             return render(request, 'alerts/edit_alert.html', {'alert': alert})
             
-    # Si entra por GET, muestra la plantilla con el formulario de edición
     return render(request, 'alerts/edit_alert.html', {'alert': alert})
 
 
@@ -321,22 +335,46 @@ def importar_pokemon_pokedex(request):
 @login_required(login_url='login')
 def search_suggestions(request):
     query = request.GET.get('q', '').strip().lower()
-    
+
     if len(query) < 2:
         return JsonResponse([], safe=False)
-    
-    sugerencias = PokemonEspecie.objects.filter(name__icontains=query)[:10]
-    
+
+    # 1. Mapeo inverso dinámico (Inglés -> Español) para traducir las salidas al JSON
+    inverso_traducciones = {v.lower().replace(" ", "-"): k for k, v in POKEMON_ES_TO_TCG.items()}
+
+    # 2. Buscamos qué nombres en inglés corresponden al texto en español que va escribiendo el usuario
+    # Ejemplo: Si escribe "colmi", sabe que se refiere a "Great Tusk" -> "great-tusk"
+    nombres_en_ingles_coincidentes = []
+    for es_name, en_name in POKEMON_ES_TO_TCG.items():
+        if query in es_name.lower():
+            nombres_en_ingles_coincidentes.append(en_name.lower().replace(" ", "-"))
+
+    # 3. Filtramos la DB local mediante un operador OR (Q):
+    # Trae los registros si el inglés original de PokeAPI contiene la query (ej: "gre" -> "great-tusk")
+    # O si coincide con las traducciones parciales obtenidas del diccionario (ej: "great-tusk")
+    sugerencias = PokemonEspecie.objects.filter(
+        Q(name__icontains=query) | Q(name__in=nombres_en_ingles_coincidentes)
+    )[:10]
+
     suggestions_list = []
     for pokemon in sugerencias:
+        nombre_db = pokemon.name.lower()
+        
+        # Mapeamos de vuelta al español para pintarlo estéticamente en el desplegable
+        if nombre_db in inverso_traducciones:
+            nombre_espanol = inverso_traducciones[nombre_db].title()
+        elif nombre_db.replace("-", " ") in inverso_traducciones:
+            nombre_espanol = inverso_traducciones[nombre_db.replace("-", " ")].title()
+        else:
+            nombre_espanol = pokemon.name.replace("-", " ").title()
+
         suggestions_list.append({
-            'name': pokemon.name.capitalize(),
+            'name': nombre_espanol,
             'id': pokemon.numero_pokedex,
             'image': pokemon.image
         })
-        
-    return JsonResponse(suggestions_list, safe=False)
 
+    return JsonResponse(suggestions_list, safe=False)
 
 def card_detail(request, card_name):
     if request.method == 'POST':
