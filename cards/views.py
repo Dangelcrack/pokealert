@@ -13,7 +13,7 @@ from django.db.models import Count
 from alerts.models import PriceAlert
 from alerts.serializers import PriceAlertSerializer
 from cards.utils import POKEMON_ES_TO_TCG
-from .models import Card, PokemonEspecie
+from .models import Card
 from .serializers import CardSerializer
 from django.db.models import Q
 
@@ -99,27 +99,54 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def search(request):
-    # 1. Obtenemos lo que el usuario escribió (ej: "colmilargo" o "colmi")
-    query_raw = request.GET.get('q', '').strip().lower()
-    
-    # 2. Buscamos la traducción al inglés exacta usando el diccionario global de utils
-    # Si encuentra el término en español (ej: "colmilargo"), lo cambia por el inglés ("Great Tusk").
-    # Si no existe en el diccionario, mantiene lo que escribió el usuario.
-    query = POKEMON_ES_TO_TCG.get(query_raw, query_raw)
-    
-    # Si el usuario escribió un término incompleto (ej: "colmi"), buscamos una coincidencia parcial en el diccionario
-    if query == query_raw:
-        for es_name, en_name in POKEMON_ES_TO_TCG.items():
-            if query_raw in es_name.lower():
-                query = en_name
-                break
+    # 🔥 SAFE INPUT HANDLING
+    query_raw = request.GET.get('q', '')
+    query_raw = (query_raw or '').strip().lower()
 
-    # Limpieza estándar requerida por la API externa
-    query = query.replace("-", " ").strip()
-    
-    results = []
-    error = None
-    
+    query = ''
+
+    # Diccionario global para tipos de cartas, objetos y mecánicas del TCG
+    TCG_TERMS = {
+        "energia": "energy", "energía": "energy",
+        "entrenador": "trainer", "objeto": "item",
+        "partidario": "supporter", "estadio": "stadium",
+        "herramienta": "tool", "pocion": "potion", "poción": "potion",
+        "pokeball": "poke ball", "pokéball": "poke ball",
+        "radiante": "radiant", "brillante": "shining",
+        "dorada": "gold", "dorado": "gold",
+        "arcoiris": "rainbow", "arco iris": "rainbow",
+    }
+
+    # 🔥 1. Traducción inteligente
+    if query_raw:
+        # Intentamos obtener traducción exacta de términos de juego (ej: "energia")
+        query = TCG_TERMS.get(query_raw, '')
+
+        # Si no, miramos si es un Pokémon exacto en tu diccionario de utilidades
+        if not query:
+            query = POKEMON_ES_TO_TCG.get(query_raw, '')
+
+        # Match parcial de Pokémon por prefijo (ej: "colmi" -> "Great Tusk")
+        if not query:
+            for es_name, en_name in POKEMON_ES_TO_TCG.items():
+                if query_raw and es_name.startswith(query_raw):
+                    query = en_name
+                    break
+
+        # Fallback: si no hubo match directo, mantenemos el texto original del usuario
+        if not query:
+            query = query_raw
+
+        # Traducir palabras sueltas dentro de frases compuestas (ej: "charizard radiante" -> "charizard radiant")
+        for es_term, en_term in TCG_TERMS.items():
+            query = query.replace(es_term, en_term)
+
+        # Reemplazos seguros de formato
+        query = query.replace("-", " ").strip()
+
+    # =========================
+    # PAGINACIÓN
+    # =========================
     try:
         current_page = int(request.GET.get('page', 1))
         if current_page < 1:
@@ -127,105 +154,139 @@ def search(request):
     except ValueError:
         current_page = 1
 
-    page_size = 24  
+    page_size = 24
     has_next = False
     has_previous = current_page > 1
     total_count = 0
     total_pages = 1
 
+    results = []
+    error = None
+
+    # =========================
+    # 🔍 SEARCH API MODE
+    # =========================
     if query:
         try:
-            url = f"https://api.pokemontcg.io/v2/cards"
+            url = "https://api.pokemontcg.io/v2/cards"
             api_key = os.getenv('POKEMON_TCG_API_KEY')
-            
+
             headers = {}
             if api_key:
                 headers['X-Api-Key'] = api_key
-                
-            # Enviamos la query ya traducida correctamente (ej: name:"Great Tusk")
+
+            # 🔥 Construcción limpia: convierte "heal energy" en "name:heal AND name:energy"
+            query_words = query.split()
+            q_lucene = " AND ".join([f"name:{word}" for word in query_words])
+
             params = {
-                'q': f'name:"{query}"',
-                'page': current_page,
-                'pageSize': page_size
+                "q": q_lucene,
+                "page": current_page,
+                "pageSize": page_size
             }
-                                
+
             response = requests.get(url, params=params, headers=headers, timeout=25)
-            
+
             if response.status_code == 200:
                 data = response.json()
                 cards_data = data.get('data', [])
                 total_count = data.get('totalCount', 0)
-                
-                total_pages = math.ceil(total_count / page_size) if total_count > 0 else 1
+
+                total_pages = math.ceil(total_count / page_size) if total_count else 1
                 has_next = (current_page * page_size) < total_count
-                
+
                 for card in cards_data:
+                    name = card.get('name')
+                    if not name:
+                        continue
+
                     tcgplayer_prices = card.get('tcgplayer', {}).get('prices', {})
                     market_price = None
-                    
+
                     if 'holofoil' in tcgplayer_prices:
                         market_price = tcgplayer_prices['holofoil'].get('market')
                     elif 'normal' in tcgplayer_prices:
                         market_price = tcgplayer_prices['normal'].get('market')
-                    
+
                     results.append({
                         'id': card.get('id'),
-                        'name': card.get('name'),
+                        'name': name,
                         'image': card.get('images', {}).get('small', ''),
                         'rarity': card.get('rarity', 'N/A'),
                         'price': market_price or 'N/A',
                         'set_name': card.get('set', {}).get('name', 'Unknown'),
                     })
+
             else:
-                error = f"La API de Pokémon TCG está experimentando demoras (Código {response.status_code})."
-        
+                error = f"API error ({response.status_code})"
+
         except requests.exceptions.Timeout:
-            error = "⏱️ El servidor externo de Pokémon TCG tardó demasiado en responder. Vuelve a intentarlo ahora."
+            error = "⏱️ Timeout API Pokémon TCG"
         except Exception as e:
-            error = f"Error con la API externa: {str(e)}"
-            
+            error = f"Error API: {str(e)}"
+
+    # =========================
+    # 🔥 TOP CARDS MODE
+    # =========================
     else:
         top_cards = Card.objects.annotate(
             alert_count=Count('alerts')
         ).filter(alert_count__gt=0).order_by('-alert_count')[:8]
-        
+
+        top_cards = list(top_cards)
+
+        if len(top_cards) < 8:
+            other_cards = Card.objects.exclude(
+                pk__in=[c.pk for c in top_cards]
+            ).order_by('-id')[:8 - len(top_cards)]
+
+            top_cards += list(other_cards)
+
         api_key = os.getenv('POKEMON_TCG_API_KEY')
         headers = {'X-Api-Key': api_key} if api_key else {}
-        
+
         for card in top_cards:
             market_price = 'N/A'
+            set_name = 'Unknown'
+
             try:
                 url = f"https://api.pokemontcg.io/v2/cards/{card.pokemontcg_id}"
                 response = requests.get(url, headers=headers, timeout=15)
+
                 if response.status_code == 200:
                     api_data = response.json().get('data', {})
-                    tcgplayer_prices = api_data.get('tcgplayer', {}).get('prices', {})
-                    if 'holofoil' in tcgplayer_prices:
-                        market_price = tcgplayer_prices['holofoil'].get('market')
-                    elif 'normal' in tcgplayer_prices:
-                        market_price = tcgplayer_prices['normal'].get('market')
+                    set_name = api_data.get('set', {}).get('name', 'Unknown')
+                    prices = api_data.get('tcgplayer', {}).get('prices', {})
+
+                    if 'holofoil' in prices:
+                        market_price = prices['holofoil'].get('market')
+                    elif 'normal' in prices:
+                        market_price = prices['normal'].get('market')
+
                     market_price = market_price or 'N/A'
+
             except Exception:
                 market_price = 'N/A'
-            
+
+            alert_count = card.alerts.count()
+
             results.append({
                 'id': card.pokemontcg_id,
                 'name': card.name,
                 'image': card.image_url,
-                'rarity': card.get_rarity_display(),
+                'rarity': card.get_rarity_display() if hasattr(card, 'get_rarity_display') else card.rarity,
                 'price': market_price,
-                'set_name': 'Popular',
-                'is_popular': True
+                'set_name': set_name,
+                'is_popular': alert_count > 0
             })
 
     page_range = range(1, total_pages + 1)
 
-    # Devolvemos el texto original capitalizado para que el buscador mantenga la coherencia visual
     return render(request, 'search.html', {
-        'query': query_raw.title(), 
+        'query': query_raw.title(),
         'results': results,
         'error': error,
-        'is_popular': not query_raw and results,
+        'is_popular': not query_raw and bool(results),
         'current_page': current_page,
         'has_next': has_next,
         'has_previous': has_previous,
@@ -235,6 +296,7 @@ def search(request):
         'total_pages': total_pages,
         'page_range': page_range,
     })
+
 
 @login_required(login_url='login')
 @require_http_methods(["POST"])
@@ -282,9 +344,6 @@ def create_alert(request):
 @login_required(login_url='login')
 @require_http_methods(["GET", "POST"])
 def edit_alert(request, alert_id):
-    """Permite al usuario modificar el porcentaje de descuento de una de sus alertas"""
-    from alerts.models import PriceAlert
-    
     alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
     
     if request.method == 'POST':
@@ -306,75 +365,73 @@ def edit_alert(request, alert_id):
     return render(request, 'alerts/edit_alert.html', {'alert': alert})
 
 
-def importar_pokemon_pokedex(request):
-    import requests
-    from django.http import HttpResponse
-
-    url = "https://pokeapi.co/api/v2/pokemon?limit=1025"
-    try:
-        response = requests.get(url, timeout=20)
-        if response.status_code == 200:
-            resultados = response.json().get('results', [])
-            contador = 0
-            for index, p in enumerate(resultados, start=1):
-                nombre = p['name']
-                url_imagen = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{index}.png"
-                
-                obj, created = PokemonEspecie.objects.get_or_create(
-                    numero_pokedex=index,
-                    defaults={'name': nombre, 'image': url_imagen}
-                )
-                if created:
-                    contador += 1
-            return HttpResponse(f"¡Éxito! Catálogo poblado con {contador} Pokémon.")
-        return HttpResponse("❌ Error con PokéAPI", status=500)
-    except Exception as e:
-        return HttpResponse(f"❌ Error: {str(e)}", status=500)
-
-
 @login_required(login_url='login')
 def search_suggestions(request):
     query = request.GET.get('q', '').strip().lower()
 
-    if len(query) < 2:
+    if not query or len(query) < 3:
         return JsonResponse([], safe=False)
 
-    # 1. Mapeo inverso dinámico (Inglés -> Español) para traducir las salidas al JSON
-    inverso_traducciones = {v.lower().replace(" ", "-"): k for k, v in POKEMON_ES_TO_TCG.items()}
+    TCG_TERMS = {
+        "energia": "energy", "energía": "energy",
+        "entrenador": "trainer", "objeto": "item",
+        "partidario": "supporter", "estadio": "stadium",
+        "herramienta": "tool", "pocion": "potion", "poción": "potion",
+        "pokeball": "poke ball", "pokéball": "poke ball",
+        "radiante": "radiant", "brillante": "shining",
+        "dorada": "gold", "dorado": "gold",
+        "arcoiris": "rainbow", "arco iris": "rainbow",
+    }
 
-    # 2. Buscamos qué nombres en inglés corresponden al texto en español que va escribiendo el usuario
-    # Ejemplo: Si escribe "colmi", sabe que se refiere a "Great Tusk" -> "great-tusk"
-    nombres_en_ingles_coincidentes = []
-    for es_name, en_name in POKEMON_ES_TO_TCG.items():
-        if query in es_name.lower():
-            nombres_en_ingles_coincidentes.append(en_name.lower().replace(" ", "-"))
-
-    # 3. Filtramos la DB local mediante un operador OR (Q):
-    # Trae los registros si el inglés original de PokeAPI contiene la query (ej: "gre" -> "great-tusk")
-    # O si coincide con las traducciones parciales obtenidas del diccionario (ej: "great-tusk")
-    sugerencias = PokemonEspecie.objects.filter(
-        Q(name__icontains=query) | Q(name__in=nombres_en_ingles_coincidentes)
-    )[:10]
+    # 1. Intentar traducir términos genéricos del TCG primero
+    translated_query = TCG_TERMS.get(query, '')
+    
+    # 2. Si no es genérico, buscar prefijo en el diccionario de Pokémon
+    if not translated_query:
+        translated_query = query
+        for es_name, en_name in POKEMON_ES_TO_TCG.items():
+            if es_name.lower().startswith(query):
+                translated_query = en_name.lower()
+                break
 
     suggestions_list = []
-    for pokemon in sugerencias:
-        nombre_db = pokemon.name.lower()
+    
+    try:
+        url = "https://api.pokemontcg.io/v2/cards"
+        api_key = os.getenv('POKEMON_TCG_API_KEY')
+        headers = {'X-Api-Key': api_key} if api_key else {}
         
-        # Mapeamos de vuelta al español para pintarlo estéticamente en el desplegable
-        if nombre_db in inverso_traducciones:
-            nombre_espanol = inverso_traducciones[nombre_db].title()
-        elif nombre_db.replace("-", " ") in inverso_traducciones:
-            nombre_espanol = inverso_traducciones[nombre_db.replace("-", " ")].title()
-        else:
-            nombre_espanol = pokemon.name.replace("-", " ").title()
+        # 🔥 Evitamos asteriscos conflictivos y usamos AND para sugerencias compuestas
+        words = translated_query.split()
+        q_lucene = " AND ".join([f"name:{w}*" if i == len(words) - 1 else f"name:{w}" for i, w in enumerate(words)])
 
-        suggestions_list.append({
-            'name': nombre_espanol,
-            'id': pokemon.numero_pokedex,
-            'image': pokemon.image
-        })
+        params = {
+            "q": q_lucene,
+            "select": "id,name,images",
+            "pageSize": 10
+        }
 
-    return JsonResponse(suggestions_list, safe=False)
+        response = requests.get(url, params=params, headers=headers, timeout=10)
+
+        if response.status_code == 200:
+            cards_data = response.json().get('data', [])
+            seen_names = set()
+
+            for card in cards_data:
+                name = card.get('name')
+                
+                if name and name.lower() not in seen_names:
+                    seen_names.add(name.lower())
+                    suggestions_list.append({
+                        'name': name,
+                        'id': card.get('id'),
+                        'image': card.get('images', {}).get('small', '')
+                    })
+
+    except Exception:
+        pass
+
+    return JsonResponse(suggestions_list[:10], safe=False)
 
 def card_detail(request, card_name):
     if request.method == 'POST':

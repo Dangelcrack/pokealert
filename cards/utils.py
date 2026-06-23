@@ -19,3 +19,20 @@ POKEMON_ES_TO_TCG = {
     "ferromole": "Iron Boulder",
     "ferrotesta": "Iron Crown",
 }
+
+TCG_TERMS = {
+        # Tipos de carta
+        "energia": "energy", "energía": "energy",
+        "entrenador": "trainer", "objeto": "item",
+        "partidario": "supporter", "estadio": "stadium",
+        "herramienta": "tool", "pocion": "potion", "poción": "potion",
+        "pokeball": "poke ball", "pokéball": "poke ball",
+        
+        # Mecánicas y rarezas (¡Crucial para el orden!)
+        "radiante": "radiant",
+        "brillante": "shining",
+        "dorada": "gold",
+        "dorado": "gold",
+        "arcoiris": "rainbow",
+        "arco iris": "rainbow",
+    }
