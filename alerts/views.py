@@ -19,3 +19,4 @@ class PriceHistoryViewSet(viewsets.ReadOnlyModelViewSet):
         if card_id:
             return PriceHistory.objects.filter(card_id=card_id)
         return PriceHistory.objects.all()
+    

@@ -4,203 +4,222 @@
 
 {% block content %}
 <div class="mb-8">
-    <h2 class="text-3xl font-bold mb-4">🔍 Buscar Cartas Pokémon</h2>
+    <h2 class="text-3xl font-bold mb-4 text-gray-800">🔍 Buscar Cartas Pokémon</h2>
     
-    <form method="GET" class="flex gap-2 relative">
+    <form method="GET" class="flex gap-2 relative" id="search-form">
+        <input type="hidden" name="sort" value="{{ selected_sort|default:'' }}">
+        <input type="hidden" name="supertype" value="{{ selected_supertype_id|default:'' }}">
+        <input type="hidden" name="rarity" value="{{ selected_rarity_id|default:'' }}">
+        <input type="hidden" name="subtype" value="{{ selected_subtype_id|default:'' }}">
+        <input type="hidden" name="artist" value="{{ selected_artist_id|default:'' }}">
+
         <div class="flex-1 relative">
             <input 
                 type="text" 
                 id="search-input"
                 name="q" 
-                placeholder="Busca una carta (ej: Charizard, Pikachu, Glaceon)..." 
-                value="{{ query }}" 
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-red-600"
-                autocomplete="off"
-                required>
+                placeholder="Busca una carta (ej: Charizard, Pikachu)..." 
+                value="{{ query_raw|default:'' }}" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm"
+                autocomplete="off">
             
-            <div id="suggestions-dropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
-            </div>
+            <div id="suggestions-dropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto"></div>
         </div>
         
-        <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 font-bold">
+        <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 font-bold transition">
             Buscar
         </button>
     </form>
 </div>
 
-<script>
-const searchInput = document.getElementById('search-input');
-const suggestionsDropdown = document.getElementById('suggestions-dropdown');
-
-searchInput.addEventListener('input', async function() {
-    const query = this.value.trim();
+<div class="flex flex-col md:flex-row gap-6 items-start">
     
-    if (query.length < 2) {
-        suggestionsDropdown.classList.add('hidden');
-        return;
-    }
-    
-    try {
-        const response = await fetch(`/search-suggestions/?q=${encodeURIComponent(query)}`);
-        const suggestions = await response.json();
+    <aside class="w-full md:w-64 flex-shrink-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <h3 class="font-bold text-gray-800 text-lg mb-4 border-b pb-2 flex items-center gap-1">
+            🎛️ Filtros Avanzados
+        </h3>
         
-        // CORRECCIÓN: Si hay elementos, los mostramos siempre. La altura máxima (max-h-48) se encarga del scroll de forma nativa.
-        if (suggestions.length > 0) {
-            suggestionsDropdown.innerHTML = '';
-            suggestionsDropdown.classList.remove('hidden');
-            
-            suggestions.forEach(suggestion => {
-                const item = document.createElement('div');
-                item.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer border-b flex items-center gap-3 transition text-sm';
-                item.innerHTML = `
-                    <img src="${suggestion.image}" alt="${suggestion.name}" class="w-8 h-10 object-contain">
-                    <span class="font-medium">${suggestion.name}</span>
-                `;
-                
-                item.addEventListener('click', function() {
-                    searchInput.value = suggestion.name;
-                    suggestionsDropdown.classList.add('hidden');
-                    searchInput.closest('form').submit();
-                });
-                
-                suggestionsDropdown.appendChild(item);
-            });
-        } else {
-            suggestionsDropdown.innerHTML = '<div class="px-4 py-3 text-gray-500 text-center">No se encontraron cartas</div>';
-            suggestionsDropdown.classList.remove('hidden');
-        }
-    } catch (error) {
-        console.error('Error en autocomplete:', error);
-        suggestionsDropdown.classList.add('hidden');
-    }
-});
+        <form method="GET" action="{% url 'search' %}" id="filter-form" class="space-y-4">
+            <input type="hidden" name="q" value="{{ query_raw|default:'' }}">
 
-document.addEventListener('click', function(e) {
-    if (e.target !== searchInput && !suggestionsDropdown.contains(e.target)) {
-        suggestionsDropdown.classList.add('hidden');
-    }
-});
-</script>
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Ordenar por:</label>
+                <select name="sort" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                    <option value="">Por defecto</option>
+                    <option value="-price" {% if selected_sort == "-price" %}selected{% endif %}>Precio: Mayor a Menor 📈</option>
+                    <option value="price" {% if selected_sort == "price" %}selected{% endif %}>Precio: Menor a Mayor 📉</option>
+                    <option value="name" {% if selected_sort == "name" %}selected{% endif %}>Nombre: A - Z</option>
+                </select>
+            </div>
 
-{% if error %}
-    <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
-        ❌ {{ error }}
-    </div>
-{% endif %}
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tipo de Carta:</label>
+                <select name="supertype" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                    <option value="">Todos los tipos</option>
+                    {% for s in options.supertypes %}
+                        <option value="{{ s.id }}" {% if selected_supertype_id|stringformat:"s" == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-{% if results %}
-    <div class="mb-6">
-        {% if query %}
-            {% if current_page == 1 %}
-                <p class="text-lg text-gray-700">
-                    🔍 Se encontraron un total de <strong class="text-red-600">{{ total_count }}</strong> cartas para "<strong>{{ query }}</strong>"
-                </p>
-            {% else %}
-                <p class="text-sm text-gray-500">
-                    Viendo resultados de la página {{ current_page }} para "{{ query }}"
-                </p>
-            {% endif %}
-        {% else %}
-            <p class="text-gray-600">
-                🔥 <strong>Cartas más buscadas</strong> (con más alertas creadas)
-            </p>
-        {% endif %}
-    </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Rareza:</label>
+                <select name="rarity" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                    <option value="">Todas las rarezas</option>
+                    {% for r in options.rarities %}
+                        <option value="{{ r.id }}" {% if selected_rarity_id|stringformat:"s" == r.id|stringformat:"s" %}selected{% endif %}>{{ r.display_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {% for card in results %}
-            <form method="POST" action="{% url 'card_detail' card.name|slugify %}" class="block h-full">
-                {% csrf_token %}
-                <input type="hidden" name="card_id" value="{{ card.id }}">
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Subtipo:</label>
+                <select name="subtype" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                    <option value="">Todos los subtipos</option>
+                    {% for s in options.subtypes %}
+                        <option value="{{ s.id }}" {% if selected_subtype_id|stringformat:"s" == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-                <button type="submit" class="w-full text-left group bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden border flex flex-col justify-between h-full cursor-pointer focus:outline-none">
-                    
-                    <div>
-                        <div class="bg-gray-100 h-56 w-full flex items-center justify-center overflow-hidden relative p-4">
-                            {% if card.is_popular %}
-                                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
-                                    🔥 Popular
-                                </span>
-                            {% endif %}
-                            
-                            {% if card.image %}
-                                <img src="{{ card.image }}" alt="{{ card.name }}" class="h-full object-contain group-hover:scale-105 transition duration-300">
-                            {% else %}
-                                <p class="text-gray-400">Sin imagen</p>
-                            {% endif %}
-                        </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Artista:</label>
+                <select name="artist" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                    <option value="">Todos los artistas</option>
+                    {% for a in options.artists %}
+                        <option value="{{ a.id }}" {% if selected_artist_id|stringformat:"s" == a.id|stringformat:"s" %}selected{% endif %}>{{ a.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-gray-900 group-hover:text-red-600 transition">
-                                {{ card.name }}
-                            </h3>
-                            <p class="text-sm text-gray-500 mb-2">{{ card.set_name }}</p>
-                            
-                            <div class="mb-3">
-                                {% if card.rarity != 'N/A' %}
-                                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded">
-                                        ✨ {{ card.rarity }}
-                                    </span>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="w-full px-4 pb-4 pt-2 bg-gray-50 border-t mt-auto">
-                        {% if card.price != 'N/A' %}
-                            <p class="text-xl font-bold text-red-600">${{ card.price }}</p>
-                            <p class="text-[10px] text-gray-400 uppercase tracking-wider">Market Price</p>
-                        {% else %}
-                            <p class="text-gray-400 text-sm italic">Precio no disponible</p>
-                        {% endif %}
-                    </div>
-
-                </button>
-            </form>
-        {% endfor %}
-    </div>
-
-    {% if query and total_pages > 1 %}
-    <div class="flex justify-center items-center gap-2 mt-10 mb-6 flex-wrap">
-        
-        {% if has_previous %}
-            <a href="?q={{ query }}&page={{ prev_page }}" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-bold">«</a>
-        {% endif %}
-
-        {% for i in page_range %}
-            {% if i == 1 or i == total_pages or i >= current_page|add:"-2" and i <= current_page|add:"2" %}
-                
-                {% if current_page == i %}
-                    <span class="px-4 py-2 bg-blue-900 text-white font-bold rounded-lg shadow">
-                        {{ i }}
-                    </span>
-                {% else %}
-                    <a href="?q={{ query }}&page={{ i }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
-                        {{ i }}
+            {% if selected_sort or selected_supertype_id or selected_rarity_id or selected_subtype_id or selected_artist_id %}
+                <div class="pt-2">
+                    <a href="{% url 'search' %}?q={{ query_raw|default:'' }}" class="block text-center text-xs text-red-600 hover:text-red-700 font-semibold underline">
+                        Limpiar filtros ×
                     </a>
-                {% endif %}
-
-            {% elif i == current_page|add:"-3" or i == current_page|add:"3" %}
-                <span class="text-gray-400 px-1">...</span>
+                </div>
             {% endif %}
-        {% endfor %}
+        </form>
+    </aside>
 
-        {% if has_next %}
-            <a href="?q={{ query }}&page={{ next_page }}" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-bold">»</a>
+    <main class="flex-1 w-full">
+        {% if error %}
+            <div class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-200">
+                ⚠️ {{ error }}
+            </div>
         {% endif %}
 
-    </div>
-    {% endif %}
+        {% if results %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {% for card in results %}
+                    <a href="{% url 'card_detail' card.id %}" class="block group bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-lg transition-all flex flex-col h-full overflow-hidden">
+                        <div class="bg-gray-50 h-56 flex items-center justify-center p-4 overflow-hidden">
+                            {% if card.images.small %}
+                                <img src="{{ card.images.small }}" alt="{{ card.name }}" class="h-full object-contain group-hover:scale-105 transition duration-300">
+                            {% else %}
+                                <div class="text-gray-400 italic text-sm">Sin imagen</div>
+                            {% endif %}
+                        </div>
 
-{% elif query %}
-    <div class="bg-yellow-100 text-yellow-700 p-4 rounded-lg text-center">
-        😕 No se encontraron cartas con el término "<strong>{{ query }}</strong>". Intenta con otro nombre.
-    </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <h3 class="font-bold text-gray-900 mb-1 leading-snug">{{ card.name }}</h3>
+                            <p class="text-xs text-gray-500 mb-3">
+                                {{ card.set_name|default:"Set desconocido" }}
+                                {% if card.artist %}
+                                    <br><span class="text-gray-400">🎨 {{ card.artist.name }}</span>
+                                {% endif %}
+                            </p>
+                            
+                            {% if card.price %}
+                                <div class="mt-auto pt-3 border-t border-gray-100">
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-lg font-bold text-red-600">${{ card.price|floatformat:2 }}</p>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Market</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
 
-{% else %}
-    <div class="bg-gray-100 p-12 rounded-lg text-center">
-        <p class="text-gray-600 text-lg">🔎 Escribe el nombre de una carta Pokémon para comenzar.</p>
-        <p class="text-gray-500 text-sm mt-2">Por ejemplo: Charizard, Pikachu, Blastoise, Venusaur...</p>
-    </div>
-{% endif %}
+            {% if total_pages > 1 %}
+                <div class="flex justify-center items-center gap-2 mt-10 pb-10">
+                    {% if has_previous %}
+                        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' and value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ prev_page }}" 
+                        class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50">« Anterior</a>
+                    {% endif %}
+                    
+                    <span class="px-4 py-2 text-sm text-gray-600">Pág {{ current_page }} de {{ total_pages }}</span>
+                    
+                    {% if has_next %}
+                        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' and value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ next_page }}" 
+                        class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50">Siguiente »</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        {% elif query_raw %}
+            <div class="text-center py-20 bg-gray-50 rounded-lg border border-dashed">
+                <p class="text-gray-500 text-lg">😕 No se encontraron cartas para "{{ query_raw }}".</p>
+            </div>
+        {% else %}
+            <div class="text-center py-20 bg-white border border-gray-100 rounded-lg shadow-sm">
+                <p class="text-gray-400 text-lg">🔎 Escribe el nombre de una carta para empezar.</p>
+            </div>
+        {% endif %}
+    </main>
+</div>
+
+<script>
+    const searchInput = document.getElementById('search-input');
+    const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+    let debounceTimer; // Variable para controlar el tiempo de espera
+
+    searchInput.addEventListener('input', function() {
+        // Limpiamos el temporizador anterior cada vez que el usuario presiona una tecla
+        clearTimeout(debounceTimer);
+        
+        const query = this.value.trim();
+        if (query.length < 3) {
+            suggestionsDropdown.classList.add('hidden');
+            return;
+        }
+
+        // Iniciamos un nuevo temporizador de 300ms
+        debounceTimer = setTimeout(async () => {
+            try {
+                const response = await fetch(`/search-suggestions/?q=${encodeURIComponent(query)}`);
+                const suggestions = await response.json();
+                
+                suggestionsDropdown.innerHTML = '';
+                if (suggestions.length > 0) {
+                    suggestionsDropdown.classList.remove('hidden');
+                    suggestions.forEach(suggestion => {
+                        const item = document.createElement('div');
+                        item.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer border-b last:border-0 flex items-center gap-3 text-sm';
+                        item.innerHTML = `<img src="${suggestion.image}" class="w-8 h-10 object-contain"><span class="font-medium">${suggestion.name}</span>`;
+                        item.onclick = () => {
+                            searchInput.value = suggestion.name;
+                            searchInput.closest('form').submit();
+                        };
+                        suggestionsDropdown.appendChild(item);
+                    });
+                } else {
+                    suggestionsDropdown.innerHTML = '<div class="px-4 py-3 text-gray-500 text-center text-sm">Sin resultados</div>';
+                    suggestionsDropdown.classList.remove('hidden');
+                }
+            } catch (e) { 
+                console.error("Error en la búsqueda:", e);
+                suggestionsDropdown.classList.add('hidden'); 
+            }
+        }, 300); // 300ms de espera antes de ejecutar
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !suggestionsDropdown.contains(e.target)) {
+            suggestionsDropdown.classList.add('hidden');
+        }
+    });
+</script>
 {% endblock %}

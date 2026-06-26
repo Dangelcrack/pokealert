@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from cards.views import (
     CardViewSet,
+    delete_alert,
     edit_alert, 
     home,
     register,
@@ -11,7 +12,6 @@ from cards.views import (
     user_logout, 
     dashboard, 
     search,
-    test_pokemon_api,
     create_alert,
     card_detail
 )
@@ -30,7 +30,6 @@ urlpatterns = [
     # API REST
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/test-pokemon/', test_pokemon_api),
     
     # Frontend
     path('', home, name='home'),
@@ -41,6 +40,7 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('create-alert/', create_alert, name='create_alert'),
     path('search-suggestions/', search_suggestions, name='search_suggestions'),
-    path('card/<slug:card_name>/', card_detail, name='card_detail'),
+    path('card/<str:card_id>/', card_detail, name='card_detail'),
     path('alerts/edit/<int:alert_id>/', edit_alert, name='edit_alert'),
+    path('alerts/delete/<int:alert_id>/', delete_alert, name='delete_alert'),
 ]

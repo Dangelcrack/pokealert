@@ -57,9 +57,12 @@
                     <form method="POST" action="{% url 'create_alert' %}" class="flex flex-col gap-3">
                         {% csrf_token %}
                         <input type="hidden" name="pokemontcg_id" value="{{ card.id }}">
+                        <input type="hidden" name="current_price" value="{{ market_price }}">
                         
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Notificarme si el precio baja un:</label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">
+                                Notificarme si el precio baja un:
+                            </label>
                             <select name="discount_percentage" class="w-full px-3 py-2 bg-white border rounded-lg focus:outline-none focus:border-red-600 text-sm" required>
                                 <option value="">Selecciona un porcentaje</option>
                                 <option value="5">5% de descuento</option>
@@ -67,6 +70,7 @@
                                 <option value="15">15% de descuento</option>
                                 <option value="20">20% de descuento</option>
                                 <option value="25">25% de descuento</option>
+                                <option value="50">50% de descuento</option>
                             </select>
                         </div>
 

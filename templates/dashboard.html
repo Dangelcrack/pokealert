@@ -77,9 +77,12 @@
                                 <a href="{% url 'edit_alert' alert.id %}" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
                                     ⚙️ Editar
                                 </a>
-                                <button class="text-red-600 hover:text-red-800 font-medium flex items-center gap-1">
-                                    🗑️ Eliminar
-                                </button>
+                                <form action="{% url 'delete_alert' alert.id %}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta alerta?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-600 hover:text-red-800 font-medium flex items-center gap-1">
+                                        🗑️ Eliminar
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
