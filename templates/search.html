@@ -44,7 +44,7 @@
 
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Ordenar por:</label>
-                <select name="sort" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                <select name="sort" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
                     <option value="">Por defecto</option>
                     <option value="-price" {% if selected_sort == "-price" %}selected{% endif %}>Precio: Mayor a Menor 📈</option>
                     <option value="price" {% if selected_sort == "price" %}selected{% endif %}>Precio: Menor a Mayor 📉</option>
@@ -54,7 +54,7 @@
 
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Tipo de Carta:</label>
-                <select name="supertype" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                <select name="supertype" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
                     <option value="">Todos los tipos</option>
                     {% for s in options.supertypes %}
                         <option value="{{ s.id }}" {% if selected_supertype_id|stringformat:"s" == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
@@ -64,7 +64,7 @@
 
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Rareza:</label>
-                <select name="rarity" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                <select name="rarity" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
                     <option value="">Todas las rarezas</option>
                     {% for r in options.rarities %}
                         <option value="{{ r.id }}" {% if selected_rarity_id|stringformat:"s" == r.id|stringformat:"s" %}selected{% endif %}>{{ r.display_name }}</option>
@@ -74,7 +74,7 @@
 
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Subtipo:</label>
-                <select name="subtype" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                <select name="subtype" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
                     <option value="">Todos los subtipos</option>
                     {% for s in options.subtypes %}
                         <option value="{{ s.id }}" {% if selected_subtype_id|stringformat:"s" == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
@@ -84,13 +84,18 @@
 
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Artista:</label>
-                <select name="artist" onchange="this.form.submit();" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
+                <select name="artist" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-red-500">
                     <option value="">Todos los artistas</option>
                     {% for a in options.artists %}
                         <option value="{{ a.id }}" {% if selected_artist_id|stringformat:"s" == a.id|stringformat:"s" %}selected{% endif %}>{{ a.name }}</option>
                     {% endfor %}
                 </select>
             </div>
+
+            <!-- Botón para aplicar filtros -->
+            <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition mt-4">
+                🔍 Aplicar Filtros
+            </button>
 
             {% if selected_sort or selected_supertype_id or selected_rarity_id or selected_subtype_id or selected_artist_id %}
                 <div class="pt-2">

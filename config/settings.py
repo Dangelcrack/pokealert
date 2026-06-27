@@ -160,10 +160,35 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = f"PokeAlert App <{EMAIL_HOST_USER}>"
 
 # Configuración de Tareas Programadas (Celery Beat)
+
+# Configuración de Tareas Programadas (Celery Beat)
 CELERY_BEAT_SCHEDULE = {
     'actualizar-pokedex-mensual': {
-        'task': 'tasks.tasks.actualizar_pokedex_automatica', # Ruta de la tarea
-        'schedule': crontab(day_of_month=1, hour=0, minute=0), # Ejecutar el día 1 de cada mes a las 00:00
+        'task': 'tasks.tasks.actualizar_pokedex_automatica',
+        'schedule': crontab(day_of_month=1, hour=0, minute=0),
+    },
+    'save-daily-prices': {
+        'task': 'cards.tasks.save_daily_prices',
+        'schedule': crontab(hour=2, minute=0),
     },
 }
-CELERY_TASK_ALWAYS_EAGER = True
+
+CELERY_TASK_ALWAYS_EAGER = True  # En desarrollo = ejecuta sincronamente
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/pokealert.log',
+        },
+    },
+    'loggers': {
+        'cards.tasks': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+    },
+}

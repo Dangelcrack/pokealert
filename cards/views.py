@@ -1,3 +1,4 @@
+from datetime import timedelta, timezone
 import os
 import unicodedata
 import requests
@@ -10,12 +11,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.http import require_POST, require_http_methods, require_GET
 from django.core.cache import cache
 from django.db import connection
 from rest_framework import viewsets
-
-from alerts.models import PriceAlert
+from datetime import timedelta, datetime
+from django.utils import timezone
+from alerts.models import PriceAlert, PriceHistory
 from alerts.serializers import PriceAlertSerializer
 from cards.utils import POKEMON_ES_TO_TCG, TCG_TERMS
 from .models import Card, Rarity, Supertype, Subtype, Artist, PokemonEspecie
@@ -430,26 +432,29 @@ def create_alert(request):
         messages.error(request, f'❌ Error: {str(e)}')
         return redirect('search')
 
-
 @login_required(login_url='login')
 @require_http_methods(["GET", "POST"])
 def edit_alert(request, alert_id):
     alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
     
+    # 1. Cambiamos 'date' por 'recorded_at'
+    historial = PriceHistory.objects.filter(card=alert.card).order_by('recorded_at')
+    
     if request.method == 'POST':
         discount_percentage = request.POST.get('discount_percentage')
-        
-        if not discount_percentage or not discount_percentage.isdigit():
-            messages.error(request, '❌ Debes seleccionar un porcentaje válido.')
-            return render(request, 'alerts/edit_alert.html', {'alert': alert})
-            
-        alert.discount_percentage = int(discount_percentage)
-        alert.save()
-        messages.success(request, '✅ Alerta actualizada correctamente.')
-        return redirect('dashboard')
-            
-    return render(request, 'alerts/edit_alert.html', {'alert': alert})
+        if discount_percentage and discount_percentage.isdigit():
+            alert.discount_percentage = int(discount_percentage)
+            alert.save()
+            messages.success(request, '✅ Alerta actualizada correctamente.')
+            return redirect('dashboard')
 
+    # 2. Cambiamos 'h.date' por 'h.recorded_at'
+    context = {
+        'alert': alert,
+        'price_dates': [h.recorded_at.strftime('%Y-%m-%d') for h in historial],
+        'price_values': [float(h.price) for h in historial],
+    }
+    return render(request, 'alerts/edit_alert.html', context)
 
 @login_required(login_url='login')
 def search_suggestions(request):
@@ -673,3 +678,26 @@ def delete_alert(request, alert_id):
     alert.delete()
     messages.success(request, '✅ Alerta eliminada correctamente.')
     return redirect('dashboard')
+
+
+@require_GET
+def card_price_history(_request, card_id):
+    """Devuelve el histórico de precios últimos 30 días en JSON"""
+    
+    try:
+        card = Card.objects.get(pokemontcg_id=card_id)
+        last_30_days = timezone.now() - timedelta(days=30)
+        
+        history = PriceHistory.objects.filter(
+            card=card,
+            recorded_at__gte=last_30_days
+        ).order_by('recorded_at')
+        
+        return JsonResponse({
+            'dates': [h.recorded_at.strftime('%d/%m') for h in history],
+            'prices': [float(h.price) for h in history],
+            'card_name': card.name
+        })
+    
+    except Card.DoesNotExist:
+        return JsonResponse({'error': 'Carta no encontrada'}, status=404)

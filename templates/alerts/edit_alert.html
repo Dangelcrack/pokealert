@@ -3,56 +3,87 @@
 {% block title %}Editar Alerta - PokeAlert{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden border mt-8">
-    <div class="p-6 border-b bg-gray-50">
-        <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            ⚙️ Editar Alerta
-        </h2>
-        <p class="text-sm text-gray-500 mt-1">Modifica tu objetivo de precio para esta carta.</p>
-    </div>
-
-    <div class="p-6">
-        <div class="flex items-center gap-4 mb-6 p-3 bg-gray-50 rounded-lg border">
-            {% if alert.card.image_url %}
-                <img src="{{ alert.card.image_url }}" alt="{{ alert.card.name }}" class="w-16 h-22 object-cover rounded shadow-sm">
-            {% endif %}
-            <div>
-                <h3 class="font-bold text-lg text-gray-900">{{ alert.card.name }}</h3>
-                <p class="text-xs bg-yellow-100 text-yellow-800 font-semibold px-2 py-0.5 rounded inline-block mt-1">
-                    {{ alert.card.get_rarity_display }}
-                </p>
-            </div>
+<div class="max-w-2xl mx-auto mt-8 mb-8">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden border">
+        <div class="p-6 border-b bg-gray-50">
+            <h2 class="text-2xl font-bold text-gray-900">⚙️ Editar Alerta</h2>
         </div>
 
-        <form method="POST">
-            {% csrf_token %}
-            
-            <div class="mb-6">
-                <label for="discount_percentage" class="block text-sm font-medium text-gray-700 mb-2">
-                    ¿Cuándo quieres que te avisemos?
-                </label>
-                <select 
-                    id="discount_percentage" 
-                    name="discount_percentage" 
-                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600 bg-white"
-                    required>
-                    <option value="10" {% if alert.discount_percentage == 10 %}selected{% endif %}>Cuando baje un 10%</option>
-                    <option value="20" {% if alert.discount_percentage == 20 %}selected{% endif %}>Cuando baje un 20%</option>
-                    <option value="30" {% if alert.discount_percentage == 30 %}selected{% endif %}>Cuando baje un 30%</option>
-                    <option value="40" {% if alert.discount_percentage == 40 %}selected{% endif %}>Cuando baje un 40%</option>
-                    <option value="50" {% if alert.discount_percentage == 50 %}selected{% endif %}>Cuando baje un 50% (¡Mitad de precio! 🔥)</option>
-                </select>
+        <div class="p-6 md:flex gap-6">
+            <div class="md:w-1/3">
+                {% if alert.card.image_url %}
+                    <img src="{{ alert.card.image_url }}" alt="{{ alert.card.name }}" class="w-full rounded shadow-sm mb-4">
+                {% endif %}
+                <h3 class="font-bold text-lg text-gray-900">{{ alert.card.name }}</h3>
             </div>
 
-            <div class="flex items-center gap-3">
-                <button type="submit" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 font-bold transition text-center">
-                    Guardar Cambios
-                </button>
-                <a href="{% url 'dashboard' %}" class="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-bold transition text-center border">
-                    Cancelar
-                </a>
+            <div class="md:w-2/3">
+                <p class="text-xs font-bold text-gray-500 uppercase mb-2">📈 Historial de Precio (30 días)</p>
+                <div class="relative h-64 mb-6 bg-white border border-gray-100 rounded-lg p-2">
+                    <canvas id="priceChart"></canvas>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-6">
+                        <label for="discount_percentage" class="block text-sm font-medium text-gray-700 mb-2">¿Cuándo quieres que te avisemos?</label>
+                        <select id="discount_percentage" name="discount_percentage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600 bg-white" required>
+                            <option value="10" {% if alert.discount_percentage == 10 %}selected{% endif %}>Cuando baje un 10%</option>
+                            <option value="20" {% if alert.discount_percentage == 20 %}selected{% endif %}>Cuando baje un 20%</option>
+                            <option value="30" {% if alert.discount_percentage == 30 %}selected{% endif %}>Cuando baje un 30%</option>
+                            <option value="40" {% if alert.discount_percentage == 40 %}selected{% endif %}>Cuando baje un 40%</option>
+                            <option value="50" {% if alert.discount_percentage == 50 %}selected{% endif %}>Cuando baje un 50%</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button type="submit" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 font-bold transition text-center">Guardar Cambios</button>
+                        <a href="{% url 'dashboard' %}" class="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 font-bold transition text-center border">Cancelar</a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const dates = {{ price_dates|default:"[]"|safe }};
+    const prices = {{ price_values|default:"[]"|safe }};
+
+    // Solo inicializamos si hay datos para mostrar
+    if (dates.length > 0) {
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Precio (USD)',
+                    data: prices,
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: false, 
+                        ticks: { callback: v => '$' + v.toFixed(2) }
+                    }
+                }
+            }
+        });
+    } else {
+        // Mensaje opcional si no hay historial
+        document.getElementById('priceChart').parentElement.innerHTML = '<p class="text-gray-400 text-center pt-20 text-sm">No hay datos históricos disponibles.</p>';
+    }
+</script>
 {% endblock %}

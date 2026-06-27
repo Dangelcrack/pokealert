@@ -15,12 +15,12 @@ class PriceAlert(models.Model):
         return f"{self.user.username} - {self.card.name} ({self.discount_percentage}%)"
     
     class Meta:
-        unique_together = ['user', 'card'] # Completé tu línea cortada
+        unique_together = ['user', 'card'] 
 
 class PriceHistory(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='price_history')
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    source = models.CharField(max_length=100, default='pokemontcg')
+    marketplace = models.CharField(max_length=100, default='tcgplayer')
     
     recorded_at = models.DateTimeField(auto_now_add=True)
     
@@ -29,3 +29,6 @@ class PriceHistory(models.Model):
     
     class Meta:
         ordering = ['-recorded_at']
+        indexes = [
+            models.Index(fields=['card', 'recorded_at']), 
+        ]

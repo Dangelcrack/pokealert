@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from cards.views import (
     CardViewSet,
+    card_price_history,
     delete_alert,
     edit_alert, 
     home,
@@ -43,4 +44,5 @@ urlpatterns = [
     path('card/<str:card_id>/', card_detail, name='card_detail'),
     path('alerts/edit/<int:alert_id>/', edit_alert, name='edit_alert'),
     path('alerts/delete/<int:alert_id>/', delete_alert, name='delete_alert'),
+    path('api/card/<str:card_id>/price-history/', card_price_history, name='card_price_history'),
 ]
