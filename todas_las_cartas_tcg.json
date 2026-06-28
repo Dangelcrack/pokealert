@@ -1,0 +1,6597 @@
+{
+  "aggron": {
+    "name": "Aggron",
+    "supertype": "Pokémon",
+    "id": "pl2-14"
+  },
+  "weedle": {
+    "name": "Weedle",
+    "supertype": "Pokémon",
+    "id": "xy12-5"
+  },
+  "ampharos": {
+    "name": "Ampharos",
+    "supertype": "Pokémon",
+    "id": "xy11-40"
+  },
+  "bulbasaur": {
+    "name": "Bulbasaur",
+    "supertype": "Pokémon",
+    "id": "ex4-39"
+  },
+  "dratini": {
+    "name": "Dratini",
+    "supertype": "Pokémon",
+    "id": "base4-38"
+  },
+  "caterpie": {
+    "name": "Caterpie",
+    "supertype": "Pokémon",
+    "id": "g1-3"
+  },
+  "absol g": {
+    "name": "Absol G",
+    "supertype": "Pokémon",
+    "id": "pl3-1"
+  },
+  "aerodactyl": {
+    "name": "Aerodactyl",
+    "supertype": "Pokémon",
+    "id": "ecard3-1"
+  },
+  "absol": {
+    "name": "Absol",
+    "supertype": "Pokémon",
+    "id": "swsh35-38"
+  },
+  "venusaur": {
+    "name": "Venusaur",
+    "supertype": "Pokémon",
+    "id": "ecard1-30"
+  },
+  "alakazam": {
+    "name": "Alakazam",
+    "supertype": "Pokémon",
+    "id": "ecard1-33"
+  },
+  "arcanine": {
+    "name": "Arcanine",
+    "supertype": "Pokémon",
+    "id": "base6-36"
+  },
+  "beedrill δ": {
+    "name": "Beedrill δ",
+    "supertype": "Pokémon",
+    "id": "ex11-1"
+  },
+  "azumarill": {
+    "name": "Azumarill",
+    "supertype": "Pokémon",
+    "id": "sm3-35"
+  },
+  "blaine's moltres": {
+    "name": "Blaine's Moltres",
+    "supertype": "Pokémon",
+    "id": "gym1-1"
+  },
+  "celebi & venusaur-gx": {
+    "name": "Celebi & Venusaur-GX",
+    "supertype": "Pokémon",
+    "id": "sm9-1"
+  },
+  "bastiodon": {
+    "name": "Bastiodon",
+    "supertype": "Pokémon",
+    "id": "dp2-21"
+  },
+  "altaria": {
+    "name": "Altaria",
+    "supertype": "Pokémon",
+    "id": "sm75-40"
+  },
+  "blastoise": {
+    "name": "Blastoise",
+    "supertype": "Pokémon",
+    "id": "bw7-31"
+  },
+  "articuno": {
+    "name": "Articuno",
+    "supertype": "Pokémon",
+    "id": "ecard3-4"
+  },
+  "blaziken fb": {
+    "name": "Blaziken FB",
+    "supertype": "Pokémon",
+    "id": "pl3-2"
+  },
+  "crobat δ": {
+    "name": "Crobat δ",
+    "supertype": "Pokémon",
+    "id": "ex11-2"
+  },
+  "lucario": {
+    "name": "Lucario",
+    "supertype": "Pokémon",
+    "id": "sma-SV22"
+  },
+  "metapod": {
+    "name": "Metapod",
+    "supertype": "Pokémon",
+    "id": "hgss1-46"
+  },
+  "brock's rhydon": {
+    "name": "Brock's Rhydon",
+    "supertype": "Pokémon",
+    "id": "gym1-2"
+  },
+  "ludicolo": {
+    "name": "Ludicolo",
+    "supertype": "Pokémon",
+    "id": "sm7-38"
+  },
+  "dark ampharos": {
+    "name": "Dark Ampharos",
+    "supertype": "Pokémon",
+    "id": "neo4-1"
+  },
+  "cherrim": {
+    "name": "Cherrim",
+    "supertype": "Pokémon",
+    "id": "hgss2-28"
+  },
+  "alolan exeggutor": {
+    "name": "Alolan Exeggutor",
+    "supertype": "Pokémon",
+    "id": "sm6-2a"
+  },
+  "kakuna": {
+    "name": "Kakuna",
+    "supertype": "Pokémon",
+    "id": "ex6-36"
+  },
+  "tangela": {
+    "name": "Tangela",
+    "supertype": "Pokémon",
+    "id": "ex12-44"
+  },
+  "banette": {
+    "name": "Banette",
+    "supertype": "Pokémon",
+    "id": "xy6-32"
+  },
+  "venusaur & snivy-gx": {
+    "name": "Venusaur & Snivy-GX",
+    "supertype": "Pokémon",
+    "id": "sm12-1"
+  },
+  "snivy": {
+    "name": "Snivy",
+    "supertype": "Pokémon",
+    "id": "mcd11-1"
+  },
+  "mew": {
+    "name": "Mew",
+    "supertype": "Pokémon",
+    "id": "sm115-32"
+  },
+  "dialga": {
+    "name": "Dialga",
+    "supertype": "Pokémon",
+    "id": "dpp-DP26"
+  },
+  "blaine's arcanine": {
+    "name": "Blaine's Arcanine",
+    "supertype": "Pokémon",
+    "id": "gym2-1"
+  },
+  "clefable": {
+    "name": "Clefable",
+    "supertype": "Pokémon",
+    "id": "sm115-40"
+  },
+  "blaziken": {
+    "name": "Blaziken",
+    "supertype": "Pokémon",
+    "id": "swsh3-24"
+  },
+  "surskit": {
+    "name": "Surskit",
+    "supertype": "Pokémon",
+    "id": "sm7-15"
+  },
+  "venusaur v": {
+    "name": "Venusaur V",
+    "supertype": "Pokémon",
+    "id": "swsh35-1"
+  },
+  "oddish": {
+    "name": "Oddish",
+    "supertype": "Pokémon",
+    "id": "sm10-6"
+  },
+  "armaldo δ": {
+    "name": "Armaldo δ",
+    "supertype": "Pokémon",
+    "id": "ex13-1"
+  },
+  "ariados": {
+    "name": "Ariados",
+    "supertype": "Pokémon",
+    "id": "neo1-27"
+  },
+  "deoxys": {
+    "name": "Deoxys",
+    "supertype": "Pokémon",
+    "id": "xy6-33"
+  },
+  "chansey": {
+    "name": "Chansey",
+    "supertype": "Pokémon",
+    "id": "neo4-31"
+  },
+  "ninetales": {
+    "name": "Ninetales",
+    "supertype": "Pokémon",
+    "id": "dp2-32"
+  },
+  "beedrill": {
+    "name": "Beedrill",
+    "supertype": "Pokémon",
+    "id": "ecard3-5"
+  },
+  "manaphy": {
+    "name": "Manaphy",
+    "supertype": "Pokémon",
+    "id": "bw8-34"
+  },
+  "pidgeot": {
+    "name": "Pidgeot",
+    "supertype": "Pokémon",
+    "id": "base6-33"
+  },
+  "dragonite δ": {
+    "name": "Dragonite δ",
+    "supertype": "Pokémon",
+    "id": "ex11-3"
+  },
+  "drifblim fb": {
+    "name": "Drifblim FB",
+    "supertype": "Pokémon",
+    "id": "pl3-3"
+  },
+  "ditto": {
+    "name": "Ditto",
+    "supertype": "Pokémon",
+    "id": "ex11-40"
+  },
+  "cradily δ": {
+    "name": "Cradily δ",
+    "supertype": "Pokémon",
+    "id": "ex13-2"
+  },
+  "celebi": {
+    "name": "Celebi",
+    "supertype": "Pokémon",
+    "id": "np-29"
+  },
+  "gloom": {
+    "name": "Gloom",
+    "supertype": "Pokémon",
+    "id": "ex5-35"
+  },
+  "masquerain": {
+    "name": "Masquerain",
+    "supertype": "Pokémon",
+    "id": "ex8-39"
+  },
+  "dark crobat": {
+    "name": "Dark Crobat",
+    "supertype": "Pokémon",
+    "id": "neo4-2"
+  },
+  "cradily": {
+    "name": "Cradily",
+    "supertype": "Pokémon",
+    "id": "dp6-21"
+  },
+  "blaine's charizard": {
+    "name": "Blaine's Charizard",
+    "supertype": "Pokémon",
+    "id": "gym2-2"
+  },
+  "butterfree": {
+    "name": "Butterfree",
+    "supertype": "Pokémon",
+    "id": "base2-33"
+  },
+  "tangrowth": {
+    "name": "Tangrowth",
+    "supertype": "Pokémon",
+    "id": "dp7-29"
+  },
+  "morelull": {
+    "name": "Morelull",
+    "supertype": "Pokémon",
+    "id": "sm1-16"
+  },
+  "crawdaunt": {
+    "name": "Crawdaunt",
+    "supertype": "Pokémon",
+    "id": "sm4-25"
+  },
+  "dragonair": {
+    "name": "Dragonair",
+    "supertype": "Pokémon",
+    "id": "sm75-36"
+  },
+  "gallade": {
+    "name": "Gallade",
+    "supertype": "Pokémon",
+    "id": "dp3-6"
+  },
+  "magmar": {
+    "name": "Magmar",
+    "supertype": "Pokémon",
+    "id": "hgss4-42"
+  },
+  "erika's clefable": {
+    "name": "Erika's Clefable",
+    "supertype": "Pokémon",
+    "id": "gym1-3"
+  },
+  "charizard": {
+    "name": "Charizard",
+    "supertype": "Pokémon",
+    "id": "swsh4-25"
+  },
+  "bellsprout": {
+    "name": "Bellsprout",
+    "supertype": "Pokémon",
+    "id": "sm10-13"
+  },
+  "dark alakazam": {
+    "name": "Dark Alakazam",
+    "supertype": "Pokémon",
+    "id": "base5-18"
+  },
+  "venonat": {
+    "name": "Venonat",
+    "supertype": "Pokémon",
+    "id": "sm10-10"
+  },
+  "team aqua's cacturne": {
+    "name": "Team Aqua's Cacturne",
+    "supertype": "Pokémon",
+    "id": "ex4-1"
+  },
+  "pinsir": {
+    "name": "Pinsir",
+    "supertype": "Pokémon",
+    "id": "hgss3-32"
+  },
+  "ho-oh": {
+    "name": "Ho-Oh",
+    "supertype": "Pokémon",
+    "id": "ex10-27"
+  },
+  "exeggcute": {
+    "name": "Exeggcute",
+    "supertype": "Pokémon",
+    "id": "ex6-33"
+  },
+  "shuckle": {
+    "name": "Shuckle",
+    "supertype": "Pokémon",
+    "id": "hsp-HGSS15"
+  },
+  "jirachi": {
+    "name": "Jirachi",
+    "supertype": "Pokémon",
+    "id": "dp6-31"
+  },
+  "turtwig": {
+    "name": "Turtwig",
+    "supertype": "Pokémon",
+    "id": "pop8-17"
+  },
+  "celebi v": {
+    "name": "Celebi V",
+    "supertype": "Pokémon",
+    "id": "swsh1-1"
+  },
+  "pikachu": {
+    "name": "Pikachu",
+    "supertype": "Pokémon",
+    "id": "xy12-35"
+  },
+  "venusaur-ex": {
+    "name": "Venusaur-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY28"
+  },
+  "garchomp": {
+    "name": "Garchomp",
+    "supertype": "Pokémon",
+    "id": "dp2-9"
+  },
+  "chimecho δ": {
+    "name": "Chimecho δ",
+    "supertype": "Pokémon",
+    "id": "ex13-37"
+  },
+  "alolan sandshrew": {
+    "name": "Alolan Sandshrew",
+    "supertype": "Pokémon",
+    "id": "sm5-28"
+  },
+  "dragonite": {
+    "name": "Dragonite",
+    "supertype": "Pokémon",
+    "id": "ecard1-9"
+  },
+  "exploud": {
+    "name": "Exploud",
+    "supertype": "Pokémon",
+    "id": "pl3-28"
+  },
+  "latias": {
+    "name": "Latias",
+    "supertype": "Pokémon",
+    "id": "dp4-22"
+  },
+  "pachirisu": {
+    "name": "Pachirisu",
+    "supertype": "Pokémon",
+    "id": "bw9-37"
+  },
+  "charmander": {
+    "name": "Charmander",
+    "supertype": "Pokémon",
+    "id": "swsh4-23"
+  },
+  "team aqua's crawdaunt": {
+    "name": "Team Aqua's Crawdaunt",
+    "supertype": "Pokémon",
+    "id": "ex4-14"
+  },
+  "gyarados": {
+    "name": "Gyarados",
+    "supertype": "Pokémon",
+    "id": "xy12-34"
+  },
+  "m venusaur-ex": {
+    "name": "M Venusaur-EX",
+    "supertype": "Pokémon",
+    "id": "g1-2"
+  },
+  "beautifly": {
+    "name": "Beautifly",
+    "supertype": "Pokémon",
+    "id": "sm8-26"
+  },
+  "ivysaur": {
+    "name": "Ivysaur",
+    "supertype": "Pokémon",
+    "id": "ex6-35"
+  },
+  "chimchar": {
+    "name": "Chimchar",
+    "supertype": "Pokémon",
+    "id": "sm5-21"
+  },
+  "weepinbell": {
+    "name": "Weepinbell",
+    "supertype": "Pokémon",
+    "id": "sm10-14"
+  },
+  "deoxys δ": {
+    "name": "Deoxys δ",
+    "supertype": "Pokémon",
+    "id": "ex13-6"
+  },
+  "venomoth": {
+    "name": "Venomoth",
+    "supertype": "Pokémon",
+    "id": "base2-29"
+  },
+  "delcatty": {
+    "name": "Delcatty",
+    "supertype": "Pokémon",
+    "id": "ex2-34"
+  },
+  "dark arbok": {
+    "name": "Dark Arbok",
+    "supertype": "Pokémon",
+    "id": "ex7-29"
+  },
+  "flygon": {
+    "name": "Flygon",
+    "supertype": "Pokémon",
+    "id": "sm75-39"
+  },
+  "pineco": {
+    "name": "Pineco",
+    "supertype": "Pokémon",
+    "id": "sm8-15"
+  },
+  "lugia": {
+    "name": "Lugia",
+    "supertype": "Pokémon",
+    "id": "ex10-29"
+  },
+  "espeon δ": {
+    "name": "Espeon δ",
+    "supertype": "Pokémon",
+    "id": "ex11-4"
+  },
+  "cresselia": {
+    "name": "Cresselia",
+    "supertype": "Pokémon",
+    "id": "dp5-2"
+  },
+  "dusknoir": {
+    "name": "Dusknoir",
+    "supertype": "Pokémon",
+    "id": "xy2-40"
+  },
+  "brock's ninetales": {
+    "name": "Brock's Ninetales",
+    "supertype": "Pokémon",
+    "id": "gym2-3"
+  },
+  "metagross": {
+    "name": "Metagross",
+    "supertype": "Pokémon",
+    "id": "hgss3-18"
+  },
+  "onix": {
+    "name": "Onix",
+    "supertype": "Pokémon",
+    "id": "mcd19-9"
+  },
+  "entei": {
+    "name": "Entei",
+    "supertype": "Pokémon",
+    "id": "basep-34"
+  },
+  "froslass": {
+    "name": "Froslass",
+    "supertype": "Pokémon",
+    "id": "bw10-23"
+  },
+  "grotle": {
+    "name": "Grotle",
+    "supertype": "Pokémon",
+    "id": "hgss2-31"
+  },
+  "flareon": {
+    "name": "Flareon",
+    "supertype": "Pokémon",
+    "id": "ecard3-8"
+  },
+  "hoppip": {
+    "name": "Hoppip",
+    "supertype": "Pokémon",
+    "id": "sm8-12"
+  },
+  "roselia": {
+    "name": "Roselia",
+    "supertype": "Pokémon",
+    "id": "ex12-42"
+  },
+  "vileplume": {
+    "name": "Vileplume",
+    "supertype": "Pokémon",
+    "id": "base2-31"
+  },
+  "lileep": {
+    "name": "Lileep",
+    "supertype": "Pokémon",
+    "id": "sm12-10"
+  },
+  "seedot": {
+    "name": "Seedot",
+    "supertype": "Pokémon",
+    "id": "sm7-12"
+  },
+  "drapion": {
+    "name": "Drapion",
+    "supertype": "Pokémon",
+    "id": "dp7-15"
+  },
+  "yanma": {
+    "name": "Yanma",
+    "supertype": "Pokémon",
+    "id": "ex7-28"
+  },
+  "togepi": {
+    "name": "Togepi",
+    "supertype": "Pokémon",
+    "id": "basep-30"
+  },
+  "electivire": {
+    "name": "Electivire",
+    "supertype": "Pokémon",
+    "id": "xy3-30"
+  },
+  "skiploom": {
+    "name": "Skiploom",
+    "supertype": "Pokémon",
+    "id": "sm8-13"
+  },
+  "mamoswine": {
+    "name": "Mamoswine",
+    "supertype": "Pokémon",
+    "id": "dp7-21"
+  },
+  "dark electrode": {
+    "name": "Dark Electrode",
+    "supertype": "Pokémon",
+    "id": "base5-34"
+  },
+  "yanmega": {
+    "name": "Yanmega",
+    "supertype": "Pokémon",
+    "id": "dp6-17"
+  },
+  "electivire fb": {
+    "name": "Electivire FB",
+    "supertype": "Pokémon",
+    "id": "pl3-4"
+  },
+  "hitmontop": {
+    "name": "Hitmontop",
+    "supertype": "Pokémon",
+    "id": "basep-37"
+  },
+  "gengar": {
+    "name": "Gengar",
+    "supertype": "Pokémon",
+    "id": "dp1-27"
+  },
+  "heatran": {
+    "name": "Heatran",
+    "supertype": "Pokémon",
+    "id": "dp6-30"
+  },
+  "golem": {
+    "name": "Golem",
+    "supertype": "Pokémon",
+    "id": "xy2-47"
+  },
+  "gardevoir": {
+    "name": "Gardevoir",
+    "supertype": "Pokémon",
+    "id": "ex16-9"
+  },
+  "flareon δ": {
+    "name": "Flareon δ",
+    "supertype": "Pokémon",
+    "id": "ex11-5"
+  },
+  "team aqua's kyogre": {
+    "name": "Team Aqua's Kyogre",
+    "supertype": "Pokémon",
+    "id": "ex4-3"
+  },
+  "darkrai": {
+    "name": "Darkrai",
+    "supertype": "Pokémon",
+    "id": "xyp-XY22"
+  },
+  "servine": {
+    "name": "Servine",
+    "supertype": "Pokémon",
+    "id": "mcd12-1"
+  },
+  "bellossom": {
+    "name": "Bellossom",
+    "supertype": "Pokémon",
+    "id": "ecard2-5"
+  },
+  "rayquaza": {
+    "name": "Rayquaza",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH029"
+  },
+  "erika's venusaur": {
+    "name": "Erika's Venusaur",
+    "supertype": "Pokémon",
+    "id": "gym2-4"
+  },
+  "jolteon": {
+    "name": "Jolteon",
+    "supertype": "Pokémon",
+    "id": "bw9-34"
+  },
+  "breloom": {
+    "name": "Breloom",
+    "supertype": "Pokémon",
+    "id": "dp3-45"
+  },
+  "electabuzz": {
+    "name": "Electabuzz",
+    "supertype": "Pokémon",
+    "id": "xy3-29"
+  },
+  "kricketot": {
+    "name": "Kricketot",
+    "supertype": "Pokémon",
+    "id": "xy9-5"
+  },
+  "magmortar": {
+    "name": "Magmortar",
+    "supertype": "Pokémon",
+    "id": "swsh2-30"
+  },
+  "latios": {
+    "name": "Latios",
+    "supertype": "Pokémon",
+    "id": "dp4-23"
+  },
+  "blissey": {
+    "name": "Blissey",
+    "supertype": "Pokémon",
+    "id": "ecard2-6"
+  },
+  "lapras": {
+    "name": "Lapras",
+    "supertype": "Pokémon",
+    "id": "sm11-36"
+  },
+  "charmeleon": {
+    "name": "Charmeleon",
+    "supertype": "Pokémon",
+    "id": "base6-37"
+  },
+  "dark donphan": {
+    "name": "Dark Donphan",
+    "supertype": "Pokémon",
+    "id": "neo4-3"
+  },
+  "raichu": {
+    "name": "Raichu",
+    "supertype": "Pokémon",
+    "id": "xy12-36"
+  },
+  "piplup": {
+    "name": "Piplup",
+    "supertype": "Pokémon",
+    "id": "xy8-36"
+  },
+  "burmy": {
+    "name": "Burmy",
+    "supertype": "Pokémon",
+    "id": "xy10-2"
+  },
+  "paras": {
+    "name": "Paras",
+    "supertype": "Pokémon",
+    "id": "g1-6"
+  },
+  "blastoise δ": {
+    "name": "Blastoise δ",
+    "supertype": "Pokémon",
+    "id": "ex14-2"
+  },
+  "rampardos": {
+    "name": "Rampardos",
+    "supertype": "Pokémon",
+    "id": "dp2-33"
+  },
+  "nuzleaf": {
+    "name": "Nuzleaf",
+    "supertype": "Pokémon",
+    "id": "ex14-39"
+  },
+  "camerupt": {
+    "name": "Camerupt",
+    "supertype": "Pokémon",
+    "id": "ex13-36"
+  },
+  "bagon": {
+    "name": "Bagon",
+    "supertype": "Pokémon",
+    "id": "ex3-23"
+  },
+  "scyther": {
+    "name": "Scyther",
+    "supertype": "Pokémon",
+    "id": "hgss3-36"
+  },
+  "dark blastoise": {
+    "name": "Dark Blastoise",
+    "supertype": "Pokémon",
+    "id": "base5-20"
+  },
+  "empoleon": {
+    "name": "Empoleon",
+    "supertype": "Pokémon",
+    "id": "bw5-29"
+  },
+  "haunter": {
+    "name": "Haunter",
+    "supertype": "Pokémon",
+    "id": "pl4-42"
+  },
+  "dark espeon": {
+    "name": "Dark Espeon",
+    "supertype": "Pokémon",
+    "id": "neo4-4"
+  },
+  "victreebel": {
+    "name": "Victreebel",
+    "supertype": "Pokémon",
+    "id": "base2-30"
+  },
+  "tropius": {
+    "name": "Tropius",
+    "supertype": "Pokémon",
+    "id": "ex5-27"
+  },
+  "regigigas": {
+    "name": "Regigigas",
+    "supertype": "Pokémon",
+    "id": "dp6-37"
+  },
+  "gardevoir δ": {
+    "name": "Gardevoir δ",
+    "supertype": "Pokémon",
+    "id": "ex11-6"
+  },
+  "nidoking": {
+    "name": "Nidoking",
+    "supertype": "Pokémon",
+    "id": "base6-31"
+  },
+  "cherubi": {
+    "name": "Cherubi",
+    "supertype": "Pokémon",
+    "id": "pop6-13"
+  },
+  "roserade": {
+    "name": "Roserade",
+    "supertype": "Pokémon",
+    "id": "dp7-23"
+  },
+  "torterra": {
+    "name": "Torterra",
+    "supertype": "Pokémon",
+    "id": "pl1-39"
+  },
+  "dark houndoom": {
+    "name": "Dark Houndoom",
+    "supertype": "Pokémon",
+    "id": "ex7-37"
+  },
+  "wormadam": {
+    "name": "Wormadam",
+    "supertype": "Pokémon",
+    "id": "xy10-3"
+  },
+  "jumpluff": {
+    "name": "Jumpluff",
+    "supertype": "Pokémon",
+    "id": "sm8-14"
+  },
+  "groudon": {
+    "name": "Groudon",
+    "supertype": "Pokémon",
+    "id": "dp6-29"
+  },
+  "sceptile": {
+    "name": "Sceptile",
+    "supertype": "Pokémon",
+    "id": "pl4-31"
+  },
+  "minun": {
+    "name": "Minun",
+    "supertype": "Pokémon",
+    "id": "xy3-32"
+  },
+  "kricketune": {
+    "name": "Kricketune",
+    "supertype": "Pokémon",
+    "id": "dp2-27"
+  },
+  "mewtwo": {
+    "name": "Mewtwo",
+    "supertype": "Pokémon",
+    "id": "base6-29"
+  },
+  "vileplume-gx": {
+    "name": "Vileplume-GX",
+    "supertype": "Pokémon",
+    "id": "sm12-4"
+  },
+  "mothim": {
+    "name": "Mothim",
+    "supertype": "Pokémon",
+    "id": "dp3-33"
+  },
+  "eldegoss v": {
+    "name": "Eldegoss V",
+    "supertype": "Pokémon",
+    "id": "swsh2-19"
+  },
+  "team aqua's manectric": {
+    "name": "Team Aqua's Manectric",
+    "supertype": "Pokémon",
+    "id": "ex4-29"
+  },
+  "starmie": {
+    "name": "Starmie",
+    "supertype": "Pokémon",
+    "id": "xy12-31"
+  },
+  "kabutops": {
+    "name": "Kabutops",
+    "supertype": "Pokémon",
+    "id": "xy10-39"
+  },
+  "shelgon": {
+    "name": "Shelgon",
+    "supertype": "Pokémon",
+    "id": "ex3-41"
+  },
+  "espeon": {
+    "name": "Espeon",
+    "supertype": "Pokémon",
+    "id": "ecard2-11"
+  },
+  "erika's dragonair": {
+    "name": "Erika's Dragonair",
+    "supertype": "Pokémon",
+    "id": "gym1-4"
+  },
+  "treecko": {
+    "name": "Treecko",
+    "supertype": "Pokémon",
+    "id": "np-16"
+  },
+  "gastly": {
+    "name": "Gastly",
+    "supertype": "Pokémon",
+    "id": "pl4-36"
+  },
+  "giovanni's gyarados": {
+    "name": "Giovanni's Gyarados",
+    "supertype": "Pokémon",
+    "id": "gym2-5"
+  },
+  "pinsir-gx": {
+    "name": "Pinsir-GX",
+    "supertype": "Pokémon",
+    "id": "sm115-6"
+  },
+  "spinarak": {
+    "name": "Spinarak",
+    "supertype": "Pokémon",
+    "id": "sm7-5"
+  },
+  "shiftry": {
+    "name": "Shiftry",
+    "supertype": "Pokémon",
+    "id": "xyp-XY23"
+  },
+  "luxray": {
+    "name": "Luxray",
+    "supertype": "Pokémon",
+    "id": "bw4-46"
+  },
+  "hitmonlee": {
+    "name": "Hitmonlee",
+    "supertype": "Pokémon",
+    "id": "hsp-HGSS25"
+  },
+  "dark dragonite": {
+    "name": "Dark Dragonite",
+    "supertype": "Pokémon",
+    "id": "base5-22"
+  },
+  "karrablast": {
+    "name": "Karrablast",
+    "supertype": "Pokémon",
+    "id": "sm11-12"
+  },
+  "delibird": {
+    "name": "Delibird",
+    "supertype": "Pokémon",
+    "id": "dp4-36"
+  },
+  "raticate": {
+    "name": "Raticate",
+    "supertype": "Pokémon",
+    "id": "base1-40"
+  },
+  "psyduck": {
+    "name": "Psyduck",
+    "supertype": "Pokémon",
+    "id": "sm12-40"
+  },
+  "infernape": {
+    "name": "Infernape",
+    "supertype": "Pokémon",
+    "id": "pl1-31"
+  },
+  "plusle": {
+    "name": "Plusle",
+    "supertype": "Pokémon",
+    "id": "xy3-31"
+  },
+  "dark hypno": {
+    "name": "Dark Hypno",
+    "supertype": "Pokémon",
+    "id": "base5-26"
+  },
+  "rotom": {
+    "name": "Rotom",
+    "supertype": "Pokémon",
+    "id": "xy7-29"
+  },
+  "feraligatr": {
+    "name": "Feraligatr",
+    "supertype": "Pokémon",
+    "id": "sm35-20"
+  },
+  "porygon-z": {
+    "name": "Porygon-Z",
+    "supertype": "Pokémon",
+    "id": "dpp-DP35"
+  },
+  "crobat": {
+    "name": "Crobat",
+    "supertype": "Pokémon",
+    "id": "ecard3-6"
+  },
+  "petilil": {
+    "name": "Petilil",
+    "supertype": "Pokémon",
+    "id": "bw2-13"
+  },
+  "team aqua's sharpedo": {
+    "name": "Team Aqua's Sharpedo",
+    "supertype": "Pokémon",
+    "id": "dc1-21"
+  },
+  "dialga g": {
+    "name": "Dialga G",
+    "supertype": "Pokémon",
+    "id": "pl1-7"
+  },
+  "tropical wind": {
+    "name": "Tropical Wind",
+    "supertype": "Trainer",
+    "id": "np-26"
+  },
+  "dark feraligatr": {
+    "name": "Dark Feraligatr",
+    "supertype": "Pokémon",
+    "id": "neo4-5"
+  },
+  "mew δ": {
+    "name": "Mew δ",
+    "supertype": "Pokémon",
+    "id": "pop5-3"
+  },
+  "dark charizard": {
+    "name": "Dark Charizard",
+    "supertype": "Pokémon",
+    "id": "base5-21"
+  },
+  "carnivine": {
+    "name": "Carnivine",
+    "supertype": "Pokémon",
+    "id": "dp1-21"
+  },
+  "electrode": {
+    "name": "Electrode",
+    "supertype": "Pokémon",
+    "id": "sm35-31"
+  },
+  "vulpix": {
+    "name": "Vulpix",
+    "supertype": "Pokémon",
+    "id": "swsh2-24"
+  },
+  "swampert": {
+    "name": "Swampert",
+    "supertype": "Pokémon",
+    "id": "sm7-35"
+  },
+  "kyogre": {
+    "name": "Kyogre",
+    "supertype": "Pokémon",
+    "id": "dp6-32"
+  },
+  "grumpig": {
+    "name": "Grumpig",
+    "supertype": "Pokémon",
+    "id": "xy10-31"
+  },
+  "dark gengar": {
+    "name": "Dark Gengar",
+    "supertype": "Pokémon",
+    "id": "neo4-6"
+  },
+  "buneary": {
+    "name": "Buneary",
+    "supertype": "Pokémon",
+    "id": "pop6-12"
+  },
+  "giovanni's machamp": {
+    "name": "Giovanni's Machamp",
+    "supertype": "Pokémon",
+    "id": "gym2-6"
+  },
+  "mismagius": {
+    "name": "Mismagius",
+    "supertype": "Pokémon",
+    "id": "col1-28"
+  },
+  "forretress": {
+    "name": "Forretress",
+    "supertype": "Pokémon",
+    "id": "ecard3-9"
+  },
+  "salamence": {
+    "name": "Salamence",
+    "supertype": "Pokémon",
+    "id": "dp7-24"
+  },
+  "drifloon": {
+    "name": "Drifloon",
+    "supertype": "Pokémon",
+    "id": "bw10-34"
+  },
+  "ledyba": {
+    "name": "Ledyba",
+    "supertype": "Pokémon",
+    "id": "sm3-9"
+  },
+  "mankey": {
+    "name": "Mankey",
+    "supertype": "Pokémon",
+    "id": "ex6-38"
+  },
+  "shaymin-ex": {
+    "name": "Shaymin-EX",
+    "supertype": "Pokémon",
+    "id": "bw4-5"
+  },
+  "flaaffy": {
+    "name": "Flaaffy",
+    "supertype": "Pokémon",
+    "id": "col1-43"
+  },
+  "grovyle": {
+    "name": "Grovyle",
+    "supertype": "Pokémon",
+    "id": "ex1-31"
+  },
+  "lilligant": {
+    "name": "Lilligant",
+    "supertype": "Pokémon",
+    "id": "bw2-14"
+  },
+  "jolteon δ": {
+    "name": "Jolteon δ",
+    "supertype": "Pokémon",
+    "id": "ex11-7"
+  },
+  "torchic": {
+    "name": "Torchic",
+    "supertype": "Pokémon",
+    "id": "sm7-26"
+  },
+  "cottonee": {
+    "name": "Cottonee",
+    "supertype": "Pokémon",
+    "id": "bw2-10"
+  },
+  "dark persian": {
+    "name": "Dark Persian",
+    "supertype": "Pokémon",
+    "id": "basep-17"
+  },
+  "combee": {
+    "name": "Combee",
+    "supertype": "Pokémon",
+    "id": "sm8-31"
+  },
+  "hypno": {
+    "name": "Hypno",
+    "supertype": "Pokémon",
+    "id": "ex6-25"
+  },
+  "gastrodon east sea": {
+    "name": "Gastrodon East Sea",
+    "supertype": "Pokémon",
+    "id": "pl2-21"
+  },
+  "manectric": {
+    "name": "Manectric",
+    "supertype": "Pokémon",
+    "id": "pl4-44"
+  },
+  "clefairy": {
+    "name": "Clefairy",
+    "supertype": "Pokémon",
+    "id": "sm115-39"
+  },
+  "claydol": {
+    "name": "Claydol",
+    "supertype": "Pokémon",
+    "id": "ex13-38"
+  },
+  "shelmet": {
+    "name": "Shelmet",
+    "supertype": "Pokémon",
+    "id": "bw3-11"
+  },
+  "magikarp": {
+    "name": "Magikarp",
+    "supertype": "Pokémon",
+    "id": "xy12-33"
+  },
+  "noctowl": {
+    "name": "Noctowl",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH027"
+  },
+  "sewaddle": {
+    "name": "Sewaddle",
+    "supertype": "Pokémon",
+    "id": "sm11-7"
+  },
+  "vaporeon": {
+    "name": "Vaporeon",
+    "supertype": "Pokémon",
+    "id": "hgss3-41"
+  },
+  "rapidash": {
+    "name": "Rapidash",
+    "supertype": "Pokémon",
+    "id": "ecard1-26"
+  },
+  "team aqua's walrein": {
+    "name": "Team Aqua's Walrein",
+    "supertype": "Pokémon",
+    "id": "dc1-5"
+  },
+  "charizard δ": {
+    "name": "Charizard δ",
+    "supertype": "Pokémon",
+    "id": "ex14-4"
+  },
+  "wurmple": {
+    "name": "Wurmple",
+    "supertype": "Pokémon",
+    "id": "sm8-24"
+  },
+  "giratina": {
+    "name": "Giratina",
+    "supertype": "Pokémon",
+    "id": "pl1-28"
+  },
+  "erika's vileplume": {
+    "name": "Erika's Vileplume",
+    "supertype": "Pokémon",
+    "id": "gym1-5"
+  },
+  "victini": {
+    "name": "Victini",
+    "supertype": "Pokémon",
+    "id": "sm11-26"
+  },
+  "yanmega break": {
+    "name": "Yanmega BREAK",
+    "supertype": "Pokémon",
+    "id": "xy11-8"
+  },
+  "machamp": {
+    "name": "Machamp",
+    "supertype": "Pokémon",
+    "id": "dp1-31"
+  },
+  "parasect": {
+    "name": "Parasect",
+    "supertype": "Pokémon",
+    "id": "pl3-38"
+  },
+  "combusken": {
+    "name": "Combusken",
+    "supertype": "Pokémon",
+    "id": "dp4-35"
+  },
+  "chikorita": {
+    "name": "Chikorita",
+    "supertype": "Pokémon",
+    "id": "xy9-1"
+  },
+  "whimsicott": {
+    "name": "Whimsicott",
+    "supertype": "Pokémon",
+    "id": "bw2-12"
+  },
+  "exeggutor": {
+    "name": "Exeggutor",
+    "supertype": "Pokémon",
+    "id": "ecard2-13"
+  },
+  "quagsire": {
+    "name": "Quagsire",
+    "supertype": "Pokémon",
+    "id": "xy7-39"
+  },
+  "pansage": {
+    "name": "Pansage",
+    "supertype": "Pokémon",
+    "id": "mcd12-2"
+  },
+  "vespiquen": {
+    "name": "Vespiquen",
+    "supertype": "Pokémon",
+    "id": "dp7-31"
+  },
+  "dark marowak": {
+    "name": "Dark Marowak",
+    "supertype": "Pokémon",
+    "id": "ex7-7"
+  },
+  "serperior": {
+    "name": "Serperior",
+    "supertype": "Pokémon",
+    "id": "bwp-BW20"
+  },
+  "jigglypuff": {
+    "name": "Jigglypuff",
+    "supertype": "Pokémon",
+    "id": "ex4-41"
+  },
+  "buizel": {
+    "name": "Buizel",
+    "supertype": "Pokémon",
+    "id": "sm5-35"
+  },
+  "accelgor": {
+    "name": "Accelgor",
+    "supertype": "Pokémon",
+    "id": "xy3-9"
+  },
+  "phantump": {
+    "name": "Phantump",
+    "supertype": "Pokémon",
+    "id": "swsh2-14"
+  },
+  "milotic": {
+    "name": "Milotic",
+    "supertype": "Pokémon",
+    "id": "sm4-27"
+  },
+  "team magma's aggron": {
+    "name": "Team Magma's Aggron",
+    "supertype": "Pokémon",
+    "id": "dc1-14"
+  },
+  "sceptile-ex": {
+    "name": "Sceptile-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-7"
+  },
+  "bastiodon gl": {
+    "name": "Bastiodon GL",
+    "supertype": "Pokémon",
+    "id": "pl2-2"
+  },
+  "dark dugtrio": {
+    "name": "Dark Dugtrio",
+    "supertype": "Pokémon",
+    "id": "base5-23"
+  },
+  "latias δ": {
+    "name": "Latias δ",
+    "supertype": "Pokémon",
+    "id": "ex13-21"
+  },
+  "gastrodon west sea": {
+    "name": "Gastrodon West Sea",
+    "supertype": "Pokémon",
+    "id": "pl2-22"
+  },
+  "giovanni's nidoking": {
+    "name": "Giovanni's Nidoking",
+    "supertype": "Pokémon",
+    "id": "gym2-7"
+  },
+  "solrock": {
+    "name": "Solrock",
+    "supertype": "Pokémon",
+    "id": "ex12-25"
+  },
+  "greninja": {
+    "name": "Greninja",
+    "supertype": "Pokémon",
+    "id": "xy1-41"
+  },
+  "gible": {
+    "name": "Gible",
+    "supertype": "Pokémon",
+    "id": "pop9-14"
+  },
+  "probopass": {
+    "name": "Probopass",
+    "supertype": "Pokémon",
+    "id": "dp6-13"
+  },
+  "cranidos": {
+    "name": "Cranidos",
+    "supertype": "Pokémon",
+    "id": "dpp-DP07"
+  },
+  "double rainbow energy": {
+    "name": "Double Rainbow Energy",
+    "supertype": "Energy",
+    "id": "pop5-4"
+  },
+  "armaldo": {
+    "name": "Armaldo",
+    "supertype": "Pokémon",
+    "id": "dp6-18"
+  },
+  "incineroar v": {
+    "name": "Incineroar V",
+    "supertype": "Pokémon",
+    "id": "swsh35-8"
+  },
+  "team magma's claydol": {
+    "name": "Team Magma's Claydol",
+    "supertype": "Pokémon",
+    "id": "ex4-33"
+  },
+  "dark raichu": {
+    "name": "Dark Raichu",
+    "supertype": "Pokémon",
+    "id": "base6-7"
+  },
+  "alolan meowth": {
+    "name": "Alolan Meowth",
+    "supertype": "Pokémon",
+    "id": "mcd19-10"
+  },
+  "rowlet": {
+    "name": "Rowlet",
+    "supertype": "Pokémon",
+    "id": "smp-SM22"
+  },
+  "simisage": {
+    "name": "Simisage",
+    "supertype": "Pokémon",
+    "id": "sm3-13"
+  },
+  "dark octillery": {
+    "name": "Dark Octillery",
+    "supertype": "Pokémon",
+    "id": "ex7-8"
+  },
+  "detective pikachu": {
+    "name": "Detective Pikachu",
+    "supertype": "Pokémon",
+    "id": "det1-10"
+  },
+  "swadloon": {
+    "name": "Swadloon",
+    "supertype": "Pokémon",
+    "id": "sm11-8"
+  },
+  "hitmonchan": {
+    "name": "Hitmonchan",
+    "supertype": "Pokémon",
+    "id": "hsp-HGSS24"
+  },
+  "riolu": {
+    "name": "Riolu",
+    "supertype": "Pokémon",
+    "id": "sma-SV21"
+  },
+  "octillery": {
+    "name": "Octillery",
+    "supertype": "Pokémon",
+    "id": "neo3-34"
+  },
+  "dark golbat": {
+    "name": "Dark Golbat",
+    "supertype": "Pokémon",
+    "id": "ex7-34"
+  },
+  "heracross": {
+    "name": "Heracross",
+    "supertype": "Pokémon",
+    "id": "neo4-41"
+  },
+  "lt. surge's electabuzz": {
+    "name": "Lt. Surge's Electabuzz",
+    "supertype": "Pokémon",
+    "id": "gym1-27"
+  },
+  "latios δ": {
+    "name": "Latios δ",
+    "supertype": "Pokémon",
+    "id": "ex13-22"
+  },
+  "dark porygon2": {
+    "name": "Dark Porygon2",
+    "supertype": "Pokémon",
+    "id": "neo4-8"
+  },
+  "charizard-gx": {
+    "name": "Charizard-GX",
+    "supertype": "Pokémon",
+    "id": "sm3-20"
+  },
+  "cacturne": {
+    "name": "Cacturne",
+    "supertype": "Pokémon",
+    "id": "pl1-42"
+  },
+  "sunkern": {
+    "name": "Sunkern",
+    "supertype": "Pokémon",
+    "id": "sm12-7"
+  },
+  "ledian": {
+    "name": "Ledian",
+    "supertype": "Pokémon",
+    "id": "ex7-23"
+  },
+  "darkrai g": {
+    "name": "Darkrai G",
+    "supertype": "Pokémon",
+    "id": "pl2-3"
+  },
+  "houndoom": {
+    "name": "Houndoom",
+    "supertype": "Pokémon",
+    "id": "ecard2-15"
+  },
+  "maractus": {
+    "name": "Maractus",
+    "supertype": "Pokémon",
+    "id": "mcd11-2"
+  },
+  "murkrow": {
+    "name": "Murkrow",
+    "supertype": "Pokémon",
+    "id": "ex10-30"
+  },
+  "silcoon": {
+    "name": "Silcoon",
+    "supertype": "Pokémon",
+    "id": "sm8-25"
+  },
+  "kirlia": {
+    "name": "Kirlia",
+    "supertype": "Pokémon",
+    "id": "ex15-32"
+  },
+  "dusclops": {
+    "name": "Dusclops",
+    "supertype": "Pokémon",
+    "id": "dp7-34"
+  },
+  "giovanni's persian": {
+    "name": "Giovanni's Persian",
+    "supertype": "Pokémon",
+    "id": "gym2-8"
+  },
+  "m sceptile-ex": {
+    "name": "M Sceptile-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-8"
+  },
+  "dugtrio": {
+    "name": "Dugtrio",
+    "supertype": "Pokémon",
+    "id": "ex6-22"
+  },
+  "trevenant": {
+    "name": "Trevenant",
+    "supertype": "Pokémon",
+    "id": "xyp-XY14"
+  },
+  "butterfree v": {
+    "name": "Butterfree V",
+    "supertype": "Pokémon",
+    "id": "swsh3-1"
+  },
+  "rowlet & alolan exeggutor-gx": {
+    "name": "Rowlet & Alolan Exeggutor-GX",
+    "supertype": "Pokémon",
+    "id": "sm11-1"
+  },
+  "croagunk": {
+    "name": "Croagunk",
+    "supertype": "Pokémon",
+    "id": "pop8-13"
+  },
+  "virizion-ex": {
+    "name": "Virizion-EX",
+    "supertype": "Pokémon",
+    "id": "bw10-9"
+  },
+  "floatzel gl": {
+    "name": "Floatzel GL",
+    "supertype": "Pokémon",
+    "id": "pl2-4"
+  },
+  "bayleef": {
+    "name": "Bayleef",
+    "supertype": "Pokémon",
+    "id": "col1-40"
+  },
+  "raikou": {
+    "name": "Raikou",
+    "supertype": "Pokémon",
+    "id": "sm35-32"
+  },
+  "leavanny": {
+    "name": "Leavanny",
+    "supertype": "Pokémon",
+    "id": "sm11-9"
+  },
+  "marowak δ": {
+    "name": "Marowak δ",
+    "supertype": "Pokémon",
+    "id": "ex11-10"
+  },
+  "team magma's groudon": {
+    "name": "Team Magma's Groudon",
+    "supertype": "Pokémon",
+    "id": "ex4-9"
+  },
+  "victini ◇": {
+    "name": "Victini ◇",
+    "supertype": "Pokémon",
+    "id": "sm75-7"
+  },
+  "lt. surge's fearow": {
+    "name": "Lt. Surge's Fearow",
+    "supertype": "Pokémon",
+    "id": "gym1-7"
+  },
+  "dewgong": {
+    "name": "Dewgong",
+    "supertype": "Pokémon",
+    "id": "ecard3-7"
+  },
+  "volbeat": {
+    "name": "Volbeat",
+    "supertype": "Pokémon",
+    "id": "ex9-42"
+  },
+  "foongus": {
+    "name": "Foongus",
+    "supertype": "Pokémon",
+    "id": "sm11-13"
+  },
+  "politoed": {
+    "name": "Politoed",
+    "supertype": "Pokémon",
+    "id": "neo2-27"
+  },
+  "dark slowking": {
+    "name": "Dark Slowking",
+    "supertype": "Pokémon",
+    "id": "neo4-20"
+  },
+  "gabite": {
+    "name": "Gabite",
+    "supertype": "Pokémon",
+    "id": "pop9-8"
+  },
+  "butterfree vmax": {
+    "name": "Butterfree VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh3-2"
+  },
+  "koga's beedrill": {
+    "name": "Koga's Beedrill",
+    "supertype": "Pokémon",
+    "id": "gym2-9"
+  },
+  "dark scizor": {
+    "name": "Dark Scizor",
+    "supertype": "Pokémon",
+    "id": "neo4-9"
+  },
+  "sunflora": {
+    "name": "Sunflora",
+    "supertype": "Pokémon",
+    "id": "dp3-38"
+  },
+  "shieldon": {
+    "name": "Shieldon",
+    "supertype": "Pokémon",
+    "id": "dpp-DP08"
+  },
+  "dark gyarados": {
+    "name": "Dark Gyarados",
+    "supertype": "Pokémon",
+    "id": "ex7-36"
+  },
+  "zapdos": {
+    "name": "Zapdos",
+    "supertype": "Pokémon",
+    "id": "g1-29"
+  },
+  "stantler": {
+    "name": "Stantler",
+    "supertype": "Pokémon",
+    "id": "ex10-32"
+  },
+  "durant": {
+    "name": "Durant",
+    "supertype": "Pokémon",
+    "id": "xy9-9"
+  },
+  "tepig": {
+    "name": "Tepig",
+    "supertype": "Pokémon",
+    "id": "mcd11-3"
+  },
+  "muk": {
+    "name": "Muk",
+    "supertype": "Pokémon",
+    "id": "hgss3-31"
+  },
+  "cacnea": {
+    "name": "Cacnea",
+    "supertype": "Pokémon",
+    "id": "ex9-44"
+  },
+  "spiritomb": {
+    "name": "Spiritomb",
+    "supertype": "Pokémon",
+    "id": "pl4-32"
+  },
+  "mr. mime": {
+    "name": "Mr. Mime",
+    "supertype": "Pokémon",
+    "id": "sm115-43"
+  },
+  "sizzlipede": {
+    "name": "Sizzlipede",
+    "supertype": "Pokémon",
+    "id": "swsh1-38"
+  },
+  "pupitar": {
+    "name": "Pupitar",
+    "supertype": "Pokémon",
+    "id": "hgss2-39"
+  },
+  "genesect": {
+    "name": "Genesect",
+    "supertype": "Pokémon",
+    "id": "swsh4-16"
+  },
+  "tentacruel": {
+    "name": "Tentacruel",
+    "supertype": "Pokémon",
+    "id": "ex12-45"
+  },
+  "alolan dugtrio": {
+    "name": "Alolan Dugtrio",
+    "supertype": "Pokémon",
+    "id": "mcd19-11"
+  },
+  "swalot": {
+    "name": "Swalot",
+    "supertype": "Pokémon",
+    "id": "ex9-40"
+  },
+  "wimpod": {
+    "name": "Wimpod",
+    "supertype": "Pokémon",
+    "id": "swsh3-17"
+  },
+  "flygon δ": {
+    "name": "Flygon δ",
+    "supertype": "Pokémon",
+    "id": "ex13-7"
+  },
+  "pheromosa & buzzwole-gx": {
+    "name": "Pheromosa & Buzzwole-GX",
+    "supertype": "Pokémon",
+    "id": "sm10-1"
+  },
+  "chespin": {
+    "name": "Chespin",
+    "supertype": "Pokémon",
+    "id": "xy1-12"
+  },
+  "leafeon": {
+    "name": "Leafeon",
+    "supertype": "Pokémon",
+    "id": "dp5-24"
+  },
+  "palkia g": {
+    "name": "Palkia G",
+    "supertype": "Pokémon",
+    "id": "pl1-12"
+  },
+  "amoonguss": {
+    "name": "Amoonguss",
+    "supertype": "Pokémon",
+    "id": "sm11-14"
+  },
+  "magneton": {
+    "name": "Magneton",
+    "supertype": "Pokémon",
+    "id": "sm6-35"
+  },
+  "fennekin": {
+    "name": "Fennekin",
+    "supertype": "Pokémon",
+    "id": "xy8-25"
+  },
+  "oshawott": {
+    "name": "Oshawott",
+    "supertype": "Pokémon",
+    "id": "mcd11-4"
+  },
+  "illumise": {
+    "name": "Illumise",
+    "supertype": "Pokémon",
+    "id": "ex9-32"
+  },
+  "celebi-ex": {
+    "name": "Celebi-EX",
+    "supertype": "Pokémon",
+    "id": "bw7-9"
+  },
+  "eevee": {
+    "name": "Eevee",
+    "supertype": "Pokémon",
+    "id": "mcd16-12"
+  },
+  "suicune": {
+    "name": "Suicune",
+    "supertype": "Pokémon",
+    "id": "swsh3-37"
+  },
+  "rayquaza c": {
+    "name": "Rayquaza C",
+    "supertype": "Pokémon",
+    "id": "pl3-8"
+  },
+  "litten": {
+    "name": "Litten",
+    "supertype": "Pokémon",
+    "id": "sm10-27"
+  },
+  "magnezone": {
+    "name": "Magnezone",
+    "supertype": "Pokémon",
+    "id": "sm6-36"
+  },
+  "darumaka": {
+    "name": "Darumaka",
+    "supertype": "Pokémon",
+    "id": "sm10-23"
+  },
+  "gliscor": {
+    "name": "Gliscor",
+    "supertype": "Pokémon",
+    "id": "xy6-37"
+  },
+  "lotad": {
+    "name": "Lotad",
+    "supertype": "Pokémon",
+    "id": "sm7-36"
+  },
+  "dark typhlosion": {
+    "name": "Dark Typhlosion",
+    "supertype": "Pokémon",
+    "id": "neo4-10"
+  },
+  "centiskorch": {
+    "name": "Centiskorch",
+    "supertype": "Pokémon",
+    "id": "swsh1-39"
+  },
+  "shaymin ◇": {
+    "name": "Shaymin ◇",
+    "supertype": "Pokémon",
+    "id": "sm9-10"
+  },
+  "wormadam sandy cloak": {
+    "name": "Wormadam Sandy Cloak",
+    "supertype": "Pokémon",
+    "id": "dp3-42"
+  },
+  "koga's ditto": {
+    "name": "Koga's Ditto",
+    "supertype": "Pokémon",
+    "id": "gym2-10"
+  },
+  "marill": {
+    "name": "Marill",
+    "supertype": "Pokémon",
+    "id": "sm3-34"
+  },
+  "deerling": {
+    "name": "Deerling",
+    "supertype": "Pokémon",
+    "id": "bw2-15"
+  },
+  "team magma's houndoom": {
+    "name": "Team Magma's Houndoom",
+    "supertype": "Pokémon",
+    "id": "ex4-34"
+  },
+  "cascoon": {
+    "name": "Cascoon",
+    "supertype": "Pokémon",
+    "id": "ex1-26"
+  },
+  "dwebble": {
+    "name": "Dwebble",
+    "supertype": "Pokémon",
+    "id": "mcd12-3"
+  },
+  "gyarados δ": {
+    "name": "Gyarados δ",
+    "supertype": "Pokémon",
+    "id": "ex13-8"
+  },
+  "charmeleon δ": {
+    "name": "Charmeleon δ",
+    "supertype": "Pokémon",
+    "id": "ex14-30"
+  },
+  "metagross δ": {
+    "name": "Metagross δ",
+    "supertype": "Pokémon",
+    "id": "ex11-11"
+  },
+  "lt. surge's magneton": {
+    "name": "Lt. Surge's Magneton",
+    "supertype": "Pokémon",
+    "id": "gym1-8"
+  },
+  "charizard-ex": {
+    "name": "Charizard-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY29"
+  },
+  "ludicolo δ": {
+    "name": "Ludicolo δ",
+    "supertype": "Pokémon",
+    "id": "ex14-6"
+  },
+  "torterra lv.x": {
+    "name": "Torterra LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP09"
+  },
+  "dhelmise v": {
+    "name": "Dhelmise V",
+    "supertype": "Pokémon",
+    "id": "swsh1-9"
+  },
+  "heal energy": {
+    "name": "Heal Energy",
+    "supertype": "Energy",
+    "id": "pop4-8"
+  },
+  "dark slowbro": {
+    "name": "Dark Slowbro",
+    "supertype": "Pokémon",
+    "id": "base5-29"
+  },
+  "lopunny": {
+    "name": "Lopunny",
+    "supertype": "Pokémon",
+    "id": "dp6-33"
+  },
+  "donphan": {
+    "name": "Donphan",
+    "supertype": "Pokémon",
+    "id": "col1-42"
+  },
+  "genesect-ex": {
+    "name": "Genesect-EX",
+    "supertype": "Pokémon",
+    "id": "bw10-11"
+  },
+  "ambipom": {
+    "name": "Ambipom",
+    "supertype": "Pokémon",
+    "id": "dp5-35"
+  },
+  "dartrix": {
+    "name": "Dartrix",
+    "supertype": "Pokémon",
+    "id": "sm12-19"
+  },
+  "team magma's numel": {
+    "name": "Team Magma's Numel",
+    "supertype": "Pokémon",
+    "id": "dc1-1"
+  },
+  "dark vaporeon": {
+    "name": "Dark Vaporeon",
+    "supertype": "Pokémon",
+    "id": "base6-9"
+  },
+  "pokémon fan club": {
+    "name": "Pokémon Fan Club",
+    "supertype": "Trainer",
+    "id": "pop4-9"
+  },
+  "luvdisc": {
+    "name": "Luvdisc",
+    "supertype": "Pokémon",
+    "id": "hgss4-39"
+  },
+  "snover": {
+    "name": "Snover",
+    "supertype": "Pokémon",
+    "id": "sm5-37"
+  },
+  "infernape lv.x": {
+    "name": "Infernape LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP10"
+  },
+  "lombre": {
+    "name": "Lombre",
+    "supertype": "Pokémon",
+    "id": "ex14-37"
+  },
+  "crustle": {
+    "name": "Crustle",
+    "supertype": "Pokémon",
+    "id": "sm11-11"
+  },
+  "shaymin": {
+    "name": "Shaymin",
+    "supertype": "Pokémon",
+    "id": "pl1-38"
+  },
+  "misty's seadra": {
+    "name": "Misty's Seadra",
+    "supertype": "Pokémon",
+    "id": "gym1-9"
+  },
+  "axew": {
+    "name": "Axew",
+    "supertype": "Pokémon",
+    "id": "bwp-BW26"
+  },
+  "moltres": {
+    "name": "Moltres",
+    "supertype": "Pokémon",
+    "id": "sm8-38"
+  },
+  "regigigas fb": {
+    "name": "Regigigas FB",
+    "supertype": "Pokémon",
+    "id": "pl3-9"
+  },
+  "tauros": {
+    "name": "Tauros",
+    "supertype": "Pokémon",
+    "id": "hgss2-41"
+  },
+  "dark steelix": {
+    "name": "Dark Steelix",
+    "supertype": "Pokémon",
+    "id": "ex7-10"
+  },
+  "torkoal": {
+    "name": "Torkoal",
+    "supertype": "Pokémon",
+    "id": "ex13-33"
+  },
+  "golisopod": {
+    "name": "Golisopod",
+    "supertype": "Pokémon",
+    "id": "swsh3-18"
+  },
+  "bill's maintenance": {
+    "name": "Bill's Maintenance",
+    "supertype": "Trainer",
+    "id": "pop5-6"
+  },
+  "dark celebi": {
+    "name": "Dark Celebi",
+    "supertype": "Pokémon",
+    "id": "ex5-4"
+  },
+  "slowking": {
+    "name": "Slowking",
+    "supertype": "Pokémon",
+    "id": "dp4-28"
+  },
+  "lickilicky": {
+    "name": "Lickilicky",
+    "supertype": "Pokémon",
+    "id": "hgss4-38"
+  },
+  "team magma's rhydon": {
+    "name": "Team Magma's Rhydon",
+    "supertype": "Pokémon",
+    "id": "ex4-22"
+  },
+  "burmy plant cloak": {
+    "name": "Burmy Plant Cloak",
+    "supertype": "Pokémon",
+    "id": "pop7-11"
+  },
+  "darmanitan": {
+    "name": "Darmanitan",
+    "supertype": "Pokémon",
+    "id": "sm10-24"
+  },
+  "dark tyranitar": {
+    "name": "Dark Tyranitar",
+    "supertype": "Pokémon",
+    "id": "ex7-20"
+  },
+  "mewtwo δ": {
+    "name": "Mewtwo δ",
+    "supertype": "Pokémon",
+    "id": "ex13-24"
+  },
+  "meganium": {
+    "name": "Meganium",
+    "supertype": "Pokémon",
+    "id": "ecard1-18"
+  },
+  "carvanha": {
+    "name": "Carvanha",
+    "supertype": "Pokémon",
+    "id": "bw8-32"
+  },
+  "popplio": {
+    "name": "Popplio",
+    "supertype": "Pokémon",
+    "id": "sm1-39"
+  },
+  "nincada": {
+    "name": "Nincada",
+    "supertype": "Pokémon",
+    "id": "sm8-29"
+  },
+  "lt. surge's raichu": {
+    "name": "Lt. Surge's Raichu",
+    "supertype": "Pokémon",
+    "id": "gym1-28"
+  },
+  "grookey": {
+    "name": "Grookey",
+    "supertype": "Pokémon",
+    "id": "swsh1-11"
+  },
+  "deoxys normal forme": {
+    "name": "Deoxys Normal Forme",
+    "supertype": "Pokémon",
+    "id": "dp6-1"
+  },
+  "slowpoke": {
+    "name": "Slowpoke",
+    "supertype": "Pokémon",
+    "id": "xy9-19"
+  },
+  "misty's golduck": {
+    "name": "Misty's Golduck",
+    "supertype": "Pokémon",
+    "id": "gym2-12"
+  },
+  "dark machamp": {
+    "name": "Dark Machamp",
+    "supertype": "Pokémon",
+    "id": "base5-27"
+  },
+  "sudowoodo": {
+    "name": "Sudowoodo",
+    "supertype": "Pokémon",
+    "id": "dp2-35"
+  },
+  "rayquaza δ": {
+    "name": "Rayquaza δ",
+    "supertype": "Pokémon",
+    "id": "ex13-26"
+  },
+  "rhyperior": {
+    "name": "Rhyperior",
+    "supertype": "Pokémon",
+    "id": "dp1-12"
+  },
+  "froslass gl": {
+    "name": "Froslass GL",
+    "supertype": "Pokémon",
+    "id": "pl2-6"
+  },
+  "misty's tentacruel": {
+    "name": "Misty's Tentacruel",
+    "supertype": "Pokémon",
+    "id": "gym1-10"
+  },
+  "larvesta": {
+    "name": "Larvesta",
+    "supertype": "Pokémon",
+    "id": "swsh3-29"
+  },
+  "heatmor": {
+    "name": "Heatmor",
+    "supertype": "Pokémon",
+    "id": "swsh2-34"
+  },
+  "team magma's camerupt": {
+    "name": "Team Magma's Camerupt",
+    "supertype": "Pokémon",
+    "id": "ex4-19"
+  },
+  "wobbuffet": {
+    "name": "Wobbuffet",
+    "supertype": "Pokémon",
+    "id": "xy4-36"
+  },
+  "m charizard-ex": {
+    "name": "M Charizard-EX",
+    "supertype": "Pokémon",
+    "id": "g1-12"
+  },
+  "azelf": {
+    "name": "Azelf",
+    "supertype": "Pokémon",
+    "id": "bw10-38"
+  },
+  "froakie": {
+    "name": "Froakie",
+    "supertype": "Pokémon",
+    "id": "xy1-39"
+  },
+  "growlithe": {
+    "name": "Growlithe",
+    "supertype": "Pokémon",
+    "id": "swsh2-27"
+  },
+  "shroomish": {
+    "name": "Shroomish",
+    "supertype": "Pokémon",
+    "id": "xy3-6"
+  },
+  "kangaskhan": {
+    "name": "Kangaskhan",
+    "supertype": "Pokémon",
+    "id": "hgss4-36"
+  },
+  "team magma's torkoal": {
+    "name": "Team Magma's Torkoal",
+    "supertype": "Pokémon",
+    "id": "ex4-12"
+  },
+  "quilladin": {
+    "name": "Quilladin",
+    "supertype": "Pokémon",
+    "id": "xy1-13"
+  },
+  "larvitar": {
+    "name": "Larvitar",
+    "supertype": "Pokémon",
+    "id": "xy10-41"
+  },
+  "staravia": {
+    "name": "Staravia",
+    "supertype": "Pokémon",
+    "id": "pop6-10"
+  },
+  "burmy sandy cloak": {
+    "name": "Burmy Sandy Cloak",
+    "supertype": "Pokémon",
+    "id": "pop7-12"
+  },
+  "magcargo": {
+    "name": "Magcargo",
+    "supertype": "Pokémon",
+    "id": "neo3-33"
+  },
+  "scramble energy": {
+    "name": "Scramble Energy",
+    "supertype": "Energy",
+    "id": "pop4-10"
+  },
+  "sharpedo": {
+    "name": "Sharpedo",
+    "supertype": "Pokémon",
+    "id": "bw8-33"
+  },
+  "fletchinder": {
+    "name": "Fletchinder",
+    "supertype": "Pokémon",
+    "id": "sm11-31"
+  },
+  "kabutops δ": {
+    "name": "Kabutops δ",
+    "supertype": "Pokémon",
+    "id": "ex13-9"
+  },
+  "dustox": {
+    "name": "Dustox",
+    "supertype": "Pokémon",
+    "id": "sm8-28"
+  },
+  "toxicroak": {
+    "name": "Toxicroak",
+    "supertype": "Pokémon",
+    "id": "dp2-36"
+  },
+  "abomasnow": {
+    "name": "Abomasnow",
+    "supertype": "Pokémon",
+    "id": "sm5-38"
+  },
+  "shedinja": {
+    "name": "Shedinja",
+    "supertype": "Pokémon",
+    "id": "ex8-14"
+  },
+  "pichu": {
+    "name": "Pichu",
+    "supertype": "Pokémon",
+    "id": "basep-35"
+  },
+  "dark magneton": {
+    "name": "Dark Magneton",
+    "supertype": "Pokémon",
+    "id": "ex7-39"
+  },
+  "staryu": {
+    "name": "Staryu",
+    "supertype": "Pokémon",
+    "id": "xy12-30"
+  },
+  "virizion": {
+    "name": "Virizion",
+    "supertype": "Pokémon",
+    "id": "bw2-17"
+  },
+  "staraptor fb": {
+    "name": "Staraptor FB",
+    "supertype": "Pokémon",
+    "id": "pl3-11"
+  },
+  "volcarona": {
+    "name": "Volcarona",
+    "supertype": "Pokémon",
+    "id": "swsh3-30"
+  },
+  "salamence δ": {
+    "name": "Salamence δ",
+    "supertype": "Pokémon",
+    "id": "ex11-14"
+  },
+  "rocket's hitmonchan": {
+    "name": "Rocket's Hitmonchan",
+    "supertype": "Pokémon",
+    "id": "gym1-11"
+  },
+  "scorbunny": {
+    "name": "Scorbunny",
+    "supertype": "Pokémon",
+    "id": "swsh1-31"
+  },
+  "ninjask": {
+    "name": "Ninjask",
+    "supertype": "Pokémon",
+    "id": "ex3-38"
+  },
+  "high pressure system": {
+    "name": "High Pressure System",
+    "supertype": "Trainer",
+    "id": "pop3-10"
+  },
+  "decidueye": {
+    "name": "Decidueye",
+    "supertype": "Pokémon",
+    "id": "sm12-20"
+  },
+  "light arcanine": {
+    "name": "Light Arcanine",
+    "supertype": "Pokémon",
+    "id": "neo4-12"
+  },
+  "kingdra": {
+    "name": "Kingdra",
+    "supertype": "Pokémon",
+    "id": "sm3-31"
+  },
+  "marowak": {
+    "name": "Marowak",
+    "supertype": "Pokémon",
+    "id": "hgss4-44"
+  },
+  "litwick": {
+    "name": "Litwick",
+    "supertype": "Pokémon",
+    "id": "bwp-BW27"
+  },
+  "reshiram": {
+    "name": "Reshiram",
+    "supertype": "Pokémon",
+    "id": "bwp-BW23"
+  },
+  "rare candy": {
+    "name": "Rare Candy",
+    "supertype": "Trainer",
+    "id": "pop8-10"
+  },
+  "ampharos δ": {
+    "name": "Ampharos δ",
+    "supertype": "Pokémon",
+    "id": "ex15-1"
+  },
+  "chesnaught": {
+    "name": "Chesnaught",
+    "supertype": "Pokémon",
+    "id": "xy8-11"
+  },
+  "diglett": {
+    "name": "Diglett",
+    "supertype": "Pokémon",
+    "id": "xy10-36"
+  },
+  "xatu": {
+    "name": "Xatu",
+    "supertype": "Pokémon",
+    "id": "dp3-44"
+  },
+  "wailord": {
+    "name": "Wailord",
+    "supertype": "Pokémon",
+    "id": "sm7-40"
+  },
+  "feraligatr δ": {
+    "name": "Feraligatr δ",
+    "supertype": "Pokémon",
+    "id": "ex15-2"
+  },
+  "misty's gyarados": {
+    "name": "Misty's Gyarados",
+    "supertype": "Pokémon",
+    "id": "gym2-13"
+  },
+  "zapdos g": {
+    "name": "Zapdos G",
+    "supertype": "Pokémon",
+    "id": "pl4-12"
+  },
+  "corsola": {
+    "name": "Corsola",
+    "supertype": "Pokémon",
+    "id": "ex5-32"
+  },
+  "empoleon lv.x": {
+    "name": "Empoleon LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP11"
+  },
+  "sylveon": {
+    "name": "Sylveon",
+    "supertype": "Pokémon",
+    "id": "xyp-XY04"
+  },
+  "fraxure": {
+    "name": "Fraxure",
+    "supertype": "Pokémon",
+    "id": "dv1-15"
+  },
+  "bidoof": {
+    "name": "Bidoof",
+    "supertype": "Pokémon",
+    "id": "xy0-29"
+  },
+  "palkia": {
+    "name": "Palkia",
+    "supertype": "Pokémon",
+    "id": "pl1-37"
+  },
+  "poliwrath": {
+    "name": "Poliwrath",
+    "supertype": "Pokémon",
+    "id": "dp6-35"
+  },
+  "lucario gl": {
+    "name": "Lucario GL",
+    "supertype": "Pokémon",
+    "id": "pl2-8"
+  },
+  "chimecho": {
+    "name": "Chimecho",
+    "supertype": "Pokémon",
+    "id": "np-24"
+  },
+  "scatterbug": {
+    "name": "Scatterbug",
+    "supertype": "Pokémon",
+    "id": "xy8-13"
+  },
+  "snorlax-gx": {
+    "name": "Snorlax-GX",
+    "supertype": "Pokémon",
+    "id": "smp-SM05"
+  },
+  "ponyta": {
+    "name": "Ponyta",
+    "supertype": "Pokémon",
+    "id": "xy12-19"
+  },
+  "rocket's moltres": {
+    "name": "Rocket's Moltres",
+    "supertype": "Pokémon",
+    "id": "gym1-12"
+  },
+  "wailord v": {
+    "name": "Wailord V",
+    "supertype": "Pokémon",
+    "id": "swsh35-13"
+  },
+  "scizor": {
+    "name": "Scizor",
+    "supertype": "Pokémon",
+    "id": "neo2-29"
+  },
+  "leafeon-gx": {
+    "name": "Leafeon-GX",
+    "supertype": "Pokémon",
+    "id": "sm5-13"
+  },
+  "reshiram-gx": {
+    "name": "Reshiram-GX",
+    "supertype": "Pokémon",
+    "id": "sm75-11"
+  },
+  "mawile": {
+    "name": "Mawile",
+    "supertype": "Pokémon",
+    "id": "pl3-33"
+  },
+  "arbok": {
+    "name": "Arbok",
+    "supertype": "Pokémon",
+    "id": "dp4-33"
+  },
+  "talonflame": {
+    "name": "Talonflame",
+    "supertype": "Pokémon",
+    "id": "sm11-32"
+  },
+  "team aqua's spheal": {
+    "name": "Team Aqua's Spheal",
+    "supertype": "Pokémon",
+    "id": "dc1-3"
+  },
+  "nidoqueen": {
+    "name": "Nidoqueen",
+    "supertype": "Pokémon",
+    "id": "dp2-31"
+  },
+  "mudkip": {
+    "name": "Mudkip",
+    "supertype": "Pokémon",
+    "id": "sm7-33"
+  },
+  "kyogre ex": {
+    "name": "Kyogre ex",
+    "supertype": "Pokémon",
+    "id": "np-1"
+  },
+  "kingdra δ": {
+    "name": "Kingdra δ",
+    "supertype": "Pokémon",
+    "id": "ex13-10"
+  },
+  "boost energy": {
+    "name": "Boost Energy",
+    "supertype": "Energy",
+    "id": "pop5-8"
+  },
+  "drednaw v": {
+    "name": "Drednaw V",
+    "supertype": "Pokémon",
+    "id": "swsh35-14"
+  },
+  "braixen": {
+    "name": "Braixen",
+    "supertype": "Pokémon",
+    "id": "xy8-26"
+  },
+  "porygon2": {
+    "name": "Porygon2",
+    "supertype": "Pokémon",
+    "id": "hsp-HGSS23"
+  },
+  "zekrom": {
+    "name": "Zekrom",
+    "supertype": "Pokémon",
+    "id": "bw9-39"
+  },
+  "sableye": {
+    "name": "Sableye",
+    "supertype": "Pokémon",
+    "id": "hgss3-35"
+  },
+  "rocket's scyther": {
+    "name": "Rocket's Scyther",
+    "supertype": "Pokémon",
+    "id": "gym1-13"
+  },
+  "smeargle": {
+    "name": "Smeargle",
+    "supertype": "Pokémon",
+    "id": "neo2-30"
+  },
+  "slugma": {
+    "name": "Slugma",
+    "supertype": "Pokémon",
+    "id": "swsh4-27"
+  },
+  "starmie-gx": {
+    "name": "Starmie-GX",
+    "supertype": "Pokémon",
+    "id": "sm115-14"
+  },
+  "rocket's mewtwo": {
+    "name": "Rocket's Mewtwo",
+    "supertype": "Pokémon",
+    "id": "gym2-14"
+  },
+  "heracross-ex": {
+    "name": "Heracross-EX",
+    "supertype": "Pokémon",
+    "id": "xy3-4"
+  },
+  "groudon ex": {
+    "name": "Groudon ex",
+    "supertype": "Pokémon",
+    "id": "np-2"
+  },
+  "glalie": {
+    "name": "Glalie",
+    "supertype": "Pokémon",
+    "id": "ex5-34"
+  },
+  "sobble": {
+    "name": "Sobble",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH003"
+  },
+  "low pressure system": {
+    "name": "Low Pressure System",
+    "supertype": "Trainer",
+    "id": "pop3-11"
+  },
+  "lucario lv.x": {
+    "name": "Lucario LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP12"
+  },
+  "wartortle": {
+    "name": "Wartortle",
+    "supertype": "Pokémon",
+    "id": "base1-42"
+  },
+  "decidueye-gx": {
+    "name": "Decidueye-GX",
+    "supertype": "Pokémon",
+    "id": "sm1-12"
+  },
+  "lanturn": {
+    "name": "Lanturn",
+    "supertype": "Pokémon",
+    "id": "ex10-40"
+  },
+  "squirtle": {
+    "name": "Squirtle",
+    "supertype": "Pokémon",
+    "id": "sm10-33"
+  },
+  "mow rotom": {
+    "name": "Mow Rotom",
+    "supertype": "Pokémon",
+    "id": "sm5-14"
+  },
+  "heracross δ": {
+    "name": "Heracross δ",
+    "supertype": "Pokémon",
+    "id": "ex15-3"
+  },
+  "light azumarill": {
+    "name": "Light Azumarill",
+    "supertype": "Pokémon",
+    "id": "neo4-13"
+  },
+  "starmie δ": {
+    "name": "Starmie δ",
+    "supertype": "Pokémon",
+    "id": "ex11-30"
+  },
+  "misdreavus": {
+    "name": "Misdreavus",
+    "supertype": "Pokémon",
+    "id": "basep-39"
+  },
+  "lampent": {
+    "name": "Lampent",
+    "supertype": "Pokémon",
+    "id": "swsh2-32"
+  },
+  "mightyena": {
+    "name": "Mightyena",
+    "supertype": "Pokémon",
+    "id": "ex16-18"
+  },
+  "luxray gl": {
+    "name": "Luxray GL",
+    "supertype": "Pokémon",
+    "id": "pl2-9"
+  },
+  "chandelure": {
+    "name": "Chandelure",
+    "supertype": "Pokémon",
+    "id": "swsh2-33"
+  },
+  "pheromosa": {
+    "name": "Pheromosa",
+    "supertype": "Pokémon",
+    "id": "sm6-11"
+  },
+  "mareep": {
+    "name": "Mareep",
+    "supertype": "Pokémon",
+    "id": "sm9-41"
+  },
+  "rockruff": {
+    "name": "Rockruff",
+    "supertype": "Pokémon",
+    "id": "sma-SV23"
+  },
+  "xerneas": {
+    "name": "Xerneas",
+    "supertype": "Pokémon",
+    "id": "xyp-XY31"
+  },
+  "delphox": {
+    "name": "Delphox",
+    "supertype": "Pokémon",
+    "id": "xy1-26"
+  },
+  "lumineon": {
+    "name": "Lumineon",
+    "supertype": "Pokémon",
+    "id": "xy4-19"
+  },
+  "bronzong": {
+    "name": "Bronzong",
+    "supertype": "Pokémon",
+    "id": "pl4-33"
+  },
+  "meowth": {
+    "name": "Meowth",
+    "supertype": "Pokémon",
+    "id": "ex4-42"
+  },
+  "thwackey": {
+    "name": "Thwackey",
+    "supertype": "Pokémon",
+    "id": "swsh1-13"
+  },
+  "pansear": {
+    "name": "Pansear",
+    "supertype": "Pokémon",
+    "id": "swsh3-26"
+  },
+  "spewpa": {
+    "name": "Spewpa",
+    "supertype": "Pokémon",
+    "id": "xy8-14"
+  },
+  "m heracross-ex": {
+    "name": "M Heracross-EX",
+    "supertype": "Pokémon",
+    "id": "xy3-5"
+  },
+  "piloswine": {
+    "name": "Piloswine",
+    "supertype": "Pokémon",
+    "id": "neo3-36"
+  },
+  "light dragonite": {
+    "name": "Light Dragonite",
+    "supertype": "Pokémon",
+    "id": "neo4-14"
+  },
+  "lickitung": {
+    "name": "Lickitung",
+    "supertype": "Pokémon",
+    "id": "ex6-37"
+  },
+  "haxorus": {
+    "name": "Haxorus",
+    "supertype": "Pokémon",
+    "id": "dv1-16"
+  },
+  "houndour": {
+    "name": "Houndour",
+    "supertype": "Pokémon",
+    "id": "neo2-24"
+  },
+  "team aqua's sealeo": {
+    "name": "Team Aqua's Sealeo",
+    "supertype": "Pokémon",
+    "id": "ex4-31"
+  },
+  "skuntank": {
+    "name": "Skuntank",
+    "supertype": "Pokémon",
+    "id": "hgss3-37"
+  },
+  "rocket's zapdos": {
+    "name": "Rocket's Zapdos",
+    "supertype": "Pokémon",
+    "id": "gym2-15"
+  },
+  "pidgey": {
+    "name": "Pidgey",
+    "supertype": "Pokémon",
+    "id": "pop4-12"
+  },
+  "drednaw vmax": {
+    "name": "Drednaw VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh35-15"
+  },
+  "slowbro": {
+    "name": "Slowbro",
+    "supertype": "Pokémon",
+    "id": "base3-43"
+  },
+  "meganium δ": {
+    "name": "Meganium δ",
+    "supertype": "Pokémon",
+    "id": "ex15-4"
+  },
+  "togekiss": {
+    "name": "Togekiss",
+    "supertype": "Pokémon",
+    "id": "dp4-11"
+  },
+  "litleo": {
+    "name": "Litleo",
+    "supertype": "Pokémon",
+    "id": "sm12-36"
+  },
+  "meowth v": {
+    "name": "Meowth V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH004"
+  },
+  "togetic": {
+    "name": "Togetic",
+    "supertype": "Pokémon",
+    "id": "hgss3-39"
+  },
+  "heatran-ex": {
+    "name": "Heatran-EX",
+    "supertype": "Pokémon",
+    "id": "bw9-13"
+  },
+  "snubbull": {
+    "name": "Snubbull",
+    "supertype": "Pokémon",
+    "id": "xy0-22"
+  },
+  "δ rainbow energy": {
+    "name": "δ Rainbow Energy",
+    "supertype": "Energy",
+    "id": "pop5-9"
+  },
+  "umbreon": {
+    "name": "Umbreon",
+    "supertype": "Pokémon",
+    "id": "neo2-32"
+  },
+  "grubbin": {
+    "name": "Grubbin",
+    "supertype": "Pokémon",
+    "id": "sm10-18"
+  },
+  "tyranitar δ": {
+    "name": "Tyranitar δ",
+    "supertype": "Pokémon",
+    "id": "ex11-16"
+  },
+  "slaking": {
+    "name": "Slaking",
+    "supertype": "Pokémon",
+    "id": "dp2-34"
+  },
+  "lunatone": {
+    "name": "Lunatone",
+    "supertype": "Pokémon",
+    "id": "ex8-36"
+  },
+  "oricorio": {
+    "name": "Oricorio",
+    "supertype": "Pokémon",
+    "id": "sm7-30"
+  },
+  "light togetic": {
+    "name": "Light Togetic",
+    "supertype": "Pokémon",
+    "id": "neo4-15"
+  },
+  "girafarig": {
+    "name": "Girafarig",
+    "supertype": "Pokémon",
+    "id": "ex3-16"
+  },
+  "glaceon": {
+    "name": "Glaceon",
+    "supertype": "Pokémon",
+    "id": "bw5-30"
+  },
+  "pikipek": {
+    "name": "Pikipek",
+    "supertype": "Pokémon",
+    "id": "smp-SM07"
+  },
+  "pyroar": {
+    "name": "Pyroar",
+    "supertype": "Pokémon",
+    "id": "xyp-XY26"
+  },
+  "hoothoot": {
+    "name": "Hoothoot",
+    "supertype": "Pokémon",
+    "id": "hsp-HGSS05"
+  },
+  "gyarados-gx": {
+    "name": "Gyarados-GX",
+    "supertype": "Pokémon",
+    "id": "sm4-18"
+  },
+  "dewpider": {
+    "name": "Dewpider",
+    "supertype": "Pokémon",
+    "id": "sm6-32"
+  },
+  "delphox break": {
+    "name": "Delphox BREAK",
+    "supertype": "Pokémon",
+    "id": "xy10-14"
+  },
+  "chatot": {
+    "name": "Chatot",
+    "supertype": "Pokémon",
+    "id": "dpp-DP14"
+  },
+  "sabrina's alakazam": {
+    "name": "Sabrina's Alakazam",
+    "supertype": "Pokémon",
+    "id": "gym2-16"
+  },
+  "mismagius gl": {
+    "name": "Mismagius GL",
+    "supertype": "Pokémon",
+    "id": "pl2-10"
+  },
+  "vivillon": {
+    "name": "Vivillon",
+    "supertype": "Pokémon",
+    "id": "xy8-15"
+  },
+  "ralts": {
+    "name": "Ralts",
+    "supertype": "Pokémon",
+    "id": "sma-SV34"
+  },
+  "sabrina's gengar": {
+    "name": "Sabrina's Gengar",
+    "supertype": "Pokémon",
+    "id": "gym2-29"
+  },
+  "skiddo": {
+    "name": "Skiddo",
+    "supertype": "Pokémon",
+    "id": "sm8-35"
+  },
+  "team aqua's mightyena": {
+    "name": "Team Aqua's Mightyena",
+    "supertype": "Pokémon",
+    "id": "ex4-30"
+  },
+  "salandit": {
+    "name": "Salandit",
+    "supertype": "Pokémon",
+    "id": "sm11-33"
+  },
+  "meowth vmax": {
+    "name": "Meowth VMAX",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH005"
+  },
+  "omastar δ": {
+    "name": "Omastar δ",
+    "supertype": "Pokémon",
+    "id": "ex13-13"
+  },
+  "charmander δ": {
+    "name": "Charmander δ",
+    "supertype": "Pokémon",
+    "id": "pop5-10"
+  },
+  "primeape": {
+    "name": "Primeape",
+    "supertype": "Pokémon",
+    "id": "pl3-39"
+  },
+  "totodile": {
+    "name": "Totodile",
+    "supertype": "Pokémon",
+    "id": "sm35-18"
+  },
+  "mr. briney's compassion": {
+    "name": "Mr. Briney's Compassion",
+    "supertype": "Trainer",
+    "id": "pop2-8"
+  },
+  "sentret": {
+    "name": "Sentret",
+    "supertype": "Pokémon",
+    "id": "pop7-16"
+  },
+  "swellow": {
+    "name": "Swellow",
+    "supertype": "Pokémon",
+    "id": "ex9-41"
+  },
+  "umbreon δ": {
+    "name": "Umbreon δ",
+    "supertype": "Pokémon",
+    "id": "ex11-17"
+  },
+  "shinx": {
+    "name": "Shinx",
+    "supertype": "Pokémon",
+    "id": "bw4-43"
+  },
+  "blaine": {
+    "name": "Blaine",
+    "supertype": "Trainer",
+    "id": "gym2-17"
+  },
+  "rampardos gl": {
+    "name": "Rampardos GL",
+    "supertype": "Pokémon",
+    "id": "pl2-11"
+  },
+  "milotic δ": {
+    "name": "Milotic δ",
+    "supertype": "Pokémon",
+    "id": "ex15-5"
+  },
+  "dodrio": {
+    "name": "Dodrio",
+    "supertype": "Pokémon",
+    "id": "ex5-33"
+  },
+  "rillaboom": {
+    "name": "Rillaboom",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH006"
+  },
+  "team aqua's kyogre-ex": {
+    "name": "Team Aqua's Kyogre-EX",
+    "supertype": "Pokémon",
+    "id": "dc1-6"
+  },
+  "rattata": {
+    "name": "Rattata",
+    "supertype": "Pokémon",
+    "id": "ru1-15"
+  },
+  "weavile g": {
+    "name": "Weavile G",
+    "supertype": "Pokémon",
+    "id": "pl1-17"
+  },
+  "arcanine g": {
+    "name": "Arcanine G",
+    "supertype": "Pokémon",
+    "id": "pl3-15"
+  },
+  "luxio": {
+    "name": "Luxio",
+    "supertype": "Pokémon",
+    "id": "pl4-43"
+  },
+  "druddigon": {
+    "name": "Druddigon",
+    "supertype": "Pokémon",
+    "id": "dv1-17"
+  },
+  "krabby": {
+    "name": "Krabby",
+    "supertype": "Pokémon",
+    "id": "swsh1-43"
+  },
+  "seel": {
+    "name": "Seel",
+    "supertype": "Pokémon",
+    "id": "base1-41"
+  },
+  "yveltal": {
+    "name": "Yveltal",
+    "supertype": "Pokémon",
+    "id": "xyp-XY32"
+  },
+  "gorebyss": {
+    "name": "Gorebyss",
+    "supertype": "Pokémon",
+    "id": "ex5-18"
+  },
+  "gardevoir v": {
+    "name": "Gardevoir V",
+    "supertype": "Pokémon",
+    "id": "swsh35-16"
+  },
+  "fomantis": {
+    "name": "Fomantis",
+    "supertype": "Pokémon",
+    "id": "sm11-15"
+  },
+  "drifblim": {
+    "name": "Drifblim",
+    "supertype": "Pokémon",
+    "id": "dpp-DP34"
+  },
+  "remoraid": {
+    "name": "Remoraid",
+    "supertype": "Pokémon",
+    "id": "xy8-32"
+  },
+  "nosepass": {
+    "name": "Nosepass",
+    "supertype": "Pokémon",
+    "id": "ex8-42"
+  },
+  "simisear": {
+    "name": "Simisear",
+    "supertype": "Pokémon",
+    "id": "swsh3-27"
+  },
+  "exp. share": {
+    "name": "Exp. Share",
+    "supertype": "Trainer",
+    "id": "dv1-18"
+  },
+  "gogoat": {
+    "name": "Gogoat",
+    "supertype": "Pokémon",
+    "id": "sm8-36"
+  },
+  "meowth δ": {
+    "name": "Meowth δ",
+    "supertype": "Pokémon",
+    "id": "pop5-11"
+  },
+  "dark vileplume": {
+    "name": "Dark Vileplume",
+    "supertype": "Pokémon",
+    "id": "base5-30"
+  },
+  "pidgeot δ": {
+    "name": "Pidgeot δ",
+    "supertype": "Pokémon",
+    "id": "ex13-14"
+  },
+  "armaldo ex": {
+    "name": "Armaldo ex",
+    "supertype": "Pokémon",
+    "id": "pop1-16"
+  },
+  "araquanid": {
+    "name": "Araquanid",
+    "supertype": "Pokémon",
+    "id": "sm6-33"
+  },
+  "spinda": {
+    "name": "Spinda",
+    "supertype": "Pokémon",
+    "id": "ex12-26"
+  },
+  "brock": {
+    "name": "Brock",
+    "supertype": "Trainer",
+    "id": "gym1-15"
+  },
+  "vaporeon δ": {
+    "name": "Vaporeon δ",
+    "supertype": "Pokémon",
+    "id": "ex11-18"
+  },
+  "lurantis-gx": {
+    "name": "Lurantis-GX",
+    "supertype": "Pokémon",
+    "id": "sm1-15"
+  },
+  "team aqua's grimer": {
+    "name": "Team Aqua's Grimer",
+    "supertype": "Pokémon",
+    "id": "dc1-7"
+  },
+  "multi technical machine 01": {
+    "name": "Multi Technical Machine 01",
+    "supertype": "Trainer",
+    "id": "pop2-9"
+  },
+  "night maintenance": {
+    "name": "Night Maintenance",
+    "supertype": "Trainer",
+    "id": "pop8-9"
+  },
+  "kingler": {
+    "name": "Kingler",
+    "supertype": "Pokémon",
+    "id": "base3-38"
+  },
+  "magnemite": {
+    "name": "Magnemite",
+    "supertype": "Pokémon",
+    "id": "bw8-43"
+  },
+  "salazzle": {
+    "name": "Salazzle",
+    "supertype": "Pokémon",
+    "id": "sm10-31"
+  },
+  "staraptor": {
+    "name": "Staraptor",
+    "supertype": "Pokémon",
+    "id": "dp7-27"
+  },
+  "hariyama": {
+    "name": "Hariyama",
+    "supertype": "Pokémon",
+    "id": "ex9-31"
+  },
+  "alolan vulpix": {
+    "name": "Alolan Vulpix",
+    "supertype": "Pokémon",
+    "id": "sm12-39"
+  },
+  "fearow": {
+    "name": "Fearow",
+    "supertype": "Pokémon",
+    "id": "dp5-36"
+  },
+  "giovanni": {
+    "name": "Giovanni",
+    "supertype": "Trainer",
+    "id": "gym2-18"
+  },
+  "nidoking δ": {
+    "name": "Nidoking δ",
+    "supertype": "Pokémon",
+    "id": "ex15-6"
+  },
+  "medicham": {
+    "name": "Medicham",
+    "supertype": "Pokémon",
+    "id": "ex16-34"
+  },
+  "huntail": {
+    "name": "Huntail",
+    "supertype": "Pokémon",
+    "id": "ex5-19"
+  },
+  "gardevoir vmax": {
+    "name": "Gardevoir VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh35-17"
+  },
+  "roserade gl": {
+    "name": "Roserade GL",
+    "supertype": "Pokémon",
+    "id": "pl2-12"
+  },
+  "dark muk": {
+    "name": "Dark Muk",
+    "supertype": "Pokémon",
+    "id": "ex7-16"
+  },
+  "togedemaru": {
+    "name": "Togedemaru",
+    "supertype": "Pokémon",
+    "id": "smp-SM09"
+  },
+  "wigglytuff": {
+    "name": "Wigglytuff",
+    "supertype": "Pokémon",
+    "id": "base2-32"
+  },
+  "cleffa": {
+    "name": "Cleffa",
+    "supertype": "Pokémon",
+    "id": "basep-31"
+  },
+  "scraggy": {
+    "name": "Scraggy",
+    "supertype": "Pokémon",
+    "id": "swsh35-41"
+  },
+  "blipbug": {
+    "name": "Blipbug",
+    "supertype": "Pokémon",
+    "id": "swsh1-17"
+  },
+  "floatzel": {
+    "name": "Floatzel",
+    "supertype": "Pokémon",
+    "id": "dp4-37"
+  },
+  "azumarill δ": {
+    "name": "Azumarill δ",
+    "supertype": "Pokémon",
+    "id": "ex11-19"
+  },
+  "hatenna": {
+    "name": "Hatenna",
+    "supertype": "Pokémon",
+    "id": "swsh35-18"
+  },
+  "horsea": {
+    "name": "Horsea",
+    "supertype": "Pokémon",
+    "id": "ex3-33"
+  },
+  "shiinotic": {
+    "name": "Shiinotic",
+    "supertype": "Pokémon",
+    "id": "sm1-17"
+  },
+  "zoroark": {
+    "name": "Zoroark",
+    "supertype": "Pokémon",
+    "id": "bwp-BW19"
+  },
+  "dark raticate": {
+    "name": "Dark Raticate",
+    "supertype": "Pokémon",
+    "id": "ex7-17"
+  },
+  "bibarel": {
+    "name": "Bibarel",
+    "supertype": "Pokémon",
+    "id": "dp7-32"
+  },
+  "sawsbuck": {
+    "name": "Sawsbuck",
+    "supertype": "Pokémon",
+    "id": "bw2-16"
+  },
+  "pokémon park": {
+    "name": "Pokémon Park",
+    "supertype": "Trainer",
+    "id": "pop2-10"
+  },
+  "frosmoth": {
+    "name": "Frosmoth",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH007"
+  },
+  "wooper": {
+    "name": "Wooper",
+    "supertype": "Pokémon",
+    "id": "xy7-38"
+  },
+  "erika": {
+    "name": "Erika",
+    "supertype": "Trainer",
+    "id": "gym1-16"
+  },
+  "xerneas-ex": {
+    "name": "Xerneas-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY07"
+  },
+  "monferno": {
+    "name": "Monferno",
+    "supertype": "Pokémon",
+    "id": "sm5-22"
+  },
+  "team aqua's muk": {
+    "name": "Team Aqua's Muk",
+    "supertype": "Pokémon",
+    "id": "dc1-8"
+  },
+  "dark weezing": {
+    "name": "Dark Weezing",
+    "supertype": "Pokémon",
+    "id": "base5-31"
+  },
+  "raichu δ": {
+    "name": "Raichu δ",
+    "supertype": "Pokémon",
+    "id": "ex13-15"
+  },
+  "cloyster": {
+    "name": "Cloyster",
+    "supertype": "Pokémon",
+    "id": "swsh1-41"
+  },
+  "nidoqueen δ": {
+    "name": "Nidoqueen δ",
+    "supertype": "Pokémon",
+    "id": "ex15-7"
+  },
+  "miracle energy": {
+    "name": "Miracle Energy",
+    "supertype": "Energy",
+    "id": "neo4-16"
+  },
+  "chesnaught break": {
+    "name": "Chesnaught BREAK",
+    "supertype": "Pokémon",
+    "id": "xy8-12"
+  },
+  "koga": {
+    "name": "Koga",
+    "supertype": "Trainer",
+    "id": "gym2-19"
+  },
+  "starly": {
+    "name": "Starly",
+    "supertype": "Pokémon",
+    "id": "pop6-16"
+  },
+  "dialga lv.x": {
+    "name": "Dialga LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP37"
+  },
+  "treecko δ": {
+    "name": "Treecko δ",
+    "supertype": "Pokémon",
+    "id": "pop4-15"
+  },
+  "first ticket": {
+    "name": "First Ticket",
+    "supertype": "Trainer",
+    "id": "dv1-19"
+  },
+  "team aqua's seviper": {
+    "name": "Team Aqua's Seviper",
+    "supertype": "Pokémon",
+    "id": "dc1-9"
+  },
+  "moltres-ex": {
+    "name": "Moltres-EX",
+    "supertype": "Pokémon",
+    "id": "bw8-14"
+  },
+  "typhlosion": {
+    "name": "Typhlosion",
+    "supertype": "Pokémon",
+    "id": "sm8-42"
+  },
+  "panpour": {
+    "name": "Panpour",
+    "supertype": "Pokémon",
+    "id": "sm3-36"
+  },
+  "dark sandslash": {
+    "name": "Dark Sandslash",
+    "supertype": "Pokémon",
+    "id": "ex7-18"
+  },
+  "relicanth": {
+    "name": "Relicanth",
+    "supertype": "Pokémon",
+    "id": "ex13-30"
+  },
+  "turtonator": {
+    "name": "Turtonator",
+    "supertype": "Pokémon",
+    "id": "smp-SM27"
+  },
+  "croconaw": {
+    "name": "Croconaw",
+    "supertype": "Pokémon",
+    "id": "col1-41"
+  },
+  "roseanne's research": {
+    "name": "Roseanne's Research",
+    "supertype": "Trainer",
+    "id": "pop8-11"
+  },
+  "super rod": {
+    "name": "Super Rod",
+    "supertype": "Trainer",
+    "id": "dv1-20"
+  },
+  "farfetch'd": {
+    "name": "Farfetch'd",
+    "supertype": "Pokémon",
+    "id": "base4-40"
+  },
+  "hattrem": {
+    "name": "Hattrem",
+    "supertype": "Pokémon",
+    "id": "swsh35-19"
+  },
+  "ninetales δ": {
+    "name": "Ninetales δ",
+    "supertype": "Pokémon",
+    "id": "ex15-8"
+  },
+  "bruxish": {
+    "name": "Bruxish",
+    "supertype": "Pokémon",
+    "id": "sm3-38"
+  },
+  "dark ariados": {
+    "name": "Dark Ariados",
+    "supertype": "Pokémon",
+    "id": "ex7-30"
+  },
+  "tv reporter": {
+    "name": "TV Reporter",
+    "supertype": "Trainer",
+    "id": "pop2-11"
+  },
+  "pikachu δ": {
+    "name": "Pikachu δ",
+    "supertype": "Pokémon",
+    "id": "pop5-13"
+  },
+  "qwilfish": {
+    "name": "Qwilfish",
+    "supertype": "Pokémon",
+    "id": "sm35-21"
+  },
+  "galarian perrserker": {
+    "name": "Galarian Perrserker",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH008"
+  },
+  "butterfree fb": {
+    "name": "Butterfree FB",
+    "supertype": "Pokémon",
+    "id": "pl3-17"
+  },
+  "yveltal-ex": {
+    "name": "Yveltal-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY08"
+  },
+  "tyranitar ex": {
+    "name": "Tyranitar ex",
+    "supertype": "Pokémon",
+    "id": "pop1-17"
+  },
+  "palkia lv.x": {
+    "name": "Palkia LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP18"
+  },
+  "sabrina": {
+    "name": "Sabrina",
+    "supertype": "Trainer",
+    "id": "gym2-20"
+  },
+  "omanyte": {
+    "name": "Omanyte",
+    "supertype": "Pokémon",
+    "id": "xy10-17"
+  },
+  "marshtomp": {
+    "name": "Marshtomp",
+    "supertype": "Pokémon",
+    "id": "ex14-38"
+  },
+  "here comes team rocket!": {
+    "name": "Here Comes Team Rocket!",
+    "supertype": "Trainer",
+    "id": "base5-15"
+  },
+  "entei-ex": {
+    "name": "Entei-EX",
+    "supertype": "Pokémon",
+    "id": "bw5-13"
+  },
+  "honchkrow": {
+    "name": "Honchkrow",
+    "supertype": "Pokémon",
+    "id": "pl3-29"
+  },
+  "cacturne δ": {
+    "name": "Cacturne δ",
+    "supertype": "Pokémon",
+    "id": "ex14-15"
+  },
+  "raichu-gx": {
+    "name": "Raichu-GX",
+    "supertype": "Pokémon",
+    "id": "sm35-29"
+  },
+  "shining genesect": {
+    "name": "Shining Genesect",
+    "supertype": "Pokémon",
+    "id": "sm35-9"
+  },
+  "alolan marowak": {
+    "name": "Alolan Marowak",
+    "supertype": "Pokémon",
+    "id": "sm4-12"
+  },
+  "lt. surge": {
+    "name": "Lt. Surge",
+    "supertype": "Trainer",
+    "id": "gym1-17"
+  },
+  "seviper": {
+    "name": "Seviper",
+    "supertype": "Pokémon",
+    "id": "ex13-32"
+  },
+  "pelipper δ": {
+    "name": "Pelipper δ",
+    "supertype": "Pokémon",
+    "id": "ex14-26"
+  },
+  "hatterene": {
+    "name": "Hatterene",
+    "supertype": "Pokémon",
+    "id": "swsh35-20"
+  },
+  "bounsweet": {
+    "name": "Bounsweet",
+    "supertype": "Pokémon",
+    "id": "sm11-17"
+  },
+  "blaine's ninetales": {
+    "name": "Blaine's Ninetales",
+    "supertype": "Pokémon",
+    "id": "gym2-21"
+  },
+  "feebas": {
+    "name": "Feebas",
+    "supertype": "Pokémon",
+    "id": "xy5-43"
+  },
+  "dottler": {
+    "name": "Dottler",
+    "supertype": "Pokémon",
+    "id": "swsh1-18"
+  },
+  "snorlax": {
+    "name": "Snorlax",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH032"
+  },
+  "cool porygon": {
+    "name": "Cool Porygon",
+    "supertype": "Pokémon",
+    "id": "basep-15"
+  },
+  "rhydon": {
+    "name": "Rhydon",
+    "supertype": "Pokémon",
+    "id": "base6-35"
+  },
+  "turtonator-gx": {
+    "name": "Turtonator-GX",
+    "supertype": "Pokémon",
+    "id": "sm2-18"
+  },
+  "darkrai lv.x": {
+    "name": "Darkrai LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP19"
+  },
+  "kyurem": {
+    "name": "Kyurem",
+    "supertype": "Pokémon",
+    "id": "bw11-43"
+  },
+  "rocket's sneak attack": {
+    "name": "Rocket's Sneak Attack",
+    "supertype": "Trainer",
+    "id": "base5-16"
+  },
+  "ursaring": {
+    "name": "Ursaring",
+    "supertype": "Pokémon",
+    "id": "col1-37"
+  },
+  "passimian": {
+    "name": "Passimian",
+    "supertype": "Pokémon",
+    "id": "smp-SM12"
+  },
+  "pinsir δ": {
+    "name": "Pinsir δ",
+    "supertype": "Pokémon",
+    "id": "ex15-9"
+  },
+  "cinccino": {
+    "name": "Cinccino",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH009"
+  },
+  "garchomp-ex": {
+    "name": "Garchomp-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY09"
+  },
+  "snorunt": {
+    "name": "Snorunt",
+    "supertype": "Pokémon",
+    "id": "sm2-31"
+  },
+  "team magma's baltoy": {
+    "name": "Team Magma's Baltoy",
+    "supertype": "Pokémon",
+    "id": "ex4-32"
+  },
+  "pichu bros.": {
+    "name": "Pichu Bros.",
+    "supertype": "Pokémon",
+    "id": "pop3-16"
+  },
+  "talonflame break": {
+    "name": "Talonflame BREAK",
+    "supertype": "Pokémon",
+    "id": "xy11-21"
+  },
+  "deoxys ex": {
+    "name": "Deoxys ex",
+    "supertype": "Pokémon",
+    "id": "pop4-17"
+  },
+  "omastar": {
+    "name": "Omastar",
+    "supertype": "Pokémon",
+    "id": "base3-40"
+  },
+  "dark magcargo": {
+    "name": "Dark Magcargo",
+    "supertype": "Pokémon",
+    "id": "ex7-38"
+  },
+  "entei-gx": {
+    "name": "Entei-GX",
+    "supertype": "Pokémon",
+    "id": "sm35-10a"
+  },
+  "venomoth-gx": {
+    "name": "Venomoth-GX",
+    "supertype": "Pokémon",
+    "id": "sm10-12"
+  },
+  "vileplume δ": {
+    "name": "Vileplume δ",
+    "supertype": "Pokémon",
+    "id": "ex13-17"
+  },
+  "misty": {
+    "name": "Misty",
+    "supertype": "Trainer",
+    "id": "gym1-18"
+  },
+  "furret": {
+    "name": "Furret",
+    "supertype": "Pokémon",
+    "id": "neo1-35"
+  },
+  "oranguru": {
+    "name": "Oranguru",
+    "supertype": "Pokémon",
+    "id": "smp-SM13"
+  },
+  "frogadier": {
+    "name": "Frogadier",
+    "supertype": "Pokémon",
+    "id": "xy1-40"
+  },
+  "computer error": {
+    "name": "Computer Error",
+    "supertype": "Trainer",
+    "id": "basep-16"
+  },
+  "ho-oh ex": {
+    "name": "Ho-Oh ex",
+    "supertype": "Pokémon",
+    "id": "pop3-17"
+  },
+  "azurill": {
+    "name": "Azurill",
+    "supertype": "Pokémon",
+    "id": "ex2-31"
+  },
+  "team magma's lairon": {
+    "name": "Team Magma's Lairon",
+    "supertype": "Pokémon",
+    "id": "ex4-36"
+  },
+  "steenee": {
+    "name": "Steenee",
+    "supertype": "Pokémon",
+    "id": "sm11-18"
+  },
+  "torracat": {
+    "name": "Torracat",
+    "supertype": "Pokémon",
+    "id": "sm10-28"
+  },
+  "orbeetle": {
+    "name": "Orbeetle",
+    "supertype": "Pokémon",
+    "id": "swsh1-19"
+  },
+  "shuckle-gx": {
+    "name": "Shuckle-GX",
+    "supertype": "Pokémon",
+    "id": "sm8-17"
+  },
+  "brock's dugtrio": {
+    "name": "Brock's Dugtrio",
+    "supertype": "Pokémon",
+    "id": "gym2-22"
+  },
+  "gossifleur": {
+    "name": "Gossifleur",
+    "supertype": "Pokémon",
+    "id": "swsh1-20"
+  },
+  "zorua": {
+    "name": "Zorua",
+    "supertype": "Pokémon",
+    "id": "sma-SV25"
+  },
+  "shiftry-gx": {
+    "name": "Shiftry-GX",
+    "supertype": "Pokémon",
+    "id": "sm7-14"
+  },
+  "elekid": {
+    "name": "Elekid",
+    "supertype": "Pokémon",
+    "id": "ecard2-9"
+  },
+  "pignite": {
+    "name": "Pignite",
+    "supertype": "Pokémon",
+    "id": "sm12-32"
+  },
+  "snorlax δ": {
+    "name": "Snorlax δ",
+    "supertype": "Pokémon",
+    "id": "ex15-10"
+  },
+  "dedenne": {
+    "name": "Dedenne",
+    "supertype": "Pokémon",
+    "id": "mcd16-10"
+  },
+  "bronzong e4": {
+    "name": "Bronzong E4",
+    "supertype": "Pokémon",
+    "id": "pl2-16"
+  },
+  "golisopod-gx": {
+    "name": "Golisopod-GX",
+    "supertype": "Pokémon",
+    "id": "sm3-17"
+  },
+  "voltorb": {
+    "name": "Voltorb",
+    "supertype": "Pokémon",
+    "id": "sm35-30"
+  },
+  "dragalge": {
+    "name": "Dragalge",
+    "supertype": "Pokémon",
+    "id": "xyp-XY10"
+  },
+  "dark omastar": {
+    "name": "Dark Omastar",
+    "supertype": "Pokémon",
+    "id": "neo4-19"
+  },
+  "trevenant-ex": {
+    "name": "Trevenant-EX",
+    "supertype": "Pokémon",
+    "id": "xy5-19"
+  },
+  "finneon": {
+    "name": "Finneon",
+    "supertype": "Pokémon",
+    "id": "xy4-18"
+  },
+  "omastar break": {
+    "name": "Omastar BREAK",
+    "supertype": "Pokémon",
+    "id": "xy10-19"
+  },
+  "glaceon-ex": {
+    "name": "Glaceon-EX",
+    "supertype": "Pokémon",
+    "id": "xy10-20"
+  },
+  "steelix": {
+    "name": "Steelix",
+    "supertype": "Pokémon",
+    "id": "dp7-28"
+  },
+  "fearow δ": {
+    "name": "Fearow δ",
+    "supertype": "Pokémon",
+    "id": "ex14-18"
+  },
+  "holon's electrode": {
+    "name": "Holon's Electrode",
+    "supertype": "Pokémon",
+    "id": "ex11-21"
+  },
+  "numel": {
+    "name": "Numel",
+    "supertype": "Pokémon",
+    "id": "hgss2-35"
+  },
+  "the rocket's trap": {
+    "name": "The Rocket's Trap",
+    "supertype": "Trainer",
+    "id": "gym1-19"
+  },
+  "giovanni's nidoqueen": {
+    "name": "Giovanni's Nidoqueen",
+    "supertype": "Pokémon",
+    "id": "gym2-23"
+  },
+  "rainbow energy": {
+    "name": "Rainbow Energy",
+    "supertype": "Energy",
+    "id": "base5-17"
+  },
+  "camerupt g": {
+    "name": "Camerupt G",
+    "supertype": "Pokémon",
+    "id": "pl3-19"
+  },
+  "happiny": {
+    "name": "Happiny",
+    "supertype": "Pokémon",
+    "id": "pop8-14"
+  },
+  "togetic δ": {
+    "name": "Togetic δ",
+    "supertype": "Pokémon",
+    "id": "ex15-11"
+  },
+  "wooloo": {
+    "name": "Wooloo",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH011"
+  },
+  "team magma's mightyena": {
+    "name": "Team Magma's Mightyena",
+    "supertype": "Pokémon",
+    "id": "ex4-37"
+  },
+  "team magma's aron": {
+    "name": "Team Magma's Aron",
+    "supertype": "Pokémon",
+    "id": "dc1-12"
+  },
+  "seadra": {
+    "name": "Seadra",
+    "supertype": "Pokémon",
+    "id": "hgss2-40"
+  },
+  "zangoose δ": {
+    "name": "Zangoose δ",
+    "supertype": "Pokémon",
+    "id": "pop5-15"
+  },
+  "golduck": {
+    "name": "Golduck",
+    "supertype": "Pokémon",
+    "id": "sm12-41"
+  },
+  "drapion e4": {
+    "name": "Drapion E4",
+    "supertype": "Pokémon",
+    "id": "pl2-17"
+  },
+  "spheal": {
+    "name": "Spheal",
+    "supertype": "Pokémon",
+    "id": "bw6-29"
+  },
+  "granbull": {
+    "name": "Granbull",
+    "supertype": "Pokémon",
+    "id": "neo1-37"
+  },
+  "victini-ex": {
+    "name": "Victini-EX",
+    "supertype": "Pokémon",
+    "id": "bw11-24"
+  },
+  "skarmory": {
+    "name": "Skarmory",
+    "supertype": "Pokémon",
+    "id": "ecard1-27"
+  },
+  "tyranitar": {
+    "name": "Tyranitar",
+    "supertype": "Pokémon",
+    "id": "neo2-31"
+  },
+  "leafeon-ex": {
+    "name": "Leafeon-EX",
+    "supertype": "Pokémon",
+    "id": "g1-10"
+  },
+  "tsareena": {
+    "name": "Tsareena",
+    "supertype": "Pokémon",
+    "id": "smp-SM26"
+  },
+  "zangoose": {
+    "name": "Zangoose",
+    "supertype": "Pokémon",
+    "id": "col1-39"
+  },
+  "galarian cursola v": {
+    "name": "Galarian Cursola V",
+    "supertype": "Pokémon",
+    "id": "swsh35-21"
+  },
+  "pyroar break": {
+    "name": "Pyroar BREAK",
+    "supertype": "Pokémon",
+    "id": "xy11-24"
+  },
+  "clauncher": {
+    "name": "Clauncher",
+    "supertype": "Pokémon",
+    "id": "xy3-23"
+  },
+  "kingdra-gx": {
+    "name": "Kingdra-GX",
+    "supertype": "Pokémon",
+    "id": "sm75-18"
+  },
+  "buzzwole": {
+    "name": "Buzzwole",
+    "supertype": "Pokémon",
+    "id": "sma-SV24"
+  },
+  "emboar": {
+    "name": "Emboar",
+    "supertype": "Pokémon",
+    "id": "bwp-BW21"
+  },
+  "lycanroc-gx": {
+    "name": "Lycanroc-GX",
+    "supertype": "Pokémon",
+    "id": "smp-SM14"
+  },
+  "minccino": {
+    "name": "Minccino",
+    "supertype": "Pokémon",
+    "id": "bwp-BW13"
+  },
+  "morpeko": {
+    "name": "Morpeko",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH031"
+  },
+  "brock's golem": {
+    "name": "Brock's Golem",
+    "supertype": "Pokémon",
+    "id": "gym1-20"
+  },
+  "espeon ★": {
+    "name": "Espeon ★",
+    "supertype": "Pokémon",
+    "id": "pop5-16"
+  },
+  "mesprit": {
+    "name": "Mesprit",
+    "supertype": "Pokémon",
+    "id": "dp6-34"
+  },
+  "phione": {
+    "name": "Phione",
+    "supertype": "Pokémon",
+    "id": "dp5-27"
+  },
+  "giovanni's pinsir": {
+    "name": "Giovanni's Pinsir",
+    "supertype": "Pokémon",
+    "id": "gym2-24"
+  },
+  "ho-oh-ex": {
+    "name": "Ho-Oh-EX",
+    "supertype": "Pokémon",
+    "id": "bw6-22"
+  },
+  "bellossom δ": {
+    "name": "Bellossom δ",
+    "supertype": "Pokémon",
+    "id": "ex13-19"
+  },
+  "charizard g": {
+    "name": "Charizard G",
+    "supertype": "Pokémon",
+    "id": "pl3-20"
+  },
+  "sealeo": {
+    "name": "Sealeo",
+    "supertype": "Pokémon",
+    "id": "ex12-43"
+  },
+  "honedge": {
+    "name": "Honedge",
+    "supertype": "Pokémon",
+    "id": "xy0-21"
+  },
+  "alcremie v": {
+    "name": "Alcremie V",
+    "supertype": "Pokémon",
+    "id": "swsh35-22"
+  },
+  "alolan sandslash": {
+    "name": "Alolan Sandslash",
+    "supertype": "Pokémon",
+    "id": "sm5-29"
+  },
+  "dark ursaring": {
+    "name": "Dark Ursaring",
+    "supertype": "Pokémon",
+    "id": "neo4-21"
+  },
+  "frillish": {
+    "name": "Frillish",
+    "supertype": "Pokémon",
+    "id": "bw7-44"
+  },
+  "white kyurem": {
+    "name": "White Kyurem",
+    "supertype": "Pokémon",
+    "id": "xy10-21"
+  },
+  "holon's magneton": {
+    "name": "Holon's Magneton",
+    "supertype": "Pokémon",
+    "id": "ex11-22"
+  },
+  "grovyle δ": {
+    "name": "Grovyle δ",
+    "supertype": "Pokémon",
+    "id": "ex14-19"
+  },
+  "espeon e4": {
+    "name": "Espeon E4",
+    "supertype": "Pokémon",
+    "id": "pl2-18"
+  },
+  "team rocket's meowth": {
+    "name": "Team Rocket's Meowth",
+    "supertype": "Pokémon",
+    "id": "basep-18"
+  },
+  "celebi ◇": {
+    "name": "Celebi ◇",
+    "supertype": "Pokémon",
+    "id": "sm8-19"
+  },
+  "walrein": {
+    "name": "Walrein",
+    "supertype": "Pokémon",
+    "id": "pl2-36"
+  },
+  "reshiram-ex": {
+    "name": "Reshiram-EX",
+    "supertype": "Pokémon",
+    "id": "bw11-29"
+  },
+  "wingull": {
+    "name": "Wingull",
+    "supertype": "Pokémon",
+    "id": "sm1-37"
+  },
+  "pelipper": {
+    "name": "Pelipper",
+    "supertype": "Pokémon",
+    "id": "sm1-38"
+  },
+  "xurkitree": {
+    "name": "Xurkitree",
+    "supertype": "Pokémon",
+    "id": "sma-SV14"
+  },
+  "team magma's zangoose": {
+    "name": "Team Magma's Zangoose",
+    "supertype": "Pokémon",
+    "id": "dc1-22"
+  },
+  "jellicent": {
+    "name": "Jellicent",
+    "supertype": "Pokémon",
+    "id": "bw7-45"
+  },
+  "mime jr.": {
+    "name": "Mime Jr.",
+    "supertype": "Pokémon",
+    "id": "dpp-DP22"
+  },
+  "eldegoss": {
+    "name": "Eldegoss",
+    "supertype": "Pokémon",
+    "id": "swsh1-21"
+  },
+  "koga's arbok": {
+    "name": "Koga's Arbok",
+    "supertype": "Pokémon",
+    "id": "gym2-25"
+  },
+  "charizard & braixen-gx": {
+    "name": "Charizard & Braixen-GX",
+    "supertype": "Pokémon",
+    "id": "sm12-22"
+  },
+  "umbreon ★": {
+    "name": "Umbreon ★",
+    "supertype": "Pokémon",
+    "id": "pop5-17"
+  },
+  "galarian ponyta": {
+    "name": "Galarian Ponyta",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH013"
+  },
+  "brock's onix": {
+    "name": "Brock's Onix",
+    "supertype": "Pokémon",
+    "id": "gym1-21"
+  },
+  "phanpy": {
+    "name": "Phanpy",
+    "supertype": "Pokémon",
+    "id": "pop2-15"
+  },
+  "volcanion": {
+    "name": "Volcanion",
+    "supertype": "Pokémon",
+    "id": "sm10-25"
+  },
+  "unown [a]": {
+    "name": "Unown [A]",
+    "supertype": "Pokémon",
+    "id": "neo2-33"
+  },
+  "typhlosion δ": {
+    "name": "Typhlosion δ",
+    "supertype": "Pokémon",
+    "id": "ex15-12"
+  },
+  "light dragonair": {
+    "name": "Light Dragonair",
+    "supertype": "Pokémon",
+    "id": "neo4-22"
+  },
+  "alcremie vmax": {
+    "name": "Alcremie VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh35-23"
+  },
+  "poochyena": {
+    "name": "Poochyena",
+    "supertype": "Pokémon",
+    "id": "xy0-16"
+  },
+  "light lanturn": {
+    "name": "Light Lanturn",
+    "supertype": "Pokémon",
+    "id": "neo4-23"
+  },
+  "volcanion-ex": {
+    "name": "Volcanion-EX",
+    "supertype": "Pokémon",
+    "id": "xy11-26"
+  },
+  "vibrava": {
+    "name": "Vibrava",
+    "supertype": "Pokémon",
+    "id": "ex12-46"
+  },
+  "zygarde": {
+    "name": "Zygarde",
+    "supertype": "Pokémon",
+    "id": "swsh35-28"
+  },
+  "machop": {
+    "name": "Machop",
+    "supertype": "Pokémon",
+    "id": "swsh35-24"
+  },
+  "binacle": {
+    "name": "Binacle",
+    "supertype": "Pokémon",
+    "id": "xy2-48"
+  },
+  "glameow": {
+    "name": "Glameow",
+    "supertype": "Pokémon",
+    "id": "dpp-DP23"
+  },
+  "brock's rhyhorn": {
+    "name": "Brock's Rhyhorn",
+    "supertype": "Pokémon",
+    "id": "gym1-22"
+  },
+  "ninetales-ex": {
+    "name": "Ninetales-EX",
+    "supertype": "Pokémon",
+    "id": "g1-13"
+  },
+  "cyndaquil": {
+    "name": "Cyndaquil",
+    "supertype": "Pokémon",
+    "id": "sm8-40"
+  },
+  "ninetales break": {
+    "name": "Ninetales BREAK",
+    "supertype": "Pokémon",
+    "id": "xy12-16"
+  },
+  "heat rotom": {
+    "name": "Heat Rotom",
+    "supertype": "Pokémon",
+    "id": "sm5-24"
+  },
+  "dhelmise": {
+    "name": "Dhelmise",
+    "supertype": "Pokémon",
+    "id": "sm11-20"
+  },
+  "pidove": {
+    "name": "Pidove",
+    "supertype": "Pokémon",
+    "id": "bwp-BW15"
+  },
+  "rillaboom v": {
+    "name": "Rillaboom V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH014"
+  },
+  "gallade e4": {
+    "name": "Gallade E4",
+    "supertype": "Pokémon",
+    "id": "pl2-20"
+  },
+  "pidgeotto": {
+    "name": "Pidgeotto",
+    "supertype": "Pokémon",
+    "id": "base6-34"
+  },
+  "regice": {
+    "name": "Regice",
+    "supertype": "Pokémon",
+    "id": "dp6-36"
+  },
+  "magby": {
+    "name": "Magby",
+    "supertype": "Pokémon",
+    "id": "hgss4-41"
+  },
+  "ho-oh-gx": {
+    "name": "Ho-Oh-GX",
+    "supertype": "Pokémon",
+    "id": "sm3-21"
+  },
+  "barbaracle": {
+    "name": "Barbaracle",
+    "supertype": "Pokémon",
+    "id": "xy10-23"
+  },
+  "inkay": {
+    "name": "Inkay",
+    "supertype": "Pokémon",
+    "id": "swsh35-44"
+  },
+  "team aqua's cacnea": {
+    "name": "Team Aqua's Cacnea",
+    "supertype": "Pokémon",
+    "id": "ex4-24"
+  },
+  "wailmer": {
+    "name": "Wailmer",
+    "supertype": "Pokémon",
+    "id": "sm7-39"
+  },
+  "team magma's groudon-ex": {
+    "name": "Team Magma's Groudon-EX",
+    "supertype": "Pokémon",
+    "id": "dc1-15"
+  },
+  "smoochum": {
+    "name": "Smoochum",
+    "supertype": "Pokémon",
+    "id": "ex10-31"
+  },
+  "machoke": {
+    "name": "Machoke",
+    "supertype": "Pokémon",
+    "id": "ex16-33"
+  },
+  "mightyena δ": {
+    "name": "Mightyena δ",
+    "supertype": "Pokémon",
+    "id": "ex11-24"
+  },
+  "tirtouga": {
+    "name": "Tirtouga",
+    "supertype": "Pokémon",
+    "id": "bw3-25"
+  },
+  "slurpuff": {
+    "name": "Slurpuff",
+    "supertype": "Pokémon",
+    "id": "xyp-XY15"
+  },
+  "alolan ninetales-gx": {
+    "name": "Alolan Ninetales-GX",
+    "supertype": "Pokémon",
+    "id": "sm2-22"
+  },
+  "sabrina's abra": {
+    "name": "Sabrina's Abra",
+    "supertype": "Pokémon",
+    "id": "basep-19"
+  },
+  "rillaboom vmax": {
+    "name": "Rillaboom VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh2-18"
+  },
+  "emboar-ex": {
+    "name": "Emboar-EX",
+    "supertype": "Pokémon",
+    "id": "xy9-14"
+  },
+  "orbeetle v": {
+    "name": "Orbeetle V",
+    "supertype": "Pokémon",
+    "id": "swsh4-20"
+  },
+  "quilava": {
+    "name": "Quilava",
+    "supertype": "Pokémon",
+    "id": "sm8-41"
+  },
+  "alomomola": {
+    "name": "Alomomola",
+    "supertype": "Pokémon",
+    "id": "bw1-39"
+  },
+  "brock's sandslash": {
+    "name": "Brock's Sandslash",
+    "supertype": "Pokémon",
+    "id": "gym2-36"
+  },
+  "celebi ex": {
+    "name": "Celebi ex",
+    "supertype": "Pokémon",
+    "id": "pop2-17"
+  },
+  "mantine": {
+    "name": "Mantine",
+    "supertype": "Pokémon",
+    "id": "hgss1-45"
+  },
+  "light ledian": {
+    "name": "Light Ledian",
+    "supertype": "Pokémon",
+    "id": "neo4-24"
+  },
+  "kyurem-ex": {
+    "name": "Kyurem-EX",
+    "supertype": "Pokémon",
+    "id": "bw11-44"
+  },
+  "ekans": {
+    "name": "Ekans",
+    "supertype": "Pokémon",
+    "id": "swsh35-33"
+  },
+  "cinderace v": {
+    "name": "Cinderace V",
+    "supertype": "Pokémon",
+    "id": "swsh2-35"
+  },
+  "koga's muk": {
+    "name": "Koga's Muk",
+    "supertype": "Pokémon",
+    "id": "gym2-26"
+  },
+  "igglybuff": {
+    "name": "Igglybuff",
+    "supertype": "Pokémon",
+    "id": "basep-36"
+  },
+  "tentacool": {
+    "name": "Tentacool",
+    "supertype": "Pokémon",
+    "id": "sm2-23"
+  },
+  "sceptile-gx": {
+    "name": "Sceptile-GX",
+    "supertype": "Pokémon",
+    "id": "sm8-22"
+  },
+  "shuppet": {
+    "name": "Shuppet",
+    "supertype": "Pokémon",
+    "id": "xy6-30"
+  },
+  "carracosta": {
+    "name": "Carracosta",
+    "supertype": "Pokémon",
+    "id": "bw3-26"
+  },
+  "brock's zubat": {
+    "name": "Brock's Zubat",
+    "supertype": "Pokémon",
+    "id": "gym1-24"
+  },
+  "lurantis": {
+    "name": "Lurantis",
+    "supertype": "Pokémon",
+    "id": "smp-SM25"
+  },
+  "team aqua's poochyena": {
+    "name": "Team Aqua's Poochyena",
+    "supertype": "Pokémon",
+    "id": "dc1-16"
+  },
+  "pawniard": {
+    "name": "Pawniard",
+    "supertype": "Pokémon",
+    "id": "xy0-19"
+  },
+  "seaking": {
+    "name": "Seaking",
+    "supertype": "Pokémon",
+    "id": "neo3-37"
+  },
+  "manectric-ex": {
+    "name": "Manectric-EX",
+    "supertype": "Pokémon",
+    "id": "xy4-23"
+  },
+  "persian": {
+    "name": "Persian",
+    "supertype": "Pokémon",
+    "id": "hgss1-27"
+  },
+  "arbok δ": {
+    "name": "Arbok δ",
+    "supertype": "Pokémon",
+    "id": "ex15-13"
+  },
+  "torkoal v": {
+    "name": "Torkoal V",
+    "supertype": "Pokémon",
+    "id": "swsh1-24"
+  },
+  "poliwag": {
+    "name": "Poliwag",
+    "supertype": "Pokémon",
+    "id": "sm1-30"
+  },
+  "uxie": {
+    "name": "Uxie",
+    "supertype": "Pokémon",
+    "id": "bw10-36"
+  },
+  "team aqua's carvanha": {
+    "name": "Team Aqua's Carvanha",
+    "supertype": "Pokémon",
+    "id": "dc1-20"
+  },
+  "m manectric-ex": {
+    "name": "M Manectric-EX",
+    "supertype": "Pokémon",
+    "id": "xy4-24a"
+  },
+  "erika's clefairy": {
+    "name": "Erika's Clefairy",
+    "supertype": "Pokémon",
+    "id": "gym2-40"
+  },
+  "crawdaunt g": {
+    "name": "Crawdaunt G",
+    "supertype": "Pokémon",
+    "id": "pl3-23"
+  },
+  "kartana": {
+    "name": "Kartana",
+    "supertype": "Pokémon",
+    "id": "sma-SV33"
+  },
+  "ducklett": {
+    "name": "Ducklett",
+    "supertype": "Pokémon",
+    "id": "bw5-35"
+  },
+  "shellos": {
+    "name": "Shellos",
+    "supertype": "Pokémon",
+    "id": "sm4-29"
+  },
+  "light machamp": {
+    "name": "Light Machamp",
+    "supertype": "Pokémon",
+    "id": "neo4-25"
+  },
+  "charizard v": {
+    "name": "Charizard V",
+    "supertype": "Pokémon",
+    "id": "swsh3-19"
+  },
+  "orbeetle vmax": {
+    "name": "Orbeetle VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh4-21"
+  },
+  "houndoom-ex": {
+    "name": "Houndoom-EX",
+    "supertype": "Pokémon",
+    "id": "xy8-21"
+  },
+  "tympole": {
+    "name": "Tympole",
+    "supertype": "Pokémon",
+    "id": "xy9-33"
+  },
+  "m houndoom-ex": {
+    "name": "M Houndoom-EX",
+    "supertype": "Pokémon",
+    "id": "xy8-22"
+  },
+  "reshiram & charizard-gx": {
+    "name": "Reshiram & Charizard-GX",
+    "supertype": "Pokémon",
+    "id": "sm10-20"
+  },
+  "alakazam-ex": {
+    "name": "Alakazam-EX",
+    "supertype": "Pokémon",
+    "id": "xy10-25"
+  },
+  "applin": {
+    "name": "Applin",
+    "supertype": "Pokémon",
+    "id": "swsh2-21"
+  },
+  "inteleon v": {
+    "name": "Inteleon V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH016"
+  },
+  "kingler δ": {
+    "name": "Kingler δ",
+    "supertype": "Pokémon",
+    "id": "ex14-22"
+  },
+  "dewott": {
+    "name": "Dewott",
+    "supertype": "Pokémon",
+    "id": "bw7-40"
+  },
+  "porygon-z g": {
+    "name": "Porygon-Z G",
+    "supertype": "Pokémon",
+    "id": "pl4-26"
+  },
+  "incineroar": {
+    "name": "Incineroar",
+    "supertype": "Pokémon",
+    "id": "sm10-29"
+  },
+  "bisharp": {
+    "name": "Bisharp",
+    "supertype": "Pokémon",
+    "id": "xy0-20"
+  },
+  "rain castform": {
+    "name": "Rain Castform",
+    "supertype": "Pokémon",
+    "id": "ex5-23"
+  },
+  "cloyster δ": {
+    "name": "Cloyster δ",
+    "supertype": "Pokémon",
+    "id": "ex15-14"
+  },
+  "palkia-gx": {
+    "name": "Palkia-GX",
+    "supertype": "Pokémon",
+    "id": "sm6-20"
+  },
+  "sandslash": {
+    "name": "Sandslash",
+    "supertype": "Pokémon",
+    "id": "base3-41"
+  },
+  "light piloswine": {
+    "name": "Light Piloswine",
+    "supertype": "Pokémon",
+    "id": "neo4-26"
+  },
+  "koga's pidgeotto": {
+    "name": "Koga's Pidgeotto",
+    "supertype": "Pokémon",
+    "id": "gym2-27"
+  },
+  "solgaleo-gx": {
+    "name": "Solgaleo-GX",
+    "supertype": "Pokémon",
+    "id": "smp-SM16"
+  },
+  "bergmite": {
+    "name": "Bergmite",
+    "supertype": "Pokémon",
+    "id": "xy11-36"
+  },
+  "jynx": {
+    "name": "Jynx",
+    "supertype": "Pokémon",
+    "id": "neo3-31"
+  },
+  "team magma's poochyena": {
+    "name": "Team Magma's Poochyena",
+    "supertype": "Pokémon",
+    "id": "dc1-17"
+  },
+  "gastrodon": {
+    "name": "Gastrodon",
+    "supertype": "Pokémon",
+    "id": "xy11-29"
+  },
+  "victini v": {
+    "name": "Victini V",
+    "supertype": "Pokémon",
+    "id": "swsh1-25"
+  },
+  "metal energy": {
+    "name": "Metal Energy",
+    "supertype": "Energy",
+    "id": "neo1-19"
+  },
+  "poliwhirl": {
+    "name": "Poliwhirl",
+    "supertype": "Pokémon",
+    "id": "hgss2-37"
+  },
+  "charizard vmax": {
+    "name": "Charizard VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh3-20"
+  },
+  "zarude v": {
+    "name": "Zarude V",
+    "supertype": "Pokémon",
+    "id": "swsh4-22"
+  },
+  "swinub": {
+    "name": "Swinub",
+    "supertype": "Pokémon",
+    "id": "bw8-26"
+  },
+  "lt. surge's jolteon": {
+    "name": "Lt. Surge's Jolteon",
+    "supertype": "Pokémon",
+    "id": "gym2-28"
+  },
+  "avalugg": {
+    "name": "Avalugg",
+    "supertype": "Pokémon",
+    "id": "xy11-37"
+  },
+  "team aqua's corphish": {
+    "name": "Team Aqua's Corphish",
+    "supertype": "Pokémon",
+    "id": "ex4-26"
+  },
+  "malamar": {
+    "name": "Malamar",
+    "supertype": "Pokémon",
+    "id": "sma-SV18"
+  },
+  "simipour": {
+    "name": "Simipour",
+    "supertype": "Pokémon",
+    "id": "sm3-37"
+  },
+  "golem e4": {
+    "name": "Golem E4",
+    "supertype": "Pokémon",
+    "id": "pl2-23"
+  },
+  "erika's victreebel": {
+    "name": "Erika's Victreebel",
+    "supertype": "Pokémon",
+    "id": "gym1-26"
+  },
+  "articuno-ex": {
+    "name": "Articuno-EX",
+    "supertype": "Pokémon",
+    "id": "bw8-25"
+  },
+  "emolga": {
+    "name": "Emolga",
+    "supertype": "Pokémon",
+    "id": "bw3-37"
+  },
+  "lunala-gx": {
+    "name": "Lunala-GX",
+    "supertype": "Pokémon",
+    "id": "smp-SM17"
+  },
+  "ampharos-ex": {
+    "name": "Ampharos-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-27"
+  },
+  "loudred": {
+    "name": "Loudred",
+    "supertype": "Pokémon",
+    "id": "ex9-35"
+  },
+  "dewgong δ": {
+    "name": "Dewgong δ",
+    "supertype": "Pokémon",
+    "id": "ex15-15"
+  },
+  "lucario v": {
+    "name": "Lucario V",
+    "supertype": "Pokémon",
+    "id": "swsh35-27"
+  },
+  "toxtricity v": {
+    "name": "Toxtricity V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH017"
+  },
+  "kecleon": {
+    "name": "Kecleon",
+    "supertype": "Pokémon",
+    "id": "ex12-37"
+  },
+  "houndoom v": {
+    "name": "Houndoom V",
+    "supertype": "Pokémon",
+    "id": "swsh3-21"
+  },
+  "gligar δ": {
+    "name": "Gligar δ",
+    "supertype": "Pokémon",
+    "id": "ex15-16"
+  },
+  "tynamo": {
+    "name": "Tynamo",
+    "supertype": "Pokémon",
+    "id": "bw3-38"
+  },
+  "zacian v": {
+    "name": "Zacian V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH018"
+  },
+  "unown [g]": {
+    "name": "Unown [G]",
+    "supertype": "Pokémon",
+    "id": "neo4-27"
+  },
+  "chesnaught-ex": {
+    "name": "Chesnaught-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY18"
+  },
+  "sandslash δ": {
+    "name": "Sandslash δ",
+    "supertype": "Pokémon",
+    "id": "ex11-27"
+  },
+  "incineroar-gx": {
+    "name": "Incineroar-GX",
+    "supertype": "Pokémon",
+    "id": "sm1-27"
+  },
+  "koffing": {
+    "name": "Koffing",
+    "supertype": "Pokémon",
+    "id": "xy10-27"
+  },
+  "m ampharos-ex": {
+    "name": "M Ampharos-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-28"
+  },
+  "electrike": {
+    "name": "Electrike",
+    "supertype": "Pokémon",
+    "id": "ex1-30"
+  },
+  "m alakazam-ex": {
+    "name": "M Alakazam-EX",
+    "supertype": "Pokémon",
+    "id": "xy10-26"
+  },
+  "poipole": {
+    "name": "Poipole",
+    "supertype": "Pokémon",
+    "id": "sma-SV19"
+  },
+  "basculin": {
+    "name": "Basculin",
+    "supertype": "Pokémon",
+    "id": "bw1-35"
+  },
+  "anorith": {
+    "name": "Anorith",
+    "supertype": "Pokémon",
+    "id": "ex2-28"
+  },
+  "heracross e4": {
+    "name": "Heracross E4",
+    "supertype": "Pokémon",
+    "id": "pl2-24"
+  },
+  "sabrina's golduck": {
+    "name": "Sabrina's Golduck",
+    "supertype": "Pokémon",
+    "id": "gym2-30"
+  },
+  "_____'s pikachu": {
+    "name": "_____'s Pikachu",
+    "supertype": "Pokémon",
+    "id": "basep-24"
+  },
+  "golduck break": {
+    "name": "Golduck BREAK",
+    "supertype": "Pokémon",
+    "id": "xy9-18"
+  },
+  "delphox-ex": {
+    "name": "Delphox-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY19"
+  },
+  "blastoise-ex": {
+    "name": "Blastoise-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY30"
+  },
+  "palpitoad": {
+    "name": "Palpitoad",
+    "supertype": "Pokémon",
+    "id": "xy9-34"
+  },
+  "whiscash": {
+    "name": "Whiscash",
+    "supertype": "Pokémon",
+    "id": "xy5-41"
+  },
+  "sneasel": {
+    "name": "Sneasel",
+    "supertype": "Pokémon",
+    "id": "sm12-43"
+  },
+  "jynx δ": {
+    "name": "Jynx δ",
+    "supertype": "Pokémon",
+    "id": "ex15-17"
+  },
+  "zamazenta v": {
+    "name": "Zamazenta V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH019"
+  },
+  "dusknoir fb": {
+    "name": "Dusknoir FB",
+    "supertype": "Pokémon",
+    "id": "pl3-26"
+  },
+  "weezing": {
+    "name": "Weezing",
+    "supertype": "Pokémon",
+    "id": "base3-45"
+  },
+  "metang": {
+    "name": "Metang",
+    "supertype": "Pokémon",
+    "id": "ex8-40"
+  },
+  "vanillite": {
+    "name": "Vanillite",
+    "supertype": "Pokémon",
+    "id": "bw5-33"
+  },
+  "eelektrik": {
+    "name": "Eelektrik",
+    "supertype": "Pokémon",
+    "id": "bw10-32"
+  },
+  "hippowdon": {
+    "name": "Hippowdon",
+    "supertype": "Pokémon",
+    "id": "dp1-29"
+  },
+  "team aqua's electrike": {
+    "name": "Team Aqua's Electrike",
+    "supertype": "Pokémon",
+    "id": "ex4-27"
+  },
+  "joltik": {
+    "name": "Joltik",
+    "supertype": "Pokémon",
+    "id": "bw2-33"
+  },
+  "unown [h]": {
+    "name": "Unown [H]",
+    "supertype": "Pokémon",
+    "id": "dp4-29"
+  },
+  "mewtwo lv.x": {
+    "name": "Mewtwo LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP28"
+  },
+  "misty's cloyster": {
+    "name": "Misty's Cloyster",
+    "supertype": "Pokémon",
+    "id": "gym1-29"
+  },
+  "vanillish": {
+    "name": "Vanillish",
+    "supertype": "Pokémon",
+    "id": "bw5-34"
+  },
+  "woobat": {
+    "name": "Woobat",
+    "supertype": "Pokémon",
+    "id": "mcd12-7"
+  },
+  "seismitoad": {
+    "name": "Seismitoad",
+    "supertype": "Pokémon",
+    "id": "xy9-35"
+  },
+  "empoleon fb": {
+    "name": "Empoleon FB",
+    "supertype": "Pokémon",
+    "id": "pl3-27"
+  },
+  "flying pikachu": {
+    "name": "Flying Pikachu",
+    "supertype": "Pokémon",
+    "id": "basep-25"
+  },
+  "ledian δ": {
+    "name": "Ledian δ",
+    "supertype": "Pokémon",
+    "id": "ex15-18"
+  },
+  "flapple": {
+    "name": "Flapple",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH022"
+  },
+  "eelektross": {
+    "name": "Eelektross",
+    "supertype": "Pokémon",
+    "id": "bw10-33"
+  },
+  "greninja-ex": {
+    "name": "Greninja-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY20"
+  },
+  "galvantula": {
+    "name": "Galvantula",
+    "supertype": "Pokémon",
+    "id": "bw2-34"
+  },
+  "m blastoise-ex": {
+    "name": "M Blastoise-EX",
+    "supertype": "Pokémon",
+    "id": "xy1-30"
+  },
+  "salazzle-gx": {
+    "name": "Salazzle-GX",
+    "supertype": "Pokémon",
+    "id": "sm3-25"
+  },
+  "greninja-gx": {
+    "name": "Greninja-GX",
+    "supertype": "Pokémon",
+    "id": "sm6-24"
+  },
+  "blaine's charmeleon": {
+    "name": "Blaine's Charmeleon",
+    "supertype": "Pokémon",
+    "id": "gym2-31"
+  },
+  "mudsdale": {
+    "name": "Mudsdale",
+    "supertype": "Pokémon",
+    "id": "smp-SM20"
+  },
+  "whismur": {
+    "name": "Whismur",
+    "supertype": "Pokémon",
+    "id": "np-19"
+  },
+  "unown [w]": {
+    "name": "Unown [W]",
+    "supertype": "Pokémon",
+    "id": "neo4-29"
+  },
+  "tropical tidal wave": {
+    "name": "Tropical Tidal Wave",
+    "supertype": "Trainer",
+    "id": "np-27"
+  },
+  "weavile": {
+    "name": "Weavile",
+    "supertype": "Pokémon",
+    "id": "sm12-44"
+  },
+  "team aqua's lanturn": {
+    "name": "Team Aqua's Lanturn",
+    "supertype": "Pokémon",
+    "id": "ex4-28"
+  },
+  "thundurus-ex": {
+    "name": "Thundurus-EX",
+    "supertype": "Pokémon",
+    "id": "bw9-38"
+  },
+  "drampa": {
+    "name": "Drampa",
+    "supertype": "Pokémon",
+    "id": "smp-SM21"
+  },
+  "natu": {
+    "name": "Natu",
+    "supertype": "Pokémon",
+    "id": "xy6-28"
+  },
+  "blaine's dodrio": {
+    "name": "Blaine's Dodrio",
+    "supertype": "Pokémon",
+    "id": "gym2-32"
+  },
+  "lickitung δ": {
+    "name": "Lickitung δ",
+    "supertype": "Pokémon",
+    "id": "ex15-19"
+  },
+  "rhyperior lv.x": {
+    "name": "Rhyperior LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP29"
+  },
+  "lycanroc": {
+    "name": "Lycanroc",
+    "supertype": "Pokémon",
+    "id": "swsh35-30"
+  },
+  "graveler": {
+    "name": "Graveler",
+    "supertype": "Pokémon",
+    "id": "xy2-46"
+  },
+  "unown": {
+    "name": "Unown",
+    "supertype": "Pokémon",
+    "id": "hgss3-40"
+  },
+  "unown [x]": {
+    "name": "Unown [X]",
+    "supertype": "Pokémon",
+    "id": "neo4-30"
+  },
+  "misty's goldeen": {
+    "name": "Misty's Goldeen",
+    "supertype": "Pokémon",
+    "id": "gym1-30"
+  },
+  "drilbur": {
+    "name": "Drilbur",
+    "supertype": "Pokémon",
+    "id": "mcd12-8"
+  },
+  "seismitoad-ex": {
+    "name": "Seismitoad-EX",
+    "supertype": "Pokémon",
+    "id": "xy3-20"
+  },
+  "tyrogue": {
+    "name": "Tyrogue",
+    "supertype": "Pokémon",
+    "id": "col1-36"
+  },
+  "camerupt-ex": {
+    "name": "Camerupt-EX",
+    "supertype": "Pokémon",
+    "id": "xy5-29"
+  },
+  "dunsparce": {
+    "name": "Dunsparce",
+    "supertype": "Pokémon",
+    "id": "hgss1-41"
+  },
+  "gyarados g": {
+    "name": "Gyarados G",
+    "supertype": "Pokémon",
+    "id": "pl1-30"
+  },
+  "vanilluxe": {
+    "name": "Vanilluxe",
+    "supertype": "Pokémon",
+    "id": "bw8-37"
+  },
+  "samurott": {
+    "name": "Samurott",
+    "supertype": "Pokémon",
+    "id": "bw7-41"
+  },
+  "appletun": {
+    "name": "Appletun",
+    "supertype": "Pokémon",
+    "id": "swsh2-23"
+  },
+  "snow-cloud castform": {
+    "name": "Snow-cloud Castform",
+    "supertype": "Pokémon",
+    "id": "ex5-25"
+  },
+  "regirock": {
+    "name": "Regirock",
+    "supertype": "Pokémon",
+    "id": "xy7-40"
+  },
+  "cubchoo": {
+    "name": "Cubchoo",
+    "supertype": "Pokémon",
+    "id": "bw8-40"
+  },
+  "mewtwo-gx": {
+    "name": "Mewtwo-GX",
+    "supertype": "Pokémon",
+    "id": "sm115-31"
+  },
+  "polteageist v": {
+    "name": "Polteageist V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH021"
+  },
+  "magnezone-ex": {
+    "name": "Magnezone-EX",
+    "supertype": "Pokémon",
+    "id": "xy2-35"
+  },
+  "regigigas lv.x": {
+    "name": "Regigigas LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP30"
+  },
+  "mantine δ": {
+    "name": "Mantine δ",
+    "supertype": "Pokémon",
+    "id": "ex15-20"
+  },
+  "helioptile": {
+    "name": "Helioptile",
+    "supertype": "Pokémon",
+    "id": "sm6-37"
+  },
+  "blaziken-gx": {
+    "name": "Blaziken-GX",
+    "supertype": "Pokémon",
+    "id": "sm7-28"
+  },
+  "rolycoly": {
+    "name": "Rolycoly",
+    "supertype": "Pokémon",
+    "id": "swsh35-31"
+  },
+  "blaine's rapidash": {
+    "name": "Blaine's Rapidash",
+    "supertype": "Pokémon",
+    "id": "gym2-33"
+  },
+  "golbat": {
+    "name": "Golbat",
+    "supertype": "Pokémon",
+    "id": "ex5-36"
+  },
+  "misty's poliwrath": {
+    "name": "Misty's Poliwrath",
+    "supertype": "Pokémon",
+    "id": "gym1-31"
+  },
+  "heatran lv.x": {
+    "name": "Heatran LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP31"
+  },
+  "grapploct v": {
+    "name": "Grapploct V",
+    "supertype": "Pokémon",
+    "id": "swsh35-32"
+  },
+  "clawitzer": {
+    "name": "Clawitzer",
+    "supertype": "Pokémon",
+    "id": "xy3-24"
+  },
+  "shellder": {
+    "name": "Shellder",
+    "supertype": "Pokémon",
+    "id": "swsh1-40"
+  },
+  "beartic": {
+    "name": "Beartic",
+    "supertype": "Pokémon",
+    "id": "bw8-41"
+  },
+  "deoxys attack forme": {
+    "name": "Deoxys Attack Forme",
+    "supertype": "Pokémon",
+    "id": "dp6-24"
+  },
+  "swirlix": {
+    "name": "Swirlix",
+    "supertype": "Pokémon",
+    "id": "xy0-24"
+  },
+  "pikachu & zekrom-gx": {
+    "name": "Pikachu & Zekrom-GX",
+    "supertype": "Pokémon",
+    "id": "sm9-33"
+  },
+  "registeel": {
+    "name": "Registeel",
+    "supertype": "Pokémon",
+    "id": "ex13-29"
+  },
+  "spoink": {
+    "name": "Spoink",
+    "supertype": "Pokémon",
+    "id": "xy10-30"
+  },
+  "quagsire δ": {
+    "name": "Quagsire δ",
+    "supertype": "Pokémon",
+    "id": "ex15-21"
+  },
+  "surfing pikachu": {
+    "name": "Surfing Pikachu",
+    "supertype": "Pokémon",
+    "id": "basep-28"
+  },
+  "goldeen": {
+    "name": "Goldeen",
+    "supertype": "Pokémon",
+    "id": "xy8-27"
+  },
+  "mamoswine gl": {
+    "name": "Mamoswine GL",
+    "supertype": "Pokémon",
+    "id": "pl2-27"
+  },
+  "baltoy": {
+    "name": "Baltoy",
+    "supertype": "Pokémon",
+    "id": "ex9-43"
+  },
+  "purrloin": {
+    "name": "Purrloin",
+    "supertype": "Pokémon",
+    "id": "swsh35-39"
+  },
+  "prinplup": {
+    "name": "Prinplup",
+    "supertype": "Pokémon",
+    "id": "bw5-28"
+  },
+  "beldum": {
+    "name": "Beldum",
+    "supertype": "Pokémon",
+    "id": "sma-SV30"
+  },
+  "brock's graveler": {
+    "name": "Brock's Graveler",
+    "supertype": "Pokémon",
+    "id": "gym1-40"
+  },
+  "lairon": {
+    "name": "Lairon",
+    "supertype": "Pokémon",
+    "id": "ex16-32"
+  },
+  "dark dragonair": {
+    "name": "Dark Dragonair",
+    "supertype": "Pokémon",
+    "id": "base5-33"
+  },
+  "amaura": {
+    "name": "Amaura",
+    "supertype": "Pokémon",
+    "id": "xy3-25"
+  },
+  "slowbro-ex": {
+    "name": "Slowbro-EX",
+    "supertype": "Pokémon",
+    "id": "xy12-26"
+  },
+  "aipom": {
+    "name": "Aipom",
+    "supertype": "Pokémon",
+    "id": "ex10-34"
+  },
+  "corphish": {
+    "name": "Corphish",
+    "supertype": "Pokémon",
+    "id": "xy5-42"
+  },
+  "heatran-gx": {
+    "name": "Heatran-GX",
+    "supertype": "Pokémon",
+    "id": "sm11-25"
+  },
+  "brock's primeape": {
+    "name": "Brock's Primeape",
+    "supertype": "Pokémon",
+    "id": "gym2-35"
+  },
+  "deoxys defense forme": {
+    "name": "Deoxys Defense Forme",
+    "supertype": "Pokémon",
+    "id": "dp6-25"
+  },
+  "mr. mime e4": {
+    "name": "Mr. Mime E4",
+    "supertype": "Pokémon",
+    "id": "pl2-28"
+  },
+  "alolan ninetales": {
+    "name": "Alolan Ninetales",
+    "supertype": "Pokémon",
+    "id": "sm3-28"
+  },
+  "geodude": {
+    "name": "Geodude",
+    "supertype": "Pokémon",
+    "id": "xy2-45"
+  },
+  "kyogre-ex": {
+    "name": "Kyogre-EX",
+    "supertype": "Pokémon",
+    "id": "bw5-26"
+  },
+  "wishiwashi": {
+    "name": "Wishiwashi",
+    "supertype": "Pokémon",
+    "id": "sm2-37"
+  },
+  "porygon": {
+    "name": "Porygon",
+    "supertype": "Pokémon",
+    "id": "base1-39"
+  },
+  "seadra δ": {
+    "name": "Seadra δ",
+    "supertype": "Pokémon",
+    "id": "ex15-22"
+  },
+  "misty's tentacool": {
+    "name": "Misty's Tentacool",
+    "supertype": "Pokémon",
+    "id": "gym1-32"
+  },
+  "volcarona-gx": {
+    "name": "Volcarona-GX",
+    "supertype": "Pokémon",
+    "id": "sm12-35"
+  },
+  "cryogonal": {
+    "name": "Cryogonal",
+    "supertype": "Pokémon",
+    "id": "bw3-33"
+  },
+  "raboot": {
+    "name": "Raboot",
+    "supertype": "Pokémon",
+    "id": "swsh1-33"
+  },
+  "munchlax": {
+    "name": "Munchlax",
+    "supertype": "Pokémon",
+    "id": "dp1-33"
+  },
+  "talonflame v": {
+    "name": "Talonflame V",
+    "supertype": "Pokémon",
+    "id": "swsh4-29"
+  },
+  "heliolisk": {
+    "name": "Heliolisk",
+    "supertype": "Pokémon",
+    "id": "xy4-30"
+  },
+  "sunny castform": {
+    "name": "Sunny Castform",
+    "supertype": "Pokémon",
+    "id": "ex5-26"
+  },
+  "alolan geodude": {
+    "name": "Alolan Geodude",
+    "supertype": "Pokémon",
+    "id": "sm2-40"
+  },
+  "ninetales v": {
+    "name": "Ninetales V",
+    "supertype": "Pokémon",
+    "id": "swsh2-26"
+  },
+  "kadabra": {
+    "name": "Kadabra",
+    "supertype": "Pokémon",
+    "id": "base1-32"
+  },
+  "aqua diffuser": {
+    "name": "Aqua Diffuser",
+    "supertype": "Trainer",
+    "id": "dc1-23"
+  },
+  "rocket's snorlax": {
+    "name": "Rocket's Snorlax",
+    "supertype": "Pokémon",
+    "id": "gym1-33"
+  },
+  "lickilicky c": {
+    "name": "Lickilicky C",
+    "supertype": "Pokémon",
+    "id": "pl3-30"
+  },
+  "coalossal": {
+    "name": "Coalossal",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH024"
+  },
+  "dark croconaw": {
+    "name": "Dark Croconaw",
+    "supertype": "Pokémon",
+    "id": "neo4-32"
+  },
+  "trapinch": {
+    "name": "Trapinch",
+    "supertype": "Pokémon",
+    "id": "sm75-32"
+  },
+  "guzzlord": {
+    "name": "Guzzlord",
+    "supertype": "Pokémon",
+    "id": "sma-SV26"
+  },
+  "magma pointer": {
+    "name": "Magma Pointer",
+    "supertype": "Trainer",
+    "id": "dc1-24"
+  },
+  "m slowbro-ex": {
+    "name": "M Slowbro-EX",
+    "supertype": "Pokémon",
+    "id": "xy12-27"
+  },
+  "aurorus": {
+    "name": "Aurorus",
+    "supertype": "Pokémon",
+    "id": "xy3-26"
+  },
+  "articuno-gx": {
+    "name": "Articuno-GX",
+    "supertype": "Pokémon",
+    "id": "sm7-31"
+  },
+  "klang": {
+    "name": "Klang",
+    "supertype": "Pokémon",
+    "id": "mcd12-11"
+  },
+  "linoone": {
+    "name": "Linoone",
+    "supertype": "Pokémon",
+    "id": "ex9-34"
+  },
+  "deoxys speed forme": {
+    "name": "Deoxys Speed Forme",
+    "supertype": "Pokémon",
+    "id": "dp6-26"
+  },
+  "gothita": {
+    "name": "Gothita",
+    "supertype": "Pokémon",
+    "id": "xy10-32"
+  },
+  "clawitzer break": {
+    "name": "Clawitzer BREAK",
+    "supertype": "Pokémon",
+    "id": "xy11-35"
+  },
+  "bronzor": {
+    "name": "Bronzor",
+    "supertype": "Pokémon",
+    "id": "pl4-34"
+  },
+  "tropius δ": {
+    "name": "Tropius δ",
+    "supertype": "Pokémon",
+    "id": "ex15-23"
+  },
+  "aron": {
+    "name": "Aron",
+    "supertype": "Pokémon",
+    "id": "ex1-25"
+  },
+  "galarian darmanitan": {
+    "name": "Galarian Darmanitan",
+    "supertype": "Pokémon",
+    "id": "swsh3-28"
+  },
+  "duskull": {
+    "name": "Duskull",
+    "supertype": "Pokémon",
+    "id": "xy2-38"
+  },
+  "krookodile-ex": {
+    "name": "Krookodile-EX",
+    "supertype": "Pokémon",
+    "id": "xyp-XY25"
+  },
+  "zubat": {
+    "name": "Zubat",
+    "supertype": "Pokémon",
+    "id": "xy4-31"
+  },
+  "garbodor": {
+    "name": "Garbodor",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH025"
+  },
+  "lucario c": {
+    "name": "Lucario C",
+    "supertype": "Pokémon",
+    "id": "pl3-31"
+  },
+  "swanna": {
+    "name": "Swanna",
+    "supertype": "Pokémon",
+    "id": "bw7-43"
+  },
+  "kabuto": {
+    "name": "Kabuto",
+    "supertype": "Pokémon",
+    "id": "xy10-38"
+  },
+  "hydreigon": {
+    "name": "Hydreigon",
+    "supertype": "Pokémon",
+    "id": "sm75-33"
+  },
+  "miltank": {
+    "name": "Miltank",
+    "supertype": "Pokémon",
+    "id": "hgss1-47"
+  },
+  "munna": {
+    "name": "Munna",
+    "supertype": "Pokémon",
+    "id": "bw10-39"
+  },
+  "vibrava δ": {
+    "name": "Vibrava δ",
+    "supertype": "Pokémon",
+    "id": "ex15-24"
+  },
+  "solosis": {
+    "name": "Solosis",
+    "supertype": "Pokémon",
+    "id": "bw10-42"
+  },
+  "golett": {
+    "name": "Golett",
+    "supertype": "Pokémon",
+    "id": "bw10-45"
+  },
+  "team aqua admin": {
+    "name": "Team Aqua Admin",
+    "supertype": "Trainer",
+    "id": "dc1-25"
+  },
+  "dark exeggutor": {
+    "name": "Dark Exeggutor",
+    "supertype": "Pokémon",
+    "id": "neo4-33"
+  },
+  "alolan graveler": {
+    "name": "Alolan Graveler",
+    "supertype": "Pokémon",
+    "id": "sm4-33"
+  },
+  "galarian zigzagoon": {
+    "name": "Galarian Zigzagoon",
+    "supertype": "Pokémon",
+    "id": "swsh35-35"
+  },
+  "sabrina's venomoth": {
+    "name": "Sabrina's Venomoth",
+    "supertype": "Pokémon",
+    "id": "gym1-34"
+  },
+  "cinderace": {
+    "name": "Cinderace",
+    "supertype": "Pokémon",
+    "id": "swsh1-36"
+  },
+  "golurk": {
+    "name": "Golurk",
+    "supertype": "Pokémon",
+    "id": "bw10-46"
+  },
+  "gyarados-ex": {
+    "name": "Gyarados-EX",
+    "supertype": "Pokémon",
+    "id": "xy9-26"
+  },
+  "galarian linoone": {
+    "name": "Galarian Linoone",
+    "supertype": "Pokémon",
+    "id": "swsh35-36"
+  },
+  "skitty": {
+    "name": "Skitty",
+    "supertype": "Pokémon",
+    "id": "xy0-28"
+  },
+  "onix-gx": {
+    "name": "Onix-GX",
+    "supertype": "Pokémon",
+    "id": "sm115-36"
+  },
+  "brock's vulpix": {
+    "name": "Brock's Vulpix",
+    "supertype": "Pokémon",
+    "id": "gym2-37"
+  },
+  "duosion": {
+    "name": "Duosion",
+    "supertype": "Pokémon",
+    "id": "bw10-43"
+  },
+  "dark flaaffy": {
+    "name": "Dark Flaaffy",
+    "supertype": "Pokémon",
+    "id": "ex7-33"
+  },
+  "dark charmeleon": {
+    "name": "Dark Charmeleon",
+    "supertype": "Pokémon",
+    "id": "base5-32"
+  },
+  "blaine's growlithe": {
+    "name": "Blaine's Growlithe",
+    "supertype": "Pokémon",
+    "id": "gym1-35"
+  },
+  "xatu δ": {
+    "name": "Xatu δ",
+    "supertype": "Pokémon",
+    "id": "ex15-25"
+  },
+  "keldeo": {
+    "name": "Keldeo",
+    "supertype": "Pokémon",
+    "id": "sm35-26"
+  },
+  "virizion-gx": {
+    "name": "Virizion-GX",
+    "supertype": "Pokémon",
+    "id": "sm8-34"
+  },
+  "raichu gl": {
+    "name": "Raichu GL",
+    "supertype": "Pokémon",
+    "id": "pl2-31"
+  },
+  "blastoise & piplup-gx": {
+    "name": "Blastoise & Piplup-GX",
+    "supertype": "Pokémon",
+    "id": "sm12-38"
+  },
+  "purugly": {
+    "name": "Purugly",
+    "supertype": "Pokémon",
+    "id": "dp1-36"
+  },
+  "castform": {
+    "name": "Castform",
+    "supertype": "Pokémon",
+    "id": "ex5-30"
+  },
+  "alolan golem": {
+    "name": "Alolan Golem",
+    "supertype": "Pokémon",
+    "id": "sm9-37"
+  },
+  "gulpin": {
+    "name": "Gulpin",
+    "supertype": "Pokémon",
+    "id": "xy4-37"
+  },
+  "unown [s]": {
+    "name": "Unown [S]",
+    "supertype": "Pokémon",
+    "id": "dp3-39"
+  },
+  "team magma's houndour": {
+    "name": "Team Magma's Houndour",
+    "supertype": "Pokémon",
+    "id": "ex4-35"
+  },
+  "musharna": {
+    "name": "Musharna",
+    "supertype": "Pokémon",
+    "id": "bw10-40"
+  },
+  "team aqua grunt": {
+    "name": "Team Aqua Grunt",
+    "supertype": "Trainer",
+    "id": "dc1-26"
+  },
+  "toxicroak-ex": {
+    "name": "Toxicroak-EX",
+    "supertype": "Pokémon",
+    "id": "xy2-41"
+  },
+  "erika's bellsprout": {
+    "name": "Erika's Bellsprout",
+    "supertype": "Pokémon",
+    "id": "gym2-38"
+  },
+  "rhyperior e4": {
+    "name": "Rhyperior E4",
+    "supertype": "Pokémon",
+    "id": "pl2-32"
+  },
+  "blaine's kangaskhan": {
+    "name": "Blaine's Kangaskhan",
+    "supertype": "Pokémon",
+    "id": "gym1-36"
+  },
+  "volcanion ◇": {
+    "name": "Volcanion ◇",
+    "supertype": "Pokémon",
+    "id": "sm6-31"
+  },
+  "cubone": {
+    "name": "Cubone",
+    "supertype": "Pokémon",
+    "id": "ex4-40"
+  },
+  "lapras-gx": {
+    "name": "Lapras-GX",
+    "supertype": "Pokémon",
+    "id": "sm1-35"
+  },
+  "shining volcanion": {
+    "name": "Shining Volcanion",
+    "supertype": "Pokémon",
+    "id": "sm35-27"
+  },
+  "vikavolt": {
+    "name": "Vikavolt",
+    "supertype": "Pokémon",
+    "id": "smp-SM28"
+  },
+  "bayleef δ": {
+    "name": "Bayleef δ",
+    "supertype": "Pokémon",
+    "id": "ex15-26"
+  },
+  "hoopa-ex": {
+    "name": "Hoopa-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-36"
+  },
+  "galarian obstagoon": {
+    "name": "Galarian Obstagoon",
+    "supertype": "Pokémon",
+    "id": "swsh35-37"
+  },
+  "m gyarados-ex": {
+    "name": "M Gyarados-EX",
+    "supertype": "Pokémon",
+    "id": "xy9-27"
+  },
+  "drowzee": {
+    "name": "Drowzee",
+    "supertype": "Pokémon",
+    "id": "ex6-32"
+  },
+  "reuniclus": {
+    "name": "Reuniclus",
+    "supertype": "Pokémon",
+    "id": "bw10-44"
+  },
+  "champions festival": {
+    "name": "Champions Festival",
+    "supertype": "Trainer",
+    "id": "xyp-XY27"
+  },
+  "dark forretress": {
+    "name": "Dark Forretress",
+    "supertype": "Pokémon",
+    "id": "neo4-35"
+  },
+  "gallade-ex": {
+    "name": "Gallade-EX",
+    "supertype": "Pokémon",
+    "id": "xy6-34"
+  },
+  "vaporeon-ex": {
+    "name": "Vaporeon-EX",
+    "supertype": "Pokémon",
+    "id": "g1-24"
+  },
+  "machamp-ex": {
+    "name": "Machamp-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-37"
+  },
+  "blaine's magmar": {
+    "name": "Blaine's Magmar",
+    "supertype": "Pokémon",
+    "id": "gym1-37"
+  },
+  "sigilyph": {
+    "name": "Sigilyph",
+    "supertype": "Pokémon",
+    "id": "bw10-41"
+  },
+  "nidorino": {
+    "name": "Nidorino",
+    "supertype": "Pokémon",
+    "id": "xy11-44"
+  },
+  "chinchou": {
+    "name": "Chinchou",
+    "supertype": "Pokémon",
+    "id": "bw9-35"
+  },
+  "wormadam plant cloak": {
+    "name": "Wormadam Plant Cloak",
+    "supertype": "Pokémon",
+    "id": "dp3-41"
+  },
+  "duraludon": {
+    "name": "Duraludon",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH028"
+  },
+  "team aqua's great ball": {
+    "name": "Team Aqua's Great Ball",
+    "supertype": "Trainer",
+    "id": "dc1-27"
+  },
+  "championship arena": {
+    "name": "Championship Arena",
+    "supertype": "Trainer",
+    "id": "np-28"
+  },
+  "dark golduck": {
+    "name": "Dark Golduck",
+    "supertype": "Pokémon",
+    "id": "base5-37"
+  },
+  "espurr": {
+    "name": "Espurr",
+    "supertype": "Pokémon",
+    "id": "xy2-42"
+  },
+  "erika's bulbasaur": {
+    "name": "Erika's Bulbasaur",
+    "supertype": "Pokémon",
+    "id": "gym2-39"
+  },
+  "dark haunter": {
+    "name": "Dark Haunter",
+    "supertype": "Pokémon",
+    "id": "neo4-36"
+  },
+  "m gallade-ex": {
+    "name": "M Gallade-EX",
+    "supertype": "Pokémon",
+    "id": "xy6-35"
+  },
+  "aerodactyl δ": {
+    "name": "Aerodactyl δ",
+    "supertype": "Pokémon",
+    "id": "ex13-35"
+  },
+  "wailord-ex": {
+    "name": "Wailord-EX",
+    "supertype": "Pokémon",
+    "id": "xy5-38"
+  },
+  "brock's geodude": {
+    "name": "Brock's Geodude",
+    "supertype": "Pokémon",
+    "id": "gym1-38"
+  },
+  "gengar-ex": {
+    "name": "Gengar-EX",
+    "supertype": "Pokémon",
+    "id": "xy4-34"
+  },
+  "gligar": {
+    "name": "Gligar",
+    "supertype": "Pokémon",
+    "id": "xy6-36"
+  },
+  "meowstic": {
+    "name": "Meowstic",
+    "supertype": "Pokémon",
+    "id": "xy2-43"
+  },
+  "milotic c": {
+    "name": "Milotic C",
+    "supertype": "Pokémon",
+    "id": "pl3-35"
+  },
+  "dark flareon": {
+    "name": "Dark Flareon",
+    "supertype": "Pokémon",
+    "id": "base5-35"
+  },
+  "bunnelby": {
+    "name": "Bunnelby",
+    "supertype": "Pokémon",
+    "id": "xy0-30"
+  },
+  "centiskorch v": {
+    "name": "Centiskorch V",
+    "supertype": "Pokémon",
+    "id": "swsh3-33"
+  },
+  "mimikyu": {
+    "name": "Mimikyu",
+    "supertype": "Pokémon",
+    "id": "smp-SM29"
+  },
+  "team aqua's secret base": {
+    "name": "Team Aqua's Secret Base",
+    "supertype": "Trainer",
+    "id": "dc1-28"
+  },
+  "dragonite-gx": {
+    "name": "Dragonite-GX",
+    "supertype": "Pokémon",
+    "id": "sm75-37"
+  },
+  "meditite": {
+    "name": "Meditite",
+    "supertype": "Pokémon",
+    "id": "ex3-37"
+  },
+  "tapu bulu": {
+    "name": "Tapu Bulu",
+    "supertype": "Pokémon",
+    "id": "sm8-37"
+  },
+  "team magma's rhyhorn": {
+    "name": "Team Magma's Rhyhorn",
+    "supertype": "Pokémon",
+    "id": "ex4-38"
+  },
+  "dark omanyte": {
+    "name": "Dark Omanyte",
+    "supertype": "Pokémon",
+    "id": "neo4-37"
+  },
+  "croconaw δ": {
+    "name": "Croconaw δ",
+    "supertype": "Pokémon",
+    "id": "ex15-27"
+  },
+  "copperajah v": {
+    "name": "Copperajah V",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH030"
+  },
+  "tapu koko": {
+    "name": "Tapu Koko",
+    "supertype": "Pokémon",
+    "id": "smp-SM31"
+  },
+  "centiskorch vmax": {
+    "name": "Centiskorch VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh3-34"
+  },
+  "dragonair δ": {
+    "name": "Dragonair δ",
+    "supertype": "Pokémon",
+    "id": "ex15-28"
+  },
+  "barboach": {
+    "name": "Barboach",
+    "supertype": "Pokémon",
+    "id": "xy5-39"
+  },
+  "liepard": {
+    "name": "Liepard",
+    "supertype": "Pokémon",
+    "id": "swsh35-40"
+  },
+  "brock's golbat": {
+    "name": "Brock's Golbat",
+    "supertype": "Pokémon",
+    "id": "gym1-39"
+  },
+  "team magma admin": {
+    "name": "Team Magma Admin",
+    "supertype": "Trainer",
+    "id": "dc1-29"
+  },
+  "skrelp": {
+    "name": "Skrelp",
+    "supertype": "Pokémon",
+    "id": "xy2-44"
+  },
+  "erika's ivysaur": {
+    "name": "Erika's Ivysaur",
+    "supertype": "Pokémon",
+    "id": "gym2-41"
+  },
+  "unown [p]": {
+    "name": "Unown [P]",
+    "supertype": "Pokémon",
+    "id": "dp5-33"
+  },
+  "vespiquen e4": {
+    "name": "Vespiquen E4",
+    "supertype": "Pokémon",
+    "id": "pl2-35"
+  },
+  "wishiwashi-gx": {
+    "name": "Wishiwashi-GX",
+    "supertype": "Pokémon",
+    "id": "sm2-38"
+  },
+  "giovanni's machoke": {
+    "name": "Giovanni's Machoke",
+    "supertype": "Pokémon",
+    "id": "gym2-42"
+  },
+  "galarian mr. mime": {
+    "name": "Galarian Mr. Mime",
+    "supertype": "Pokémon",
+    "id": "swsh3-35"
+  },
+  "moltres ex": {
+    "name": "Moltres ex",
+    "supertype": "Pokémon",
+    "id": "np-31"
+  },
+  "dark gloom": {
+    "name": "Dark Gloom",
+    "supertype": "Pokémon",
+    "id": "base5-36"
+  },
+  "blitzle": {
+    "name": "Blitzle",
+    "supertype": "Pokémon",
+    "id": "bw3-35"
+  },
+  "galarian darmanitan v": {
+    "name": "Galarian Darmanitan V",
+    "supertype": "Pokémon",
+    "id": "swsh4-36"
+  },
+  "celesteela": {
+    "name": "Celesteela",
+    "supertype": "Pokémon",
+    "id": "sma-SV32"
+  },
+  "giratina lv.x": {
+    "name": "Giratina LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP38"
+  },
+  "fletchling": {
+    "name": "Fletchling",
+    "supertype": "Pokémon",
+    "id": "xy0-31"
+  },
+  "dark pupitar": {
+    "name": "Dark Pupitar",
+    "supertype": "Pokémon",
+    "id": "ex7-40"
+  },
+  "starmie break": {
+    "name": "Starmie BREAK",
+    "supertype": "Pokémon",
+    "id": "xy12-32"
+  },
+  "team magma grunt": {
+    "name": "Team Magma Grunt",
+    "supertype": "Trainer",
+    "id": "dc1-30"
+  },
+  "palkia-ex": {
+    "name": "Palkia-EX",
+    "supertype": "Pokémon",
+    "id": "xy9-31"
+  },
+  "tropical beach": {
+    "name": "Tropical Beach",
+    "supertype": "Trainer",
+    "id": "bwp-BW28"
+  },
+  "electabuzz δ": {
+    "name": "Electabuzz δ",
+    "supertype": "Pokémon",
+    "id": "ex15-29"
+  },
+  "team magma's great ball": {
+    "name": "Team Magma's Great Ball",
+    "supertype": "Trainer",
+    "id": "dc1-31"
+  },
+  "shaymin lv.x": {
+    "name": "Shaymin LV.X",
+    "supertype": "Pokémon",
+    "id": "dpp-DP39"
+  },
+  "glaceon-gx": {
+    "name": "Glaceon-GX",
+    "supertype": "Pokémon",
+    "id": "sm5-39"
+  },
+  "giovanni's meowth": {
+    "name": "Giovanni's Meowth",
+    "supertype": "Pokémon",
+    "id": "gym2-43"
+  },
+  "m gengar-ex": {
+    "name": "M Gengar-EX",
+    "supertype": "Pokémon",
+    "id": "xy4-35"
+  },
+  "galarian darmanitan vmax": {
+    "name": "Galarian Darmanitan VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh4-37"
+  },
+  "manaphy-ex": {
+    "name": "Manaphy-EX",
+    "supertype": "Pokémon",
+    "id": "xy9-32"
+  },
+  "mareanie": {
+    "name": "Mareanie",
+    "supertype": "Pokémon",
+    "id": "sm2-39"
+  },
+  "wormadam trash cloak": {
+    "name": "Wormadam Trash Cloak",
+    "supertype": "Pokémon",
+    "id": "dp3-43"
+  },
+  "toxicroak g": {
+    "name": "Toxicroak G",
+    "supertype": "Pokémon",
+    "id": "dpp-DP41"
+  },
+  "zebstrika": {
+    "name": "Zebstrika",
+    "supertype": "Pokémon",
+    "id": "bw3-36"
+  },
+  "alolan raichu": {
+    "name": "Alolan Raichu",
+    "supertype": "Pokémon",
+    "id": "sm4-31"
+  },
+  "dark quilava": {
+    "name": "Dark Quilava",
+    "supertype": "Pokémon",
+    "id": "neo4-39"
+  },
+  "scrafty": {
+    "name": "Scrafty",
+    "supertype": "Pokémon",
+    "id": "swsh35-42"
+  },
+  "furfrou": {
+    "name": "Furfrou",
+    "supertype": "Pokémon",
+    "id": "xy0-33"
+  },
+  "glalie-ex": {
+    "name": "Glalie-EX",
+    "supertype": "Pokémon",
+    "id": "xy8-34"
+  },
+  "jolteon-ex": {
+    "name": "Jolteon-EX",
+    "supertype": "Pokémon",
+    "id": "g1-28a"
+  },
+  "articuno ex": {
+    "name": "Articuno ex",
+    "supertype": "Pokémon",
+    "id": "np-32"
+  },
+  "slowpoke & psyduck-gx": {
+    "name": "Slowpoke & Psyduck-GX",
+    "supertype": "Pokémon",
+    "id": "sm11-35"
+  },
+  "nidoran ♂": {
+    "name": "Nidoran ♂",
+    "supertype": "Pokémon",
+    "id": "xy11-43"
+  },
+  "wynaut": {
+    "name": "Wynaut",
+    "supertype": "Pokémon",
+    "id": "dp1-42"
+  },
+  "dark jolteon": {
+    "name": "Dark Jolteon",
+    "supertype": "Pokémon",
+    "id": "base5-38"
+  },
+  "giovanni's nidorina": {
+    "name": "Giovanni's Nidorina",
+    "supertype": "Pokémon",
+    "id": "gym2-44"
+  },
+  "victory cup": {
+    "name": "Victory Cup",
+    "supertype": "Trainer",
+    "id": "bwp-BW30"
+  },
+  "zacian": {
+    "name": "Zacian",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH033"
+  },
+  "flaaffy δ": {
+    "name": "Flaaffy δ",
+    "supertype": "Pokémon",
+    "id": "ex15-30"
+  },
+  "team magma's secret base": {
+    "name": "Team Magma's Secret Base",
+    "supertype": "Trainer",
+    "id": "dc1-32"
+  },
+  "trubbish": {
+    "name": "Trubbish",
+    "supertype": "Pokémon",
+    "id": "swsh35-43"
+  },
+  "bronzong g": {
+    "name": "Bronzong G",
+    "supertype": "Pokémon",
+    "id": "pl1-41"
+  },
+  "blacephalon": {
+    "name": "Blacephalon",
+    "supertype": "Pokémon",
+    "id": "sm10-32"
+  },
+  "zapdos ex": {
+    "name": "Zapdos ex",
+    "supertype": "Pokémon",
+    "id": "np-33"
+  },
+  "nidoran ♀": {
+    "name": "Nidoran ♀",
+    "supertype": "Pokémon",
+    "id": "bw9-40"
+  },
+  "wigglytuff-gx": {
+    "name": "Wigglytuff-GX",
+    "supertype": "Pokémon",
+    "id": "sm115-42"
+  },
+  "m glalie-ex": {
+    "name": "M Glalie-EX",
+    "supertype": "Pokémon",
+    "id": "xy8-35"
+  },
+  "unown [j]": {
+    "name": "Unown [J]",
+    "supertype": "Pokémon",
+    "id": "basep-38"
+  },
+  "budew": {
+    "name": "Budew",
+    "supertype": "Pokémon",
+    "id": "dp1-43"
+  },
+  "brock's lickitung": {
+    "name": "Brock's Lickitung",
+    "supertype": "Pokémon",
+    "id": "gym1-41"
+  },
+  "dark wigglytuff": {
+    "name": "Dark Wigglytuff",
+    "supertype": "Pokémon",
+    "id": "neo4-40"
+  },
+  "galarian mr. rime": {
+    "name": "Galarian Mr. Rime",
+    "supertype": "Pokémon",
+    "id": "swsh3-36"
+  },
+  "ampharos-gx": {
+    "name": "Ampharos-GX",
+    "supertype": "Pokémon",
+    "id": "sm9-43"
+  },
+  "clamperl": {
+    "name": "Clamperl",
+    "supertype": "Pokémon",
+    "id": "sm7-41"
+  },
+  "dark kadabra": {
+    "name": "Dark Kadabra",
+    "supertype": "Pokémon",
+    "id": "base5-39"
+  },
+  "keldeo-ex": {
+    "name": "Keldeo-EX",
+    "supertype": "Pokémon",
+    "id": "bw11-45"
+  },
+  "tapu bulu-gx": {
+    "name": "Tapu Bulu-GX",
+    "supertype": "Pokémon",
+    "id": "smp-SM32"
+  },
+  "erika's dratini": {
+    "name": "Erika's Dratini",
+    "supertype": "Pokémon",
+    "id": "gym1-42"
+  },
+  "tyranitar-ex": {
+    "name": "Tyranitar-EX",
+    "supertype": "Pokémon",
+    "id": "xy7-42"
+  },
+  "cinderace vmax": {
+    "name": "Cinderace VMAX",
+    "supertype": "Pokémon",
+    "id": "swsh2-36"
+  },
+  "horsea δ": {
+    "name": "Horsea δ",
+    "supertype": "Pokémon",
+    "id": "ex15-31"
+  },
+  "yanmega e4": {
+    "name": "Yanmega E4",
+    "supertype": "Pokémon",
+    "id": "pl2-37"
+  },
+  "hawlucha": {
+    "name": "Hawlucha",
+    "supertype": "Pokémon",
+    "id": "xy6-39"
+  },
+  "zamazenta": {
+    "name": "Zamazenta",
+    "supertype": "Pokémon",
+    "id": "swshp-SWSH034"
+  },
+  "chewtle": {
+    "name": "Chewtle",
+    "supertype": "Pokémon",
+    "id": "swsh4-38"
+  },
+  "wash rotom": {
+    "name": "Wash Rotom",
+    "supertype": "Pokémon",
+    "id": "sm5-40"
+  },
+  "giovanni's nidorino": {
+    "name": "Giovanni's Nidorino",
+    "supertype": "Pokémon",
+    "id": "gym2-45"
+  },
+  "nidorina": {
+    "name": "Nidorina",
+    "supertype": "Pokémon",
+    "id": "hgss4-45"
+  },
+  "exeggutor δ": {
+    "name": "Exeggutor δ",
+    "supertype": "Pokémon",
+    "id": "ex13-41"
+  },
+  "double aqua energy": {
+    "name": "Double Aqua Energy",
+    "supertype": "Energy",
+    "id": "dc1-33"
+  },
+  "abra": {
+    "name": "Abra",
+    "supertype": "Pokémon",
+    "id": "base1-43"
+  },
+  "crushing hammer": {
+    "name": "Crushing Hammer",
+    "supertype": "Trainer",
+    "id": "xy0-34"
+  },
+  "thundurus": {
+    "name": "Thundurus",
+    "supertype": "Pokémon",
+    "id": "bw2-35"
+  },
+  "moltres & zapdos & articuno-gx": {
+    "name": "Moltres & Zapdos & Articuno-GX",
+    "supertype": "Pokémon",
+    "id": "sm115-44"
+  },
+  "carnivine g": {
+    "name": "Carnivine G",
+    "supertype": "Pokémon",
+    "id": "dpp-DP42"
+  },
+  "alakazam e4": {
+    "name": "Alakazam E4",
+    "supertype": "Pokémon",
+    "id": "pl2-38"
+  }
+}
