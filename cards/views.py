@@ -24,12 +24,12 @@ from .models import Card, Rarity, Supertype, Subtype, Artist, PokemonEspecie
 from .serializers import CardSerializer
 
 def warm_up_database():
-    """Ejecuta una consulta ligera para calentar el caché de SQLite."""
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM cards_card")
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT COUNT(*) FROM cards_card")
+    except Exception:
+        pass
 
-# Llama a esto solo una vez cuando el módulo se cargue
-warm_up_database()
 # Asumiendo que POKEMON_ES_TO_TCG y TCG_TERMS están importados o disponibles
 def normalize(text):
     """Quita acentos y minúsculas"""
