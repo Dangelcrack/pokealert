@@ -2,5 +2,10 @@
   "python.defaultInterpreterPath": "Z:\\Proyectos Git\\pokealert\\venv\\Scripts\\python.exe",
   "python.analysis.extraPaths": [
     "Z:\\Proyectos Git\\pokealert"
-  ]
+  ],
+  "python.testing.pytestArgs": [
+    "."
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
