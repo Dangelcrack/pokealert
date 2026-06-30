@@ -60,12 +60,12 @@ jobs:
           sudo apt-get install -y libpq-dev
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-django pytest-cov flake8
+          pip install pytest pytest-django pytest-cov ruff
 
-      - name: Lint with flake8
+      # 🧹 RUFF LINT (REEMPLAZA FLAKE8)
+      - name: Lint with Ruff
         run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          ruff check .
 
       - name: Run Django migrations
         run: python manage.py migrate --noinput
