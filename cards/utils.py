@@ -1,20 +1,21 @@
+import requests
+from django.core.cache import cache
 POKEMON_ES_TO_TCG = {
     # GENERACIÓN I
-    "bisasam": "Bulbasaur",
-    "bisaknosp": "Ivysaur",
-    "bisaknostra": "Venusaur",
+    "bulbasaur": "Bulbasaur",
+    "ivysaur": "Ivysaur",
+    "venusaur": "Venusaur",
     "charmander": "Charmander",
     "charmeleon": "Charmeleon",
     "charizard": "Charizard",
-    "esquirtle": "Squirtle",
+    "squirtle": "Squirtle",
     "wartortle": "Wartortle",
     "blastoise": "Blastoise",
     "caterpie": "Caterpie",
     "metapod": "Metapod",
-    "beedrill": "Beedrill",
+    "butterfree": "Butterfree",
     "pidgeot": "Pidgeot",
     "pidgeotto": "Pidgeotto",
-    "pidgeot": "Pidgeot",
     "rattata": "Rattata",
     "raticate": "Raticate",
     "spearow": "Spearow",
@@ -74,8 +75,6 @@ POKEMON_ES_TO_TCG = {
     "alola marowak": "Alolan Marowak",
     "hitmonlee": "Hitmonlee",
     "hitmonchan": "Hitmonchan",
-    "hitmonlee": "Hitmonlee",
-    "lickitung": "Lickitung",
     "lickilicky": "Lickilicky",
     "rhyhorn": "Rhyhorn",
     "rhydon": "Rhydon",
@@ -119,8 +118,6 @@ POKEMON_ES_TO_TCG = {
     "alola muk": "Alolan Muk",
     "paras": "Paras",
     "parasect": "Parasect",
-    "venonat": "Venonat",
-    "venomoth": "Venomoth",
     "oddish": "Oddish",
     "gloom": "Gloom",
     "vileplume": "Vileplume",
@@ -192,8 +189,6 @@ POKEMON_ES_TO_TCG = {
     "wooper": "Wooper",
     "clodsire": "Clodsire",
     "quagsire": "Quagsire",
-    "espeon": "Espeon",
-    "umbreon": "Umbreon",
     "murkrow": "Murkrow",
     "honchkrow": "Honchkrow",
     "misdreavus": "Misdreavus",
@@ -212,12 +207,8 @@ POKEMON_ES_TO_TCG = {
     "skarmory": "Skarmory",
     "houndour": "Houndour",
     "houndoom": "Houndoom",
-    "kingdra": "Kingdra",
     "phanpy": "Phanpy",
     "donphan": "Donphan",
-    "porygon2": "Porygon2",
-    "steelix": "Steelix",
-    "scizor": "Scizor",
     "shiny": "Shiny",
     "celebi": "Celebi",
     
@@ -353,21 +344,11 @@ POKEMON_ES_TO_TCG = {
     "toxicroak": "Toxicroak",
     "carnivine": "Carnivine",
     "mamoswine": "Mamoswine",
-    "leafeon": "Leafeon",
-    "glaceon": "Glaceon",
-    "rhyperior": "Rhyperior",
     "tangrowth": "Tangrowth",
-    "electivire": "Electivire",
     "magmortar": "Magmortar",
     "togekiss": "Togekiss",
-    "yanmega": "Yanmega",
     "gliscor": "Gliscor",
-    "mamoswine": "Mamoswine",
-    "porygon-z": "Porygon-Z",
-    "gallade": "Gallade",
     "probopass": "Probopass",
-    "dusknoir": "Dusknoir",
-    "froslass": "Froslass",
     "rotom": "Rotom",
     "uxie": "Uxie",
     "mesprit": "Mesprit",
@@ -542,7 +523,6 @@ POKEMON_ES_TO_TCG = {
     "tyrunt": "Tyrunt",
     "aurorus": "Aurorus",
     "amaura": "Amaura",
-    "sylveon": "Sylveon",
     "hawlucha": "Hawlucha",
     "goodra": "Goodra",
     "sliggoo": "Sliggoo",
@@ -574,7 +554,6 @@ POKEMON_ES_TO_TCG = {
     "incineroar": "Incineroar",
     "torracat": "Torracat",
     "litten": "Litten",
-    "mimikyu": "Mimikyu",
     "mimikyu": "Mimikyu",
     "dragapult": "Dragapult",
     "drakloak": "Drakloak",
@@ -665,7 +644,6 @@ POKEMON_ES_TO_TCG = {
     "super pocion": "Super Potion",
     "hiperpocion": "Hyper Potion",
     "pocion completa": "Full Restore",
-    "revivir": "Revive",
     "revival completo": "Full Revive",
     "repelente": "Repel",
     "superrepelente": "Super Repel",
@@ -696,12 +674,9 @@ TCG_TERMS = {
     }
 
 
-import requests
-from django.core.cache import cache
 
-# En tu archivo cards/utils.py
 
-def get_filter_options(filter_type): # <--- Asegúrate de que tenga (endpoint) aquí
+def get_filter_options(filter_type):
     """Obtiene datos de la API y los guarda en caché durante 24 horas."""
     cache_key = f"api_options_{filter_type}"
     options = cache.get(cache_key)
@@ -712,8 +687,6 @@ def get_filter_options(filter_type): # <--- Asegúrate de que tenga (endpoint) a
             response = requests.get(url, timeout=10)
             if response.status_code == 200:
                 data = response.json().get('data', [])
-                # Si es una lista de strings simple, sorted(data) está bien.
-                # Si son objetos, necesitarás sorted(data, key=lambda x: x)
                 options = sorted(data)
                 cache.set(cache_key, options, 86400)
         except Exception:

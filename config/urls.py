@@ -17,7 +17,6 @@ from cards.views import (
     card_detail
 )
 from alerts.views import PriceAlertViewSet, PriceHistoryViewSet
-from tasks import views
 
 router = DefaultRouter()
 router.register(r'cards', CardViewSet)

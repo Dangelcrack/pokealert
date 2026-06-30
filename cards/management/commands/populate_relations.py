@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from cards.models import Card, Rarity, Supertype, Subtype, Artist
+from cards.models import Card, Rarity
 
 class Command(BaseCommand):
     help = 'Convierte campos de texto en relaciones de base de datos'

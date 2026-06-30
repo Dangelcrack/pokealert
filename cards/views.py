@@ -1,10 +1,10 @@
-from datetime import timedelta, timezone
+from asyncio.log import logger
+from datetime import timedelta
 import os
 import unicodedata
 import requests
 import math
 from django.db.models import Q
-from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,10 +15,8 @@ from django.views.decorators.http import require_POST, require_http_methods, req
 from django.core.cache import cache
 from django.db import connection
 from rest_framework import viewsets
-from datetime import timedelta, datetime
 from django.utils import timezone
 from alerts.models import PriceAlert, PriceHistory
-from alerts.serializers import PriceAlertSerializer
 from cards.utils import POKEMON_ES_TO_TCG, TCG_TERMS
 from .models import Card, Rarity, Supertype, Subtype, Artist, PokemonEspecie
 from .serializers import CardSerializer
@@ -29,6 +27,12 @@ def warm_up_database():
             cursor.execute("SELECT COUNT(*) FROM cards_card")
     except Exception:
         pass
+def safe_append(query_parts, model, id_value, label, field):
+    try:
+        obj = model.objects.get(id=id_value)
+        query_parts.append(f'{label}:"{getattr(obj, field)}"')
+    except model.DoesNotExist:
+        return
 
 # Asumiendo que POKEMON_ES_TO_TCG y TCG_TERMS están importados o disponibles
 def normalize(text):
@@ -253,30 +257,18 @@ def search(request):
         )
         # Usamos asteriscos para búsqueda parcial
         query_parts.append(f'name:"{term}"')
-    # ... (Tus bloques try/except de filtros permanecen igual) ...
+
     if selected_rarity_id:
-        try:
-            rarity_obj = Rarity.objects.get(id=selected_rarity_id)
-            query_parts.append(f'rarity:"{rarity_obj.name}"')
-        except Rarity.DoesNotExist: pass
-    
+        safe_append(query_parts, Rarity, selected_rarity_id, "rarity", "name")
+
     if selected_supertype_id:
-        try:
-            supertype_obj = Supertype.objects.get(id=selected_supertype_id)
-            query_parts.append(f'supertype:"{supertype_obj.name}"')
-        except Supertype.DoesNotExist: pass
+        safe_append(query_parts, Supertype, selected_supertype_id, "supertype", "name")
 
     if selected_subtype_id:
-        try:
-            subtype_obj = Subtype.objects.get(id=selected_subtype_id)
-            query_parts.append(f'subtypes:"{subtype_obj.name}"')
-        except Subtype.DoesNotExist: pass
+        safe_append(query_parts, Subtype, selected_subtype_id, "subtypes", "name")
 
     if selected_artist_id:
-        try:
-            artist_obj = Artist.objects.get(id=selected_artist_id)
-            query_parts.append(f'artist:"{artist_obj.name}"')
-        except Artist.DoesNotExist: pass
+        safe_append(query_parts, Artist, selected_artist_id, "artist", "name")
 
     # Inicialización de variables de estado
     error = None 
@@ -527,8 +519,8 @@ def search_suggestions(request):
                             
                             all_cards.append(card_obj)
                 
-                except:
-                    pass
+                except Exception:
+                    continue
         
         seen_ids = set()
         unique_cards = []
@@ -563,9 +555,9 @@ def search_suggestions(request):
             results.append(result)
         
         return JsonResponse(results, safe=False)
-        
-    except:
-        return JsonResponse([], safe=False)
+    except Exception:
+        logger.exception("Error en search view")
+        return JsonResponse({"error": "Internal server error"}, status=500)
 
 
 @login_required(login_url='login')

@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # 1. Ver cuántas alertas hay activas
         alerts = PriceAlert.objects.filter(is_active=True)
-        self.stdout.write(f"🔍 Buscando alertas activas en la Base de Datos...")
+        self.stdout.write("🔍 Buscando alertas activas en la Base de Datos...")
         self.stdout.write(f"📊 Alertas activas encontradas: {alerts.count()}")
 
         for alert in alerts:
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 
                 if current_price > 0 and current_price <= float(alert.target_price):
                     if alert.user.email:
-                        self.stdout.write(f"🚀 ¡OFERTA DETECTADA! Intentando enviar correo real...")
+                        self.stdout.write("🚀 ¡OFERTA DETECTADA! Intentando enviar correo real...")
                         
                         send_mail(
                             subject=f"¡Alerta de Precio! 🔥 {alert.card.name} ha bajado",

@@ -1,3 +1,5 @@
+from asyncio.log import logger
+
 from django.apps import AppConfig
 
 
@@ -10,5 +12,5 @@ def ready(self):
         from .views import warm_up_database
         try:
             warm_up_database()
-        except:
-            pass # Ignorar si la tabla aún no existe durante el migrate
+        except Exception:
+            logger.warning("error procesando cards")
