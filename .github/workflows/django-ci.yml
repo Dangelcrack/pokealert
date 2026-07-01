@@ -1,15 +1,15 @@
-name: Django CI/CD - PokeAlert
+name: Django CI/CD - PokeAlert (AlwaysData Deploy)
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]  # Solo deploy en main
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    
     services:
       postgres:
         image: postgres:15
@@ -33,14 +33,12 @@ jobs:
     env:
       DEBUG: False
       SECRET_KEY: test-secret-key-for-ci
-
       DB_ENGINE: django.db.backends.postgresql
       DB_NAME: pokealert_test
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: localhost
       DB_PORT: 5432
-
       REDIS_URL: redis://localhost:6379/0
       POKEMON_TCG_API_KEY: ${{ secrets.POKEMON_TCG_API_KEY }}
 
@@ -62,10 +60,8 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-django pytest-cov ruff
 
-      # 🧹 RUFF LINT (REEMPLAZA FLAKE8)
       - name: Lint with Ruff
-        run: |
-          ruff check .
+        run: ruff check .
 
       - name: Run Django migrations
         run: python manage.py migrate --noinput
@@ -86,3 +82,67 @@ jobs:
           path: |
             junit.xml
             coverage.xml
+
+  # ===================== DEPLOY A ALWAYSDATA =====================
+  deploy:
+    needs: test  # Solo deploy si tests pasan
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Clone completo para deploy
+
+      - name: Deploy to AlwaysData via SSH
+        env:
+          ALWAYSDATA_SSH_KEY: ${{ secrets.ALWAYSDATA_SSH_KEY }}
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}
+          ALWAYSDATA_USER: ${{ secrets.ALWAYSDATA_USER }}
+          ALWAYSDATA_APP_PATH: ${{ secrets.ALWAYSDATA_APP_PATH }}
+        run: |
+          # 1. Crear directorio .ssh
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          
+          # 2. Añadir clave SSH
+          echo "$ALWAYSDATA_SSH_KEY" > ~/.ssh/alwaysdata_key
+          chmod 600 ~/.ssh/alwaysdata_key
+          
+          # 3. Añadir host a known_hosts
+          ssh-keyscan -H $ALWAYSDATA_HOST >> ~/.ssh/known_hosts 2>/dev/null
+          
+          # 4. Deploy
+          ssh -i ~/.ssh/alwaysdata_key $ALWAYSDATA_USER@$ALWAYSDATA_HOST << 'EOF'
+            cd $ALWAYSDATA_APP_PATH
+            
+            # Actualizar código
+            git fetch origin
+            git reset --hard origin/main
+            
+            # Instalar dependencias
+            pip install -r requirements.txt --user
+            
+            # Migraciones
+            python manage.py migrate --noinput
+            
+            # Static files
+            python manage.py collectstatic --noinput
+            
+            # Reiniciar aplicación
+            touch /tmp/restart-uwsgi
+            
+            echo "✅ Deploy completado"
+          EOF
+          
+      - name: Notify deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Deployment to AlwaysData completed successfully!'
+            })
+        if: success()
