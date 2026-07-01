@@ -92,7 +92,6 @@
                 </select>
             </div>
 
-            <!-- Botón para aplicar filtros -->
             <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition mt-4">
                 🔍 Aplicar Filtros
             </button>
@@ -118,9 +117,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {% for card in results %}
                     <a href="{% url 'card_detail' card.id %}" class="block group bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-lg transition-all flex flex-col h-full overflow-hidden">
+                        
                         <div class="bg-gray-50 h-56 flex items-center justify-center p-4 overflow-hidden">
-                            {% if card.images.small %}
-                                <img src="{{ card.images.small }}" alt="{{ card.name }}" class="h-full object-contain group-hover:scale-105 transition duration-300">
+                            {% if card.image_url %}
+                                <img src="{{ card.image_url }}" alt="{{ card.name }}" class="h-full object-contain group-hover:scale-105 transition duration-300">
                             {% else %}
                                 <div class="text-gray-400 italic text-sm">Sin imagen</div>
                             {% endif %}
@@ -131,7 +131,7 @@
                             <p class="text-xs text-gray-500 mb-3">
                                 {{ card.set_name|default:"Set desconocido" }}
                                 {% if card.artist %}
-                                    <br><span class="text-gray-400">🎨 {{ card.artist.name }}</span>
+                                    <br><span class="text-gray-400">🎨 {{ card.artist }}</span>
                                 {% endif %}
                             </p>
                             
@@ -179,10 +179,9 @@
 <script>
     const searchInput = document.getElementById('search-input');
     const suggestionsDropdown = document.getElementById('suggestions-dropdown');
-    let debounceTimer; // Variable para controlar el tiempo de espera
+    let debounceTimer;
 
     searchInput.addEventListener('input', function() {
-        // Limpiamos el temporizador anterior cada vez que el usuario presiona una tecla
         clearTimeout(debounceTimer);
         
         const query = this.value.trim();
@@ -191,7 +190,6 @@
             return;
         }
 
-        // Iniciamos un nuevo temporizador de 300ms
         debounceTimer = setTimeout(async () => {
             try {
                 const response = await fetch(`/search-suggestions/?q=${encodeURIComponent(query)}`);
@@ -203,7 +201,7 @@
                     suggestions.forEach(suggestion => {
                         const item = document.createElement('div');
                         item.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer border-b last:border-0 flex items-center gap-3 text-sm';
-                        item.innerHTML = `<img src="${suggestion.image}" class="w-8 h-10 object-contain"><span class="font-medium">${suggestion.name}</span>`;
+                        item.innerHTML = `<img src="${suggestion.image || suggestion.image_url}" class="w-8 h-10 object-contain"><span class="font-medium">${suggestion.name}</span>`;
                         item.onclick = () => {
                             searchInput.value = suggestion.name;
                             searchInput.closest('form').submit();
@@ -218,7 +216,7 @@
                 console.error("Error en la búsqueda:", e);
                 suggestionsDropdown.classList.add('hidden'); 
             }
-        }, 300); // 300ms de espera antes de ejecutar
+        }, 300);
     });
 
     document.addEventListener('click', (e) => {

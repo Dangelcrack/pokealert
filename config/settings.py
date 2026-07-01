@@ -19,7 +19,7 @@ from celery.schedules import crontab
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Cargar las variables de entorno desde el archivo .env
-load_dotenv()
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-si-no-hay-env')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+POKEMON_TCG_API_KEY = os.getenv("POKEMON_TCG_API_KEY", "")
 
 # Application definition
 
