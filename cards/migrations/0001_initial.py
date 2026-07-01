@@ -5,97 +5,216 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Artist',
+            name="Artist",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(db_index=True, max_length=255, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(db_index=True, max_length=255, unique=True)),
             ],
             options={
-                'ordering': ['name'],
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='PokemonEspecie',
+            name="PokemonEspecie",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('numero_pokedex', models.IntegerField(unique=True)),
-                ('name_en', models.CharField(db_index=True, max_length=100)),
-                ('name_es', models.CharField(db_index=True, max_length=100)),
-                ('image', models.URLField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("numero_pokedex", models.IntegerField(unique=True)),
+                ("name_en", models.CharField(db_index=True, max_length=100)),
+                ("name_es", models.CharField(db_index=True, max_length=100)),
+                ("image", models.URLField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'Especie Pokémon',
-                'verbose_name_plural': 'Especies Pokémon',
-                'ordering': ['numero_pokedex'],
+                "verbose_name": "Especie Pokémon",
+                "verbose_name_plural": "Especies Pokémon",
+                "ordering": ["numero_pokedex"],
             },
         ),
         migrations.CreateModel(
-            name='Rarity',
+            name="Rarity",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('display_name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
+                ("display_name", models.CharField(max_length=100)),
             ],
             options={
-                'verbose_name_plural': 'Rarities',
-                'ordering': ['name'],
+                "verbose_name_plural": "Rarities",
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='Subtype',
+            name="Subtype",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('display_name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                ("display_name", models.CharField(max_length=100)),
             ],
             options={
-                'ordering': ['name'],
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='Supertype',
+            name="Supertype",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('display_name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                ("display_name", models.CharField(max_length=100)),
             ],
             options={
-                'ordering': ['name'],
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='Card',
+            name="Card",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pokemontcg_id', models.CharField(db_index=True, max_length=255, unique=True)),
-                ('name', models.CharField(db_index=True, max_length=255)),
-                ('image_url', models.URLField()),
-                ('set_name', models.CharField(default='Unknown', max_length=255)),
-                ('number', models.CharField(blank=True, max_length=50, null=True)),
-                ('price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('hp', models.IntegerField(blank=True, null=True)),
-                ('types', models.CharField(blank=True, max_length=255, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('artist', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cards', to='cards.artist')),
-                ('pokemon_especie', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cards', to='cards.pokemonespecie')),
-                ('rarity', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cards', to='cards.rarity')),
-                ('subtype', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cards', to='cards.subtype')),
-                ('supertype', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cards', to='cards.supertype')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "pokemontcg_id",
+                    models.CharField(db_index=True, max_length=255, unique=True),
+                ),
+                ("name", models.CharField(db_index=True, max_length=255)),
+                ("image_url", models.URLField()),
+                ("set_name", models.CharField(default="Unknown", max_length=255)),
+                ("number", models.CharField(blank=True, max_length=50, null=True)),
+                (
+                    "price",
+                    models.DecimalField(
+                        blank=True, decimal_places=2, max_digits=10, null=True
+                    ),
+                ),
+                ("hp", models.IntegerField(blank=True, null=True)),
+                ("types", models.CharField(blank=True, max_length=255, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "artist",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="cards",
+                        to="cards.artist",
+                    ),
+                ),
+                (
+                    "pokemon_especie",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="cards",
+                        to="cards.pokemonespecie",
+                    ),
+                ),
+                (
+                    "rarity",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="cards",
+                        to="cards.rarity",
+                    ),
+                ),
+                (
+                    "subtype",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="cards",
+                        to="cards.subtype",
+                    ),
+                ),
+                (
+                    "supertype",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="cards",
+                        to="cards.supertype",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
-                'indexes': [models.Index(fields=['pokemontcg_id'], name='cards_card_pokemon_0e3156_idx'), models.Index(fields=['name'], name='cards_card_name_a125cc_idx'), models.Index(fields=['rarity'], name='cards_card_rarity__8d0841_idx'), models.Index(fields=['supertype'], name='cards_card_superty_8e119b_idx'), models.Index(fields=['subtype'], name='cards_card_subtype_0bdc6d_idx'), models.Index(fields=['artist'], name='cards_card_artist__3cd3e6_idx'), models.Index(fields=['pokemon_especie'], name='cards_card_pokemon_00b521_idx')],
+                "ordering": ["-created_at"],
+                "indexes": [
+                    models.Index(
+                        fields=["pokemontcg_id"], name="cards_card_pokemon_0e3156_idx"
+                    ),
+                    models.Index(fields=["name"], name="cards_card_name_a125cc_idx"),
+                    models.Index(
+                        fields=["rarity"], name="cards_card_rarity__8d0841_idx"
+                    ),
+                    models.Index(
+                        fields=["supertype"], name="cards_card_superty_8e119b_idx"
+                    ),
+                    models.Index(
+                        fields=["subtype"], name="cards_card_subtype_0bdc6d_idx"
+                    ),
+                    models.Index(
+                        fields=["artist"], name="cards_card_artist__3cd3e6_idx"
+                    ),
+                    models.Index(
+                        fields=["pokemon_especie"], name="cards_card_pokemon_00b521_idx"
+                    ),
+                ],
             },
         ),
     ]

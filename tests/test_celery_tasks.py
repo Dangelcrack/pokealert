@@ -8,21 +8,11 @@ from alerts.models import PriceAlert
 @pytest.fixture
 def setup_data(db):
     """Fixture para preparar los datos que necesita el comando."""
-    user = User.objects.create_user(
-        username='testuser',
-        password='password'
-    )
+    user = User.objects.create_user(username="testuser", password="password")
 
-    card = Card.objects.create(
-        name='Pikachu V',
-        pokemontcg_id='base1-1'
-    )
+    card = Card.objects.create(name="Pikachu V", pokemontcg_id="base1-1")
 
-    PriceAlert.objects.create(
-        user=user,
-        card=card,
-        target_price=10.00
-    )
+    PriceAlert.objects.create(user=user, card=card, target_price=10.00)
 
     return user, card
 
@@ -34,7 +24,7 @@ def test_check_prices_command(setup_data):
     """
 
     try:
-        call_command('check_prices')
+        call_command("check_prices")
     except Exception as e:
         pytest.fail(f"El comando check_prices falló con error: {e}")
 

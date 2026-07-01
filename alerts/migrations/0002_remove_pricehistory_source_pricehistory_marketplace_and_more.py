@@ -4,24 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('alerts', '0001_initial'),
-        ('cards', '0001_initial'),
+        ("alerts", "0001_initial"),
+        ("cards", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='pricehistory',
-            name='source',
+            model_name="pricehistory",
+            name="source",
         ),
         migrations.AddField(
-            model_name='pricehistory',
-            name='marketplace',
-            field=models.CharField(default='tcgplayer', max_length=100),
+            model_name="pricehistory",
+            name="marketplace",
+            field=models.CharField(default="tcgplayer", max_length=100),
         ),
         migrations.AddIndex(
-            model_name='pricehistory',
-            index=models.Index(fields=['card', 'recorded_at'], name='alerts_pric_card_id_aea805_idx'),
+            model_name="pricehistory",
+            index=models.Index(
+                fields=["card", "recorded_at"], name="alerts_pric_card_id_aea805_idx"
+            ),
         ),
     ]

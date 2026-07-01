@@ -6,41 +6,82 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('cards', '0001_initial'),
+        ("cards", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PriceHistory',
+            name="PriceHistory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('source', models.CharField(default='pokemontcg', max_length=100)),
-                ('recorded_at', models.DateTimeField(auto_now_add=True)),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='price_history', to='cards.card')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("source", models.CharField(default="pokemontcg", max_length=100)),
+                ("recorded_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "card",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="price_history",
+                        to="cards.card",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-recorded_at'],
+                "ordering": ["-recorded_at"],
             },
         ),
         migrations.CreateModel(
-            name='PriceAlert',
+            name="PriceAlert",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('target_price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('discount_percentage', models.IntegerField(default=0)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='alerts', to='cards.card')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='alerts', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "target_price",
+                    models.DecimalField(
+                        blank=True, decimal_places=2, max_digits=10, null=True
+                    ),
+                ),
+                ("discount_percentage", models.IntegerField(default=0)),
+                ("is_active", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "card",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="alerts",
+                        to="cards.card",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="alerts",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('user', 'card')},
+                "unique_together": {("user", "card")},
             },
         ),
     ]

@@ -1,5 +1,6 @@
 import requests
 from django.core.cache import cache
+
 POKEMON_ES_TO_TCG = {
     # GENERACIÓN I
     "bulbasaur": "Bulbasaur",
@@ -150,7 +151,6 @@ POKEMON_ES_TO_TCG = {
     "dragonite": "Dragonite",
     "mewtwo": "Mewtwo",
     "mew": "Mew",
-    
     # GENERACIÓN II
     "chikorita": "Chikorita",
     "bayleef": "Bayleef",
@@ -211,7 +211,6 @@ POKEMON_ES_TO_TCG = {
     "donphan": "Donphan",
     "shiny": "Shiny",
     "celebi": "Celebi",
-    
     # GENERACIÓN III
     "treecko": "Treecko",
     "grovyle": "Grovyle",
@@ -300,7 +299,6 @@ POKEMON_ES_TO_TCG = {
     "rayquaza": "Rayquaza",
     "jirachi": "Jirachi",
     "deoxys": "Deoxys",
-    
     # GENERACIÓN IV
     "turtwig": "Turtwig",
     "grotle": "Grotle",
@@ -364,7 +362,6 @@ POKEMON_ES_TO_TCG = {
     "darkrai": "Darkrai",
     "shaymin": "Shaymin",
     "arceus": "Arceus",
-    
     # GENERACIÓN V
     "snivy": "Snivy",
     "servine": "Servine",
@@ -496,7 +493,6 @@ POKEMON_ES_TO_TCG = {
     "keldeo": "Keldeo",
     "meloetta": "Meloetta",
     "genesect": "Genesect",
-    
     # GENERACIÓN VI - VII - VIII - IX
     "greninja": "Greninja",
     "talonflame": "Talonflame",
@@ -613,7 +609,6 @@ POKEMON_ES_TO_TCG = {
     "ferroverdor": "Iron Leaves",
     "ferromole": "Iron Boulder",
     "ferrotesta": "Iron Crown",
-    
     # ENTRENADORES / TRAINERS EN ESPAÑOL
     "ornitologo": "Bird Keeper",
     "ornitologa": "Bird Keeper",
@@ -657,38 +652,41 @@ POKEMON_ES_TO_TCG = {
 }
 
 TCG_TERMS = {
-        # Tipos de carta
-        "energia": "energy", "energía": "energy",
-        "entrenador": "trainer", "objeto": "item",
-        "partidario": "supporter", "estadio": "stadium",
-        "herramienta": "tool", "pocion": "potion", "poción": "potion",
-        "pokeball": "poke ball", "pokéball": "poke ball",
-        
-        # Mecánicas y rarezas (¡Crucial para el orden!)
-        "radiante": "radiant",
-        "brillante": "shining",
-        "dorada": "gold",
-        "dorado": "gold",
-        "arcoiris": "rainbow",
-        "arco iris": "rainbow",
-    }
-
-
+    # Tipos de carta
+    "energia": "energy",
+    "energía": "energy",
+    "entrenador": "trainer",
+    "objeto": "item",
+    "partidario": "supporter",
+    "estadio": "stadium",
+    "herramienta": "tool",
+    "pocion": "potion",
+    "poción": "potion",
+    "pokeball": "poke ball",
+    "pokéball": "poke ball",
+    # Mecánicas y rarezas (¡Crucial para el orden!)
+    "radiante": "radiant",
+    "brillante": "shining",
+    "dorada": "gold",
+    "dorado": "gold",
+    "arcoiris": "rainbow",
+    "arco iris": "rainbow",
+}
 
 
 def get_filter_options(filter_type):
     """Obtiene datos de la API y los guarda en caché durante 24 horas."""
     cache_key = f"api_options_{filter_type}"
     options = cache.get(cache_key)
-    
+
     if not options:
         try:
             url = f"https://api.pokemontcg.io/v2/{filter_type}"
             response = requests.get(url, timeout=10)
             if response.status_code == 200:
-                data = response.json().get('data', [])
+                data = response.json().get("data", [])
                 options = sorted(data)
                 cache.set(cache_key, options, 86400)
         except Exception:
-            options = [] 
+            options = []
     return options

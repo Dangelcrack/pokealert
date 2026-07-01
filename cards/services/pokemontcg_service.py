@@ -12,18 +12,22 @@ def _get_headers() -> dict:
     """
     Obtiene la API Key validada desde los settings de Django.
     """
-    api_key = getattr(settings, 'POKEMON_TCG_API_KEY', '').strip()
-    
+    api_key = getattr(settings, "POKEMON_TCG_API_KEY", "").strip()
+
     headers = {}
     if api_key:
         headers["X-Api-Key"] = api_key
     else:
-        logger.warning("⚠️ Alerta: Ejecutando peticiones a Pokémon TCG sin API Key válida.")
-        
+        logger.warning(
+            "⚠️ Alerta: Ejecutando peticiones a Pokémon TCG sin API Key válida."
+        )
+
     return headers
 
 
-def _get(url: str, params: Optional[dict] = None, timeout: int = 5) -> Optional[Dict[str, Any]]:
+def _get(
+    url: str, params: Optional[dict] = None, timeout: int = 5
+) -> Optional[Dict[str, Any]]:
     """
     Wrapper único para todas las llamadas HTTP.
     Centraliza headers, timeouts cortos y captura errores para evitar colgar el servidor.
@@ -37,12 +41,12 @@ def _get(url: str, params: Optional[dict] = None, timeout: int = 5) -> Optional[
         )
         response.raise_for_status()
         return response.json()
-        
+
     except requests.exceptions.Timeout:
         return None
-    except requests.exceptions.HTTPError as e:
+    except requests.exceptions.HTTPError:
         return None
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         return None
 
 
