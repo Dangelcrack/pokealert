@@ -3,53 +3,78 @@
 {% block title %}Mi Perfil - PokeAlert{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 p-8 my-10">
-    
-    <!-- Encabezado del Perfil -->
-    <div class="flex items-center space-x-4 border-b border-gray-100 pb-6 mb-6">
-        <div class="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-2xl uppercase shadow-inner">
-            {{ request.user.username|slice:":2" }}
-        </div>
-        <div>
-            <h2 class="text-2xl font-bold text-gray-800">@{{ request.user.username }}</h2>
-            <p class="text-sm text-gray-500">Gestiona los datos de tu cuenta en PokeAlert</p>
-        </div>
-    </div>
-
-    <!-- Mensaje de Éxito -->
-    {% if messages %}
-        {% for message in messages %}
-            <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-600 flex items-center">
-                <span class="mr-2">✓</span> {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <!-- Formulario de Actualización -->
-    <form method="POST" class="space-y-5">
-        {% csrf_token %}
+<div class="max-w-5xl mx-auto my-10 px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        {% for field in form %}
+        <!-- COLUMNA IZQUIERDA: TARJETA DE ENTRENADOR -->
+        <div class="bg-gradient-to-b from-red-600 to-red-800 rounded-2xl shadow-xl p-6 text-white text-center flex flex-col items-center justify-between min-h-[350px]">
             <div>
-                <label class="block text-gray-700 text-sm font-semibold mb-1" for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
-                {{ field }}
-                {% if field.errors %}
-                    <p class="mt-1 text-sm text-red-600">{{ field.errors.0 }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
+                <span class="bg-white/20 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                    Tarjeta de Entrenador
+                </span>
+                
+                <!-- Avatar Dinámico de Pokémon -->
+                <div class="mt-6 w-32 h-32 bg-white rounded-full p-2 shadow-inner flex items-center justify-center overflow-hidden border-4 border-yellow-400 mx-auto">
+                    <img src="{{ avatar_url }}" alt="Avatar Pokémon" class="w-full h-full object-contain transform hover:scale-110 transition-transform">
+                </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-6">
-            <button type="submit" class="bg-red-600 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-red-700 transition-colors shadow-md shadow-red-100">
-                Guardar Cambios
-            </button>
-            
-            <a href="{% url 'logout' %}" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">
-                Cerrar sesión
+                <h3 class="text-2xl font-black mt-4">@{{ request.user.username }}</h3>
+                <p class="text-red-200 text-sm">Miembro desde: {{ request.user.date_joined|date:"M Y" }}</p>
+            </div>
+
+            <!-- Estadísticas útiles de Cartas -->
+            <div class="w-full bg-white/10 rounded-xl p-4 my-6 backdrop-blur-sm grid grid-cols-1 gap-2 text-left">
+                <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                    <span class="text-red-100 text-sm">🔔 Alertas Activas</span>
+                    <span class="font-bold text-lg text-yellow-300">{{ total_alertas }}</span>
+                </div>
+                <div class="flex justify-between items-center pt-1">
+                    <span class="text-red-100 text-sm">🎒 Rango TCG</span>
+                    <span class="font-bold text-sm text-yellow-300">Coleccionista</span>
+                </div>
+            </div>
+
+            <a href="{% url 'logout' %}" class="w-full bg-white/20 hover:bg-white/30 text-white font-semibold py-2 px-4 rounded-xl text-sm transition-colors text-center">
+                Cerrar Sesión
             </a>
         </div>
-    </form>
+
+        <!-- COLUMNA DERECHA: FORMULARIO DE EDICIÓN -->
+        <div class="md:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Configuración de la Cuenta</h2>
+            <p class="text-sm text-gray-500 mb-6">Actualiza tus credenciales y tu avatar preferido.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border-l-4 border-green-600 flex items-center shadow-sm">
+                        <span class="mr-2">✓</span> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" class="space-y-5">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-1" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="pt-4 border-t border-gray-100 flex justify-end">
+                    <button type="submit" class="bg-red-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-red-700 transition-colors shadow-md shadow-red-100">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
 </div>
 {% endblock %}

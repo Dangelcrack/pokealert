@@ -28,12 +28,23 @@
                             Buscar Cartas
                         </a>
                         <div class="border-l border-gray-200 pl-4 flex items-center gap-3">
-                            <!-- Enlace al Perfil -->
-                            <a href="{% url 'profile' %}" class="text-gray-700 hover:text-red-600 font-semibold flex items-center gap-1 transition-colors group">
-                                <span class="bg-gray-100 text-gray-700 group-hover:bg-red-50 group-hover:text-red-600 w-7 h-7 rounded-full flex items-center justify-center text-xs uppercase shadow-inner transition-colors">
-                                    {{ user.username|slice:":2" }}
-                                </span>
-                                {{ user.username }}
+                            <!-- Enlace al Perfil con Avatar de Pokémon Dinámico -->
+                            <a href="{% url 'profile' %}" class="text-gray-700 hover:text-red-600 font-semibold flex items-center gap-2 transition-colors group">
+                                <div class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 p-0.5 flex items-center justify-center overflow-hidden transition-colors group-hover:border-red-300 group-hover:bg-red-50">
+                                    {% if request.session.pokemon_avatar == 'charizard' %}
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard" class="object-contain w-full h-full">
+                                    {% elif request.session.pokemon_avatar == 'gengar' %}
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar" class="object-contain w-full h-full">
+                                    {% elif request.session.pokemon_avatar == 'mewtwo' %}
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" class="object-contain w-full h-full">
+                                    {% elif request.session.pokemon_avatar == 'lugia' %}
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" class="object-contain w-full h-full">
+                                    {% else %}
+                                        <!-- Por defecto (Pikachu) si no se ha guardado nada en la sesión todavía -->
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu" class="object-contain w-full h-full">
+                                    {% endif %}
+                                </div>
+                                <span>{{ user.username }}</span>
                             </a>
                             <span class="text-gray-300">|</span>
                             <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors">

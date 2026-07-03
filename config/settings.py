@@ -160,8 +160,8 @@ CELERY_BEAT_SCHEDULE = {
         "task": "tasks.tasks.actualizar_pokedex_automatica",
         "schedule": crontab(day_of_month=1, hour=0, minute=0),
     },
-    "save-daily-prices": {
-        "task": "cards.tasks.save_daily_prices",
+    "verificar-alertas-precios-diario": {
+        "task": "tasks.tasks.check_pokemon_prices",
         "schedule": crontab(hour=2, minute=0),
     },
 }
@@ -183,6 +183,9 @@ if not DEBUG:
     }
 
 # ===================== LOGGING =====================
+LOGS_DIR = BASE_DIR / "logs"
+os.makedirs(LOGS_DIR, exist_ok=True)
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -190,7 +193,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": BASE_DIR / "logs" / "pokealert.log",
+            "filename": LOGS_DIR / "pokealert.log",
         },
         "console": {
             "level": "INFO",
@@ -198,7 +201,7 @@ LOGGING = {
         },
     },
     "loggers": {
-        "cards.tasks": {
+        "tasks.tasks": {  # ✅ Registramos el logger de tu app encargada del backend distribuido
             "handlers": ["file", "console"],
             "level": "INFO",
         },
