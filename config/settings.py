@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -112,8 +113,10 @@ USE_I18N = True
 USE_TZ = True
 
 # ===================== STATIC FILES =====================
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -201,7 +204,7 @@ LOGGING = {
         },
     },
     "loggers": {
-        "tasks.tasks": {  # ✅ Registramos el logger de tu app encargada del backend distribuido
+        "tasks.tasks": {
             "handlers": ["file", "console"],
             "level": "INFO",
         },
