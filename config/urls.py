@@ -1,3 +1,5 @@
+import profile
+
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
@@ -26,6 +28,9 @@ router.register(r"price-history", PriceHistoryViewSet, basename="price-history")
 urlpatterns = [
     # Admin
     path("admin/", admin.site.urls),
+    # Autenticación
+    path("accounts/", include("allauth.urls")),
+    path("profile/", include("users.urls")),
     # API REST
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),

@@ -18,6 +18,7 @@ from django.db import connection
 from django.conf import settings
 from django.utils import timezone
 
+
 from rest_framework import viewsets
 
 from cards.services.pokemontcg_service import fetch_cards, fetch_card
@@ -286,6 +287,8 @@ def user_logout(request):
 def dashboard(request):
     alerts = request.user.alerts.all()
     return render(request, "dashboard.html", {"alerts": alerts})
+
+
 
 
 # ==========================================

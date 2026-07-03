@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Completar Registro - PokeAlert{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-xl shadow-lg border border-gray-100 p-8 my-10">
+    <h2 class="text-3xl font-extrabold mb-2 text-center text-gray-800">Paso Final</h2>
+    <p class="text-sm text-gray-500 text-center mb-6">Estás usando tu cuenta de Google. Confirma tus datos para terminar de unirte a PokeAlert.</p>
+
+    {% if form.errors %}
+        <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border-l-4 border-red-600">
+            <span class="font-bold">Por favor corrige los siguientes errores:</span>
+            <ul class="list-disc list-inside text-sm mt-1">
+                {% for field in form %}{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}{% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div>
+                <label class="block text-gray-700 text-sm font-semibold mb-1" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+                <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                       name="{{ field.html_name }}" 
+                       id="{{ field.id_for_label }}"
+                       value="{{ field.value|default_if_none:'' }}"
+                       required
+                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
+                {% if field.help_text %}
+                    <p class="text-xs text-gray-400 mt-1">{{ field.help_text }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="w-full bg-red-600 text-white font-bold py-2.5 rounded-lg hover:bg-red-700 transition-colors shadow-md shadow-red-100 mt-2">
+            Confirmar y Registrarse
+        </button>
+    </form>
+</div>
+{% endblock %}

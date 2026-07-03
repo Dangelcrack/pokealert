@@ -21,6 +21,8 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 POKEMON_TCG_API_KEY = os.getenv("POKEMON_TCG_API_KEY", "")
 
+SITE_ID = 1
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -34,6 +36,13 @@ INSTALLED_APPS = [
     "cards",
     "alerts",
     "tasks",
+    "users",
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -42,6 +51,9 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+
+    "allauth.account.middleware.AccountMiddleware",
+
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -196,3 +208,29 @@ LOGGING = {
         },
     },
 }
+
+# ===================== DJANGO ALLAUTH =====================
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+
+# El nuevo estándar para definir cómo se inicia sesión (reemplaza a ACCOUNT_AUTHENTICATION_METHOD)
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+
+# El nuevo estándar para exigir campos en el registro (reemplaza a EMAIL_REQUIRED y USERNAME_REQUIRED)
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+# Configuración de inicio de sesión social automático por Email
+ACCOUNT_UNIQUE_EMAIL = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
+SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_LOGIN_ON_GET = True
