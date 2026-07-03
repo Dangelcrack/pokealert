@@ -1,11 +1,13 @@
 import os
 
 import django
-from django.contrib.auth.models import User
 from django.core.management import execute_from_command_line
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
+
+# ← AHORA SÍ importamos User (después de django.setup())
+from django.contrib.auth.models import User
 
 # Ejecutar migraciones
 print("🔄 Ejecutando migraciones...")
