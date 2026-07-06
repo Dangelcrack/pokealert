@@ -873,11 +873,16 @@ def card_detail(request, card_id):
             # -----------------------------------------------------
 
             # Normalización y formateo de relaciones para el contexto de la plantilla
-            if relations.get("rarity"): card_data_payload["rarity"] = relations["rarity"].display_name
-            if relations.get("artist"): card_data_payload["artist"] = relations["artist"].name
-            if relations.get("supertype"): card_data_payload["supertype"] = relations["supertype"].display_name
-            if relations.get("subtype"): card_data_payload["subtype"] = relations["subtype"].display_name
-            if relations.get("pokemon_especie"): card_data_payload["pokemon"] = relations["pokemon_especie"].name_en
+            if relations.get("rarity"):
+                card_data_payload["rarity"] = getattr(relations["rarity"], "display_name", "N/A")
+            if relations.get("artist"):
+                card_data_payload["artist"] = getattr(relations["artist"], "name", "Desconocido")
+            if relations.get("supertype"):
+                card_data_payload["supertype"] = getattr(relations["supertype"], "display_name", "N/A")
+            if relations.get("subtype"):
+                card_data_payload["subtype"] = getattr(relations["subtype"], "display_name", "N/A")
+            if relations.get("pokemon_especie"):
+                card_data_payload["pokemon"] = getattr(relations["pokemon_especie"], "name_en", None)
             
             # --- NORMALIZACIÓN ESTRUCTURAL DEL SET ---
             inferred_set_name = None
