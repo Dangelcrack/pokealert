@@ -3,16 +3,16 @@
 {% block title %}Error{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto my-16 text-center">
-    <div class="bg-red-50 p-8 rounded-2xl border border-red-200">
-        <h2 class="text-2xl font-black text-red-600 mb-4">⚠️ Algo salió mal</h2>
-        <p class="text-gray-700 mb-6">{{ message }}</p>
+<div class="error-page-container">
+    <div class="error-box">
+        <h2 class="error-box-title">Algo salió mal</h2>
+        <p class="error-box-message">{{ message }}</p>
         
         <div class="flex justify-center gap-4">
-            <a href="javascript:history.back()" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition">
+            <a href="javascript:history.back()" class="btn-error-back">
                 Volver atrás
             </a>
-            <a href="{% url 'search' %}" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition">
+            <a href="{% url 'search' %}" class="btn-error-search">
                 Ir al buscador
             </a>
         </div>

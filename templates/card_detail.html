@@ -3,100 +3,114 @@
 {% block title %}{{ card.name }} - Detalles{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto my-8">
-    <a href="{% url 'search' %}" class="inline-block mb-6 text-gray-600 hover:text-red-600 font-medium transition">
+<div class="detail-container">
+    <a href="{% url 'search' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="back-link">
         ⬅️ Volver al listado
     </a>
 
     {% if error %}
-        <div class="bg-red-100 text-red-700 p-4 rounded-lg">
-            ❌ {{ error }}
+        <div class="auth-error">
+            {{ error }}
         </div>
     {% else %}
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden md:flex gap-8 p-6 border">
-            
-            <div class="md:w-1/2 flex items-center justify-center bg-gray-50 rounded-xl p-4">
-                <img src="{{ card.images.large }}" alt="{{ card.name }}" class="w-full max-w-sm object-contain rounded-lg shadow-md hover:scale-105 transition duration-300">
-            </div>
-
-            <div class="md:w-1/2 flex flex-col justify-between mt-6 md:mt-0">
+        <div class="detail-card">
+            <header class="detail-header">
                 <div>
-                    <div class="flex items-center justify-between gap-4 mb-2">
-                        <h2 class="text-3xl font-bold text-gray-900">{{ card.name }}</h2>
-                        {% if card.rarity %}
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">
-                                ✨ {{ card.rarity }}
-                            </span>
-                        {% endif %}
-                    </div>
-                    <p class="text-gray-500 font-medium mb-6">{{ card.set.name }} ({{ card.set.series }}) - #{{ card.number }}</p>
+                    <h1 class="detail-title">{{ card.name }}</h1>
+                    <p class="detail-subtitle">{{ card.set.name }} · #{{ card.number }}</p>
+                    {% if card.rarity %}
+                        <span class="rarity-pill">{{ card.rarity }}</span>
+                    {% endif %}
+                </div>
+            </header>
 
-                    <div class="bg-red-50 rounded-xl p-4 mb-6 border border-red-100">
-                        <p class="text-xs text-red-500 uppercase tracking-wider font-bold">Precio de Mercado TCGPlayer</p>
-                        {% if market_price != 'N/A' %}
-                            <p class="text-4xl font-black text-red-600 mt-1">${{ market_price }}</p>
-                        {% else %}
-                            <p class="text-xl font-bold text-gray-500 mt-1">No disponible</p>
-                        {% endif %}
-                    </div>
-
-                    <!-- 📈 GRÁFICO DE HISTÓRICO DE PRECIOS -->
-                    <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200">
-                        <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                            📈 Historial de Precio (Últimos 30 días)
-                        </h3>
-                        <div class="relative" style="height: 250px;">
-                            <canvas id="priceChart"></canvas>
+            <div class="card-detail-grid">
+                <div class="detail-left">
+                    <div class="image-wrapper">
+                            <img src="{{ card.images.large }}" alt="{{ card.name }}" class="card-image" loading="lazy">
                         </div>
-                        <p class="text-xs text-gray-500 text-center mt-2">Precio actualizado diariamente</p>
-                    </div>
+                </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-4 rounded-xl text-sm text-gray-700">
-                        <div><span class="font-bold text-gray-500">Supertype:</span> {{ card.supertype }}</div>
-                        <div><span class="font-bold text-gray-500">Artista:</span> {{ card.artist|default:"Desconocido" }}</div>
-                        {% if card.types %}
-                            <div class="col-span-2">
-                                <span class="font-bold text-gray-500">Tipos:</span> 
-                                {{ card.types|join:", " }}
+                <div class="detail-right">
+                    <div class="detail-right-panel">
+                        <section class="price-panel price-panel-compact">
+                            <div class="price-header">
+                                <span class="price-label">💰 Precio actual</span>
                             </div>
-                        {% endif %}
+                            <div class="price-main">
+                                {% if market_price != 'N/A' %}
+                                    <p class="price-value">${{ market_price }}</p>
+                                {% else %}
+                                    <p class="price-none">No disponible</p>
+                                {% endif %}
+                            </div>
+                            <div class="price-meta">
+                                <span class="target-label">Fuente</span>
+                                <span class="target-value">TCGPlayer</span>
+                            </div>
+                        </section>
+
+                        <section class="chart-box">
+                            <h3 class="chart-title">📈 Historial de Precio (Últimos 30 días)</h3>
+                            <div class="relative chart-panel mb-4 bg-panel border-muted rounded-lg p-2">
+                                <canvas id="priceChart"></canvas>
+                            </div>
+                            <p class="text-xs text-gray-400 text-center">Precio actualizado diariamente</p>
+                        </section>
+
+                        <section class="alert-box">
+                            <h4 class="alert-title">🔔 Configurar Alerta de Precio</h4>
+                            <form method="POST" action="{% url 'create_alert' %}" class="flex flex-col gap-3">
+                                {% csrf_token %}
+                                <input type="hidden" name="pokemontcg_id" value="{{ card.id }}">
+                                <input type="hidden" name="current_price" value="{{ market_price }}">
+
+                                <div class="percent-toggle" role="radiogroup" aria-label="Porcentaje de alerta">
+                                    <input type="radio" id="p10" name="discount_percentage" value="10">
+                                    <label for="p10">10%</label>
+                                    <input type="radio" id="p20" name="discount_percentage" value="20">
+                                    <label for="p20">20%</label>
+                                    <input type="radio" id="p30" name="discount_percentage" value="30">
+                                    <label for="p30">30%</label>
+                                    <input type="radio" id="p40" name="discount_percentage" value="40">
+                                    <label for="p40">40%</label>
+                                    <input type="radio" id="p50" name="discount_percentage" value="50">
+                                    <label for="p50">50%</label>
+                                </div>
+
+                                <div class="flex flex-row gap-3">
+                                    <button type="submit" class="btn-auth-submit">Activar Alerta</button>
+                                    <a href="{% url 'dashboard' %}" class="btn-home-secondary">Cancelar</a>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section class="info-card-grid">
+                            <div class="info-card">
+                                <span class="info-card-icon">🎨</span>
+                                <p class="info-card-label">Artista</p>
+                                <p class="info-card-value">{{ card.artist|default:'Desconocido' }}</p>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-card-icon">📦</span>
+                                <p class="info-card-label">Set</p>
+                                <p class="info-card-value">{{ card.set.name|default:'Desconocido' }}</p>
+                            </div>
+                            {% if card.supertype %}
+                                <div class="info-card">
+                                    <span class="info-card-icon">💠</span>
+                                    <p class="info-card-label">Supertype</p>
+                                    <p class="info-card-value">{{ card.supertype }}</p>
+                                </div>
+                            {% endif %}
+                        </section>
                     </div>
                 </div>
-
-                <div class="bg-gray-100 rounded-xl p-4 border">
-                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">🔔 Configurar Alerta de Precio</h4>
-                    <form method="POST" action="{% url 'create_alert' %}" class="flex flex-col gap-3">
-                        {% csrf_token %}
-                        <input type="hidden" name="pokemontcg_id" value="{{ card.id }}">
-                        <input type="hidden" name="current_price" value="{{ market_price }}">
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">
-                                Notificarme si el precio baja un:
-                            </label>
-                            <select name="discount_percentage" class="w-full px-3 py-2 bg-white border rounded-lg focus:outline-none focus:border-red-600 text-sm" required>
-                                <option value="">Selecciona un porcentaje</option>
-                                <option value="5">5% de descuento</option>
-                                <option value="10">10% de descuento</option>
-                                <option value="15">15% de descuento</option>
-                                <option value="20">20% de descuento</option>
-                                <option value="25">25% de descuento</option>
-                                <option value="50">50% de descuento</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-bold transition text-sm shadow">
-                            Activar Alerta
-                        </button>
-                    </form>
-                </div>
-
             </div>
         </div>
     {% endif %}
 </div>
 
-<!-- 📊 SCRIPT DEL GRÁFICO -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     fetch('/api/card/{{ card.id }}/price-history/')
@@ -105,11 +119,24 @@
             const chartContainer = document.getElementById('priceChart').parentElement;
             
             if (data.error || data.dates.length === 0) {
-                chartContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Sin histórico de precios disponible aún</p>';
+                chartContainer.innerHTML = '<p class="text-gray-400 text-center py-8">Sin histórico de precios disponible aún</p>';
                 return;
             }
             
             const ctx = document.getElementById('priceChart').getContext('2d');
+            const themeStyles = getComputedStyle(document.documentElement);
+            const chartAccent = themeStyles.getPropertyValue('--cyan').trim();
+            const chartLabel = themeStyles.getPropertyValue('--gray').trim();
+            const chartPanel = themeStyles.getPropertyValue('--panel-bg').trim();
+            function hexToRgba(hex, alpha = 1) {
+                const cleaned = hex.replace('#', '');
+                const normalized = cleaned.length === 3 ? cleaned.split('').map(c => c + c).join('') : cleaned;
+                const intVal = parseInt(normalized, 16);
+                const r = (intVal >> 16) & 255;
+                const g = (intVal >> 8) & 255;
+                const b = intVal & 255;
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            }
             new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -117,14 +144,14 @@
                     datasets: [{
                         label: 'Precio (USD)',
                         data: data.prices,
-                        borderColor: '#dc2626',
-                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        borderColor: chartAccent,
+                        backgroundColor: hexToRgba(chartAccent, 0.1),
                         borderWidth: 2,
                         tension: 0.4,
                         fill: true,
                         pointRadius: 4,
-                        pointBackgroundColor: '#dc2626',
-                        pointBorderColor: '#fff',
+                        pointBackgroundColor: chartAccent,
+                        pointBorderColor: chartPanel,
                         pointBorderWidth: 2,
                         pointHoverRadius: 6
                     }]
@@ -135,16 +162,20 @@
                     plugins: {
                         legend: { 
                             display: true,
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: chartLabel
+                            }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: false,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(47, 59, 76, 0.3)'
                             },
                             ticks: {
+                                color: chartLabel,
                                 callback: function(value) {
                                     return '$' + value.toFixed(2);
                                 }
@@ -153,6 +184,9 @@
                         x: {
                             grid: {
                                 display: false
+                            },
+                            ticks: {
+                                color: chartLabel
                             }
                         }
                     }
@@ -162,8 +196,7 @@
         .catch(err => {
             console.error('Error cargando histórico:', err);
             document.getElementById('priceChart').parentElement.innerHTML = 
-                '<p class="text-red-500 text-center py-8">Error al cargar el histórico</p>';
+                '<p class="text-red-400 text-center py-8">Error al cargar el histórico</p>';
         });
 </script>
-
 {% endblock %}

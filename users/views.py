@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserUpdateForm
-# ✅ CORREGIDO: Importamos el modelo real de alertas desde tu app alerts
 from alerts.models import PriceAlert
 
 
@@ -19,10 +18,8 @@ def profile(request):
         initial_avatar = request.session.get('pokemon_avatar', 'pikachu')
         form = UserUpdateForm(instance=request.user, initial={'pokemon_avatar': initial_avatar})
 
-    # 📊 CORREGIDO: Usamos PriceAlert en lugar de Task.objects, filtrando solo las alertas del usuario
     total_alertas = PriceAlert.objects.filter(user=request.user).count()
 
-    # 🎒 LÓGICA DEL RANGO POKÉMON
     if total_alertas >= 5:
         rango = "Maestro TCG"
     elif total_alertas >= 2:
@@ -44,7 +41,7 @@ def profile(request):
         "form": form,
         "avatar_url": current_avatar_url,
         "total_alertas": total_alertas,
-        "rango": rango, # Pasamos el rango dinámico
+        "rango": rango,
     }
 
     return render(request, "users/profile.html", context)

@@ -1,61 +1,69 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Busca cartas Pokémon, compara precios y recibe alertas de precio de Pokémon TCG en PokeAlert.">
     <title>{% block title %}PokeAlert - Alertas de Precios de Pokémon{% endblock %}</title>
+    
+    <!-- Script de Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- TU ARCHIVO CSS REAL -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body class="bg-gray-50">
+<body class="poke-body">
+    
     <!-- Navbar -->
-    <nav class="bg-white shadow">
+    <nav class="poke-navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="text-2xl font-bold text-red-600">
+                    <a href="{% url 'home' %}" class="poke-logo">
                         🃏 PokeAlert
                     </a>
                 </div>
 
                 <!-- Menu derecha -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-6">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'dashboard' %}" class="text-gray-700 hover:text-red-600 font-medium transition-colors">
+                        <a href="{% url 'dashboard' %}" class="nav-link">
                             Mi Dashboard
                         </a>
-                        <a href="{% url 'search' %}" class="text-gray-700 hover:text-red-600 font-medium transition-colors">
+                        <a href="{% url 'search' %}" class="nav-link">
                             Buscar Cartas
                         </a>
-                        <div class="border-l border-gray-200 pl-4 flex items-center gap-3">
+                        
+                        <div class="nav-user-zone">
                             <!-- Enlace al Perfil con Avatar de Pokémon Dinámico -->
-                            <a href="{% url 'profile' %}" class="text-gray-700 hover:text-red-600 font-semibold flex items-center gap-2 transition-colors group">
-                                <div class="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 p-0.5 flex items-center justify-center overflow-hidden transition-colors group-hover:border-red-300 group-hover:bg-red-50">
+                            <a href="{% url 'profile' %}" class="profile-link group">
+                                <div class="avatar-container">
                                     {% if request.session.pokemon_avatar == 'charizard' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard" class="object-contain w-full h-full">
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard">
                                     {% elif request.session.pokemon_avatar == 'gengar' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar" class="object-contain w-full h-full">
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar">
                                     {% elif request.session.pokemon_avatar == 'mewtwo' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" class="object-contain w-full h-full">
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo">
                                     {% elif request.session.pokemon_avatar == 'lugia' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" class="object-contain w-full h-full">
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia">
                                     {% else %}
-                                        <!-- Por defecto (Pikachu) si no se ha guardado nada en la sesión todavía -->
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu" class="object-contain w-full h-full">
+                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu">
                                     {% endif %}
                                 </div>
-                                <span>{{ user.username }}</span>
+                                <span class="hidden sm:inline">{{ user.username }}</span>
                             </a>
-                            <span class="text-gray-300">|</span>
-                            <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors">
+                            <span class="text-gray-600">|</span>
+                            <a href="{% url 'logout' %}" class="btn-logout">
                                 Salir
                             </a>
                         </div>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-red-600 font-medium transition-colors">
+                        <a href="{% url 'login' %}" class="nav-link">
                             Iniciar Sesión
                         </a>
-                        <a href="{% url 'register' %}" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors shadow-sm">
+                        <a href="{% url 'register' %}" class="btn-register">
                             Registrarse
                         </a>
                     {% endif %}
@@ -65,11 +73,12 @@
     </nav>
 
     <!-- Contenido principal -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
         {% if messages %}
             {% for message in messages %}
-                <div class="mb-4 p-4 rounded-lg bg-green-50 border-l-4 border-green-600 text-green-700 shadow-sm flex items-center">
-                    <span class="mr-2">✓</span> {{ message }}
+                <div class="poke-message">
+                    <span class="text-xl font-bold">✓</span> 
+                    <span class="font-medium">{{ message }}</span>
                 </div>
             {% endfor %}
         {% endif %}
@@ -78,9 +87,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-12 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p>&copy; 2026 PokeAlert. Alertas de precios de Pokémon TCG en tiempo real.</p>
+    <footer class="poke-footer">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm font-medium">
+            <p>&copy; 2026 <span class="logo-text-color">PokeAlert</span>. Alertas de precios de Pokémon TCG en tiempo real.</p>
         </div>
     </footer>
 </body>

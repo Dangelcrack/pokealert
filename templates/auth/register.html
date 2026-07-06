@@ -3,19 +3,17 @@
 {% block title %}Registrarse - PokeAlert{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto bg-white rounded-xl shadow-lg border border-gray-100 p-8 my-10">
-    <h2 class="text-3xl font-extrabold mb-2 text-center text-gray-800">Crear Cuenta</h2>
-    <p class="text-sm text-gray-500 text-center mb-6">Únete a PokeAlert y empieza a monitorear</p>
+<div class="auth-container">
+    <h2 class="auth-title">Crear Cuenta</h2>
+    <p class="auth-subtitle">Únete a PokeAlert y empieza a monitorear</p>
 
     {% if error %}
-        <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border-l-4 border-red-600 flex items-center">
-            <span class="mr-2">⚠️</span> {{ error }}
+        <div class="auth-error">
+            {{ error }}
         </div>
     {% endif %}
 
-    <!-- Botón de Google -->
-    {% load socialaccount %}
-    <a href="{% provider_login_url 'google' %}" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-medium py-2.5 px-4 rounded-lg hover:bg-gray-50 transition-colors shadow-sm mb-6">
+    <a href="/accounts/google/login/" class="btn-google-auth">
         <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -25,48 +23,42 @@
         <span>Registrarse con Google</span>
     </a>
 
-    <!-- Divisor -->
-    <div class="relative flex py-2 items-center mb-6">
-        <div class="flex-grow border-t border-gray-200"></div>
-        <span class="flex-shrink mx-4 text-gray-400 text-xs uppercase tracking-wider">o rellena los datos</span>
-        <div class="flex-grow border-t border-gray-200"></div>
+    <div class="auth-divider">
+        <div class="auth-divider-line"></div>
+        <span class="auth-divider-text">o rellena los datos</span>
+        <div class="auth-divider-line"></div>
     </div>
 
-    <!-- Formulario Tradicional -->
-    <form method="POST" class="space-y-4">
+    <form method="POST" class="flex flex-col gap-4">
         {% csrf_token %}
         
         <div>
-            <label class="block text-gray-700 text-sm font-semibold mb-2">Usuario</label>
-            <input type="text" name="username" required 
-                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
+            <label class="auth-label">Usuario</label>
+            <input type="text" name="username" required class="auth-input">
         </div>
 
         <div>
-            <label class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
-            <input type="email" name="email" required 
-                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
+            <label class="auth-label">Email</label>
+            <input type="email" name="email" required class="auth-input">
         </div>
 
         <div>
-            <label class="block text-gray-700 text-sm font-semibold mb-2">Contraseña</label>
-            <input type="password" name="password" required 
-                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
+            <label class="auth-label">Contraseña</label>
+            <input type="password" name="password" required class="auth-input">
         </div>
 
         <div>
-            <label class="block text-gray-700 text-sm font-semibold mb-2">Confirmar Contraseña</label>
-            <input type="password" name="password_confirm" required 
-                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
+            <label class="auth-label">Confirmar Contraseña</label>
+            <input type="password" name="password_confirm" required class="auth-input">
         </div>
 
-        <button type="submit" class="w-full bg-red-600 text-white font-bold py-2.5 rounded-lg hover:bg-red-700 transition-colors shadow-md shadow-red-100">
+        <button type="submit" class="btn-auth-submit">
             Registrarse
         </button>
     </form>
 
-    <p class="text-center mt-6 text-sm text-gray-600">
-        ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-red-600 hover:underline font-bold">Inicia sesión</a>
+    <p class="auth-footer-text">
+        ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="auth-footer-link">Inicia sesión</a>
     </p>
 </div>
 {% endblock %}

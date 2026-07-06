@@ -3,48 +3,47 @@
 {% block title %}PokeAlert - Inicio{% endblock %}
 
 {% block content %}
-<div class="text-center py-12">
-    <h1 class="text-5xl font-bold mb-4 text-gray-900">
-        ¿Te encanta coleccionar cartas Pokémon? 🎴
+<div class="home-hero">
+    <h1 class="home-title">
+        ¿Te encanta coleccionar cartas Pokémon?
     </h1>
-    <p class="text-xl text-gray-600 mb-8">
+    <p class="home-subtitle">
         Recibe alertas automáticas cuando tus cartas favoritas bajan de precio.
     </p>
 
     {% if user.is_authenticated %}
         <div class="flex gap-4 justify-center">
-            <a href="{% url 'search' %}" class="bg-red-600 text-white px-8 py-3 rounded-lg text-lg hover:bg-red-700">
-                🔍 Buscar Cartas
+            <a href="{% url 'search' %}" class="btn-home-primary">
+                Buscar Cartas
             </a>
-            <a href="{% url 'dashboard' %}" class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg hover:bg-blue-700">
-                📊 Mi Dashboard
+            <a href="{% url 'dashboard' %}" class="btn-home-secondary">
+                Mi Dashboard
             </a>
         </div>
     {% else %}
         <div class="flex gap-4 justify-center">
-            <a href="{% url 'register' %}" class="bg-red-600 text-white px-8 py-3 rounded-lg text-lg hover:bg-red-700">
+            <a href="{% url 'register' %}" class="btn-home-primary">
                 Comenzar Gratis
             </a>
-            <a href="{% url 'login' %}" class="bg-gray-600 text-white px-8 py-3 rounded-lg text-lg hover:bg-gray-700">
+            <a href="{% url 'login' %}" class="btn-home-secondary">
                 Iniciar Sesión
             </a>
         </div>
     {% endif %}
 </div>
 
-<!-- Features -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-xl font-bold mb-2">⚡ Búsqueda Rápida</h3>
-        <p class="text-gray-600">Encuentra cualquier carta de Pokémon TCG en segundos.</p>
+<div class="features-grid">
+    <div class="feature-card">
+        <h3 class="feature-card-title">Búsqueda Rápida</h3>
+        <p class="feature-card-text">Encuentra cualquier carta de Pokémon TCG en segundos.</p>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-xl font-bold mb-2">📧 Alertas por Email</h3>
-        <p class="text-gray-600">Recibe notificaciones cuando bajará el precio.</p>
+    <div class="feature-card">
+        <h3 class="feature-card-title">Alertas por Email</h3>
+        <p class="feature-card-text">Recibe notificaciones cuando bajará el precio.</p>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-xl font-bold mb-2">📊 Historial de Precios</h3>
-        <p class="text-gray-600">Visualiza la evolución del precio en el tiempo.</p>
+    <div class="feature-card">
+        <h3 class="feature-card-title">Historial de Precios</h3>
+        <p class="feature-card-text">Visualiza la evolución del precio en el tiempo.</p>
     </div>
 </div>
 {% endblock %}

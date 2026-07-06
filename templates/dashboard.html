@@ -3,84 +3,83 @@
 {% block title %}Mi Dashboard - PokeAlert{% endblock %}
 
 {% block content %}
-<div class="mb-8">
-    <h2 class="text-3xl font-bold mb-4">📊 Mi Dashboard</h2>
-    <p class="text-gray-600">Aquí verás todas tus alertas activas.</p>
+<!-- Encabezado -->
+<div class="dashboard-header mb-8">
+    <h2>Mi Dashboard</h2>
+    <p>Aquí verás todas tus alertas activas.</p>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-gray-600 font-medium mb-2">Alertas Activas</h3>
-        <p class="text-3xl font-bold text-red-600">{{ alerts|length }}</p>
+<!-- Grid de Estadísticas superiores -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Alertas Activas</h3>
+        <p class="stat-number-red">{{ alerts|length }}</p>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-gray-600 font-medium mb-2">Cartas Diferentes</h3>
-        <p class="text-3xl font-bold text-blue-600">{{ alerts|length }}</p>
+    <div class="stat-card">
+        <h3>Cartas Diferentes</h3>
+        <p class="stat-number-cyan">{{ alerts|length }}</p>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-        <a href="{% url 'search' %}" class="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-bold">
-            + Crear Alerta
+    <div class="stat-card flex items-center justify-center">
+        <a href="{% url 'search' %}" class="btn-create-alert w-full">
+            Crear Alerta
         </a>
     </div>
 </div>
 
-<div class="bg-white rounded-lg shadow overflow-hidden">
-    <div class="p-6 border-b">
-        <h3 class="text-xl font-bold">Tus Alertas</h3>
+<!-- Tabla de Alertas -->
+<div class="table-container">
+    <div class="table-header">
+        <h3>Tus Alertas</h3>
     </div>
 
     {% if alerts %}
-        <table class="w-full">
-            <thead class="bg-gray-50 border-b">
+        <table class="poke-table">
+            <thead>
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Carta</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Porcentaje / Objetivo</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Estado</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Creada</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Acciones</th>
+                    <th>Carta</th>
+                    <th>Porcentaje / Objetivo</th>
+                    <th>Estado</th>
+                    <th>Creada</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for alert in alerts %}
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4">
+                    <tr>
+                        <td>
                             <div class="flex items-center gap-4">
                                 {% if alert.card.image_url %}
-                                    <img src="{{ alert.card.image_url }}" alt="{{ alert.card.name }}" class="w-12 h-16 object-cover rounded">
+                                    <img src="{{ alert.card.image_url }}" alt="{{ alert.card.name }}" class="w-12 h-16 object-cover rounded shadow">
                                 {% endif %}
                                 <div>
-                                    <p class="font-bold">{{ alert.card.name }}</p>
-                                    <p class="text-sm text-gray-500">{{ alert.card.get_rarity_display }}</p>
+                                    <p class="card-title">{{ alert.card.name }}</p>
+                                    <p class="card-rarity">{{ alert.card.get_rarity_display }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4">
+                        <td>
                             <span class="block text-xs text-gray-500">Baja del {{ alert.discount_percentage }}%</span>
-                            <span class="font-bold text-red-600">${{ alert.target_price }}</span>
+                            <span class="price-target">${{ alert.target_price }}</span>
                         </td>
-                        <td class="px-6 py-4">
+                        <td>
                             {% if alert.is_active %}
-                                <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-                                    ✅ Activa
-                                </span>
+                                <span class="badge-active">Activa</span>
                             {% else %}
-                                <span class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
-                                    ⏸️ Inactiva
-                                </span>
+                                <span class="badge-inactive">Inactiva</span>
                             {% endif %}
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ alert.created_at|date:"d/m/Y" }}</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-4">
-                                <a href="{% url 'edit_alert' alert.id %}" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
-                                    ⚙️ Editar
+                        <td>{{ alert.created_at|date:"d/m/Y" }}</td>
+                        <td>
+                            <div class="action-area">
+                                <a href="{% url 'edit_alert' alert.id %}" class="link-edit">
+                                    Editar
                                 </a>
-                                <form action="{% url 'delete_alert' alert.id %}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta alerta?');">
+                                <form action="{% url 'delete_alert' alert.id %}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta alerta?');" style="margin: 0;">
                                     {% csrf_token %}
-                                    <button type="submit" class="text-red-600 hover:text-red-800 font-medium flex items-center gap-1">
-                                        🗑️ Eliminar
+                                    <button type="submit" class="btn-delete">
+                                        Eliminar
                                     </button>
                                 </form>
                             </div>
@@ -90,10 +89,10 @@
             </tbody>
         </table>
     {% else %}
-        <div class="p-6 text-center">
-            <p class="text-gray-600 mb-4">No tienes alertas creadas aún.</p>
-            <a href="{% url 'search' %}" class="inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 font-bold">
-                🔍 Crear tu primera alerta
+        <div class="empty-state">
+            <p>No tienes alertas creadas aún.</p>
+            <a href="{% url 'search' %}" class="btn-empty-action">
+                Crear tu primera alerta
             </a>
         </div>
     {% endif %}

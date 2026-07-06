@@ -25,11 +25,11 @@
             <!-- Estadísticas útiles de Cartas -->
             <div class="w-full bg-white/10 rounded-xl p-4 my-6 backdrop-blur-sm grid grid-cols-1 gap-2 text-left">
                 <div class="flex justify-between items-center border-b border-white/10 pb-2">
-                    <span class="text-red-100 text-sm">🔔 Alertas Activas</span>
+                    <span class="text-red-100 text-sm">Alertas Activas</span>
                     <span class="font-bold text-lg text-yellow-300">{{ total_alertas }}</span>
                 </div>
                 <div class="flex justify-between items-center pt-1">
-                    <span class="text-red-100 text-sm">🎒 Rango TCG</span>
+                    <span class="text-red-100 text-sm">Rango TCG</span>
                     <span class="font-bold text-sm text-yellow-300">Coleccionista</span>
                 </div>
             </div>
@@ -40,13 +40,13 @@
         </div>
 
         <!-- COLUMNA DERECHA: FORMULARIO DE EDICIÓN -->
-        <div class="md:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Configuración de la Cuenta</h2>
-            <p class="text-sm text-gray-500 mb-6">Actualiza tus credenciales y tu avatar preferido.</p>
+        <div class="md:col-span-2 bg-card-solid rounded-2xl shadow-lg border-muted p-8">
+            <h2 class="text-2xl font-bold text-white mb-2">Configuración de la Cuenta</h2>
+            <p class="text-sm text-gray-400 mb-6">Actualiza tus credenciales y tu avatar preferido.</p>
 
             {% if messages %}
                 {% for message in messages %}
-                    <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border-l-4 border-green-600 flex items-center shadow-sm">
+                    <div class="mb-6 p-4 bg-green-950/40 text-green-400 rounded-xl border border-green-500/30 flex items-center shadow-sm text-sm">
                         <span class="mr-2">✓</span> {{ message }}
                     </div>
                 {% endfor %}
@@ -57,18 +57,21 @@
                 
                 {% for field in form %}
                     <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-1" for="{{ field.id_for_label }}">
+                        <label class="auth-label" for="{{ field.id_for_label }}">
                             {{ field.label }}
                         </label>
+                        
+                        {# Inyección directa de tu clase CSS usando el filtro de Django #}
                         {{ field }}
+
                         {% if field.errors %}
-                            <p class="mt-1 text-sm text-red-600">{{ field.errors.0 }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ field.errors.0 }}</p>
                         {% endif %}
                     </div>
                 {% endfor %}
 
-                <div class="pt-4 border-t border-gray-100 flex justify-end">
-                    <button type="submit" class="bg-red-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-red-700 transition-colors shadow-md shadow-red-100">
+                <div class="pt-4 border-t-muted flex justify-end">
+                    <button type="submit" class="btn-auth-submit !w-auto px-8">
                         Guardar Cambios
                     </button>
                 </div>
