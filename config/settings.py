@@ -1,12 +1,13 @@
-"""Configuración principal de Django para el proyecto PokeAlert."""
+"""Configuración principal de Django para el proyecto PokeAlert.
 
-# config/settings.py (PRODUCCIÓN)
-"""Django settings for config project."""
+Django settings for config project.
+"""
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+
 from celery.schedules import crontab
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -221,10 +222,10 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-# El nuevo estándar para definir cómo se inicia sesión (reemplaza a ACCOUNT_AUTHENTICATION_METHOD)
+# El nuevo estándar para definir cómo se inicia sesión
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
 
-# El nuevo estándar para exigir campos en el registro (reemplaza a EMAIL_REQUIRED y USERNAME_REQUIRED)
+# El nuevo estándar para exigir campos en el registro
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
