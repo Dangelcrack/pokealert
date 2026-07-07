@@ -1,3 +1,5 @@
+"""Pruebas de modelo para alertas de precio y histórico de precios."""
+
 import pytest
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -21,6 +23,7 @@ def setup_data(db):
 
 @pytest.mark.django_db
 def test_price_alert_creation(setup_data):
+    """Comprueba la creación correcta de una `PriceAlert` y su representación."""
     user, card = setup_data
 
     alert = PriceAlert.objects.create(
@@ -46,11 +49,10 @@ def test_unique_together_constraint(setup_data):
 
 @pytest.mark.django_db
 def test_price_history_creation(setup_data):
+    """Verifica que `PriceHistory` se crea correctamente y contiene datos esperados."""
     _, card = setup_data
 
-    history = PriceHistory.objects.create(
-        card=card, price=15.99, marketplace="tcgplayer"
-    )
+    history = PriceHistory.objects.create(card=card, price=15.99, marketplace="tcgplayer")
 
     assert history.price == 15.99
     assert history.card.name == "Pikachu V"

@@ -1,3 +1,8 @@
+"""Utilidades y mapeos estáticos para la aplicación de `cards`.
+
+Contiene mapeos de nombres y funciones auxiliares ligeras usadas por las
+vistas y servicios para normalizar términos y obtener opciones de filtros."""
+
 import requests
 from django.core.cache import cache
 

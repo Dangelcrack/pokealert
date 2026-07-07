@@ -1,0 +1,63 @@
+#!/bin/bash
+# ============================================================================
+# PRE-COMMIT HOOK PARA GIT
+# ============================================================================
+# Instala este script como hook de pre-commit:
+#   cp .githooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# O configura automáticamente:
+#   git config core.hooksPath .githooks
+# ============================================================================
+
+set -e
+
+echo "========================================"
+echo "  Pre-commit checks"
+echo "========================================"
+
+# Obtén los archivos Python que van a ser commiteados
+PYTHON_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
+
+if [ -z "$PYTHON_FILES" ]; then
+    echo "No hay archivos Python para validar"
+    exit 0
+fi
+
+echo "Validando archivos Python:"
+for file in $PYTHON_FILES; do
+    echo "  - $file"
+done
+
+# 1. Black (formateador)
+echo ""
+echo "Running Black..."
+python -m black --check $PYTHON_FILES || {
+    echo "Black validation failed!"
+    echo "  Ejecuta: black $PYTHON_FILES"
+    exit 1
+}
+echo "Black: OK"
+
+# 2. Flake8 (linter)
+echo ""
+echo "Running Flake8..."
+python -m flake8 $PYTHON_FILES || {
+    echo "Flake8 validation failed!"
+    echo "  Ejecuta: flake8 $PYTHON_FILES"
+    exit 1
+}
+echo "Flake8: OK"
+# 3. Pydocstyle (docstrings)
+echo ""
+echo "Running Pydocstyle..."
+python -m pydocstyle --convention=google $PYTHON_FILES || {
+    echo "Pydocstyle warnings (no blocking)"
+}
+echo "Pydocstyle: checked"
+
+echo ""
+echo "========================================"
+echo "Pre-commit checks passed!"
+echo "========================================"
+exit 0

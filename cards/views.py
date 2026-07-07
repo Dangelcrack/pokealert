@@ -1,3 +1,8 @@
+"""Vistas y utilidades principales de la aplicación `cards`.
+
+Este módulo combina helpers de búsqueda, normalización, sincronización con la API,
+views frontend y endpoints de API REST para cartas y alertas."""
+
 import os
 import math
 import json
@@ -35,6 +40,11 @@ logger = logging.getLogger(__name__)
 
 
 def warm_up_database():
+    """Ejecuta una consulta ligera para inicializar la conexión a la base de datos.
+
+    Uso: llamada esperada al inicio de la aplicación para evitar latencias por
+    conexiones perezosas en la primera petición.
+    No devuelve valor y silencia cualquier excepción de conexión."""
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT COUNT(*) FROM cards_card")
@@ -43,7 +53,17 @@ def warm_up_database():
 
 
 def safe_append(query_parts, model, id_value, label, field):
-    """🛡️ CORREGIDO: Evita que IDs vacíos o inválidos rompan la construcción de la query."""
+    """Evita que IDs vacíos o inválidos rompan la construcción de la consulta.
+
+    Parámetros:
+    - query_parts: lista que recibe fragmentos de consulta.
+    - model: modelo Django usado para validar el id.
+    - id_value: valor del id que se quiere resolver.
+    - label: etiqueta que se añade a la consulta construida.
+    - field: campo del objeto para usar en la etiqueta.
+
+    Comportamiento: si `id_value` no es un entero válido o el objeto no existe,
+    la función no modifica `query_parts` y devuelve silenciosamente."""
     if not id_value or not str(id_value).isdigit():
         return
     try:
@@ -54,17 +74,22 @@ def safe_append(query_parts, model, id_value, label, field):
 
 
 def normalize(text):
-    """Quita acentos y pasa a minúsculas de forma segura."""
+    """Normaliza una cadena para comparaciones: devuelve minúsculas sin acentos.
+
+    Retorna una cadena vacía si la entrada es falsy. Utiliza NFD para separar
+    diacríticos y filtra los caracteres de marca."""
     if not text:
         return ""
     text = str(text).lower().strip()
-    return "".join(
-        c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
-    )
+    return "".join(c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn")
 
 
 def get_expanded_search_terms(query_raw: str) -> set:
-    """Busca coincidencias parciales y traducciones en diccionarios."""
+    """Expande un término de búsqueda con sinónimos y traducciones relevantes.
+
+    Devuelve un conjunto de términos en minúsculas que incluye la cadena
+    original normalizada y coincidencias encontradas en los mapeos
+    `POKEMON_ES_TO_TCG` y `TCG_TERMS`."""
     if not query_raw:
         return set()
 
@@ -85,7 +110,13 @@ def get_expanded_search_terms(query_raw: str) -> set:
 def build_search_query(
     query_raw: str, rarity=None, supertype=None, subtype=None, artist=None
 ) -> str:
-    """Construye consultas Lucene válidas para la API externa."""
+    """Construye una consulta Lucene para la API externa a partir de filtros.
+
+    Parámetros:
+    - query_raw: término de búsqueda ingresado por el usuario.
+    - rarity, supertype, subtype, artist: ids de modelos usados como filtros
+
+    Devuelve una cadena con la consulta preparada para enviar a la API."""
     query_parts = []
 
     if query_raw:
@@ -113,6 +144,11 @@ def build_search_query(
 
 
 def translate_query(query_raw: str) -> str:
+    """Traduce un término de búsqueda desde español a su equivalente TCG (inglés).
+
+    Busca coincidencias en el modelo `PokemonEspecie` y en los diccionarios de
+    mapeo del proyecto. Si no encuentra traducción, devuelve el término original
+    recortado."""
     if not query_raw:
         return ""
     q = normalize(query_raw)
@@ -132,11 +168,18 @@ def translate_query(query_raw: str) -> str:
 
 
 def invalidate_filter_options_cache():
+    """Elimina la entrada en caché que contiene las opciones de filtro.
+
+    Se usa después de crear nuevos registros relacionados con filtros
+    para forzar recálculo en la siguiente petición."""
     cache.delete("filter_options_all")
 
 
 def sync_api_filter_values():
-    """Sincroniza valores de la API en la base de datos para que los filtros muestren todo."""
+    """Solicita valores de filtros a la API externa y los persiste en la DB local.
+
+    Crea `Supertypes`, `Subtypes` y `Rarities` si no existen para asegurar que
+    los menús de filtro muestren todas las opciones disponibles."""
     mapping = [
         (Supertype, "supertypes", "display_name"),
         (Subtype, "subtypes", "display_name"),
@@ -155,6 +198,11 @@ def sync_api_filter_values():
 
 
 def get_filter_options(filter_name=None):
+    """Devuelve las opciones de filtro (cached) para filtros de la interfaz.
+
+    Si la caché está vacía o la base de datos no parece completa, sincroniza
+    los valores con la API externa antes de construir el resultado. Si se pasa
+    `filter_name`, devuelve solo ese subconjunto."""
     cache_key = "filter_options_all"
     filters = cache.get(cache_key)
 
@@ -181,6 +229,11 @@ def get_filter_options(filter_name=None):
 
 
 def get_local_card_by_id(card_id: str):
+    """Recupera una carta desde el archivo JSON local `todas_las_cartas_tcg.json`.
+
+    Busca por varios identificadores posibles (`id`, `pokemontcg_id`, `card_id`).
+    Devuelve el diccionario de la carta o `None` si no existe o si el archivo
+    no puede leerse correctamente."""
     json_path = os.path.join(settings.BASE_DIR, "todas_las_cartas_tcg.json")
     try:
         with open(json_path, "r", encoding="utf-8") as f:
@@ -196,6 +249,11 @@ def get_local_card_by_id(card_id: str):
 
 
 def extract_market_price(prices: dict):
+    """Extrae el precio de mercado del diccionario `prices` devuelto por TCGPlayer.
+
+    Intenta variantes habituales (`holofoil`, `normal`, `reverseHolofoil`) y
+    devuelve el primer `market` válido como `float`. Retorna `None` si no hay
+    precio disponible."""
     if not prices:
         return None
     for t in ["holofoil", "normal", "reverseHolofoil"]:
@@ -207,6 +265,10 @@ def extract_market_price(prices: dict):
 
 
 def format_card(card_data: dict):
+    """Normaliza la estructura de una carta para consumo del frontend.
+
+    Devuelve un diccionario con campos estándar (`id`, `name`, `images`,
+    `price`, `rarity`, `set_name`, etc.)."""
     if not card_data:
         return {}
     prices = card_data.get("tcgplayer", {}).get("prices", {})
@@ -214,22 +276,18 @@ def format_card(card_data: dict):
     return {
         "id": card_data.get("id"),
         "name": card_data.get("name"),
-        "image_url": card_data.get("image_url")
-        or card_data.get("images", {}).get("small", ""),
+        "image_url": card_data.get("image_url") or card_data.get("images", {}).get("small", ""),
         "images": card_data.get("images", {}),
         "price": price,
         "rarity": card_data.get("rarity", "N/A"),
-        "set_name": card_data.get("set_name")
-        or card_data.get("set", {}).get("name", "Unknown"),
+        "set_name": card_data.get("set_name") or card_data.get("set", {}).get("name", "Unknown"),
         "set": {
             "name": card_data.get("set", {}).get("name", "Desconocido"),
             "series": card_data.get("set", {}).get("series", ""),
         },
         "artist": card_data.get("artist", "Desconocido"),
         "supertype": card_data.get("supertype", "N/A"),
-        "subtype": card_data.get("subtypes", ["N/A"])[0]
-        if card_data.get("subtypes")
-        else "N/A",
+        "subtype": card_data.get("subtypes", ["N/A"])[0] if card_data.get("subtypes") else "N/A",
         "number": card_data.get("number", "N/A"),
         "hp": card_data.get("hp", "N/A"),
         "types": card_data.get("types", []),
@@ -237,6 +295,11 @@ def format_card(card_data: dict):
 
 
 def resolve_card_relations(card_data: dict):
+    """Resuelve y crea (si procede) las relaciones referenciales para una carta.
+
+    Retorna un dict con instancias para `rarity`, `supertype`, `subtype`,
+    `artist` y `pokemon_especie` cuando aplica. Invalida la caché de opciones
+    de filtro si se generan nuevos registros."""
     relations = {}
     if card_data.get("rarity"):
         rarity, created = Rarity.objects.get_or_create(
@@ -270,8 +333,7 @@ def resolve_card_relations(card_data: dict):
             invalidate_filter_options_cache()
     if card_data.get("name"):
         pokemon = PokemonEspecie.objects.filter(
-            Q(name_en__icontains=card_data["name"])
-            | Q(name_es__icontains=card_data["name"])
+            Q(name_en__icontains=card_data["name"]) | Q(name_es__icontains=card_data["name"])
         ).first()
         if pokemon:
             relations["pokemon_especie"] = pokemon
@@ -284,6 +346,8 @@ def resolve_card_relations(card_data: dict):
 
 
 class CardViewSet(viewsets.ModelViewSet):
+    """API REST para `Card` con operaciones CRUD y campos de búsqueda/filtrado."""
+
     queryset = Card.objects.all()
     serializer_class = CardSerializer
     search_fields = ["name"]
@@ -291,27 +355,25 @@ class CardViewSet(viewsets.ModelViewSet):
 
 
 def home(request):
+    """Renderiza la página de inicio del servicio."""
     return render(request, "home.html")
 
 
 @require_http_methods(["GET", "POST"])
 def register(request):
+    """Registra un nuevo usuario y realiza login automático.
+
+    Valida que las contraseñas coincidan y que el nombre de usuario no exista."""
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
         password_confirm = request.POST.get("password_confirm")
         if password != password_confirm:
-            return render(
-                request, "auth/register.html", {"error": "Las contraseñas no coinciden"}
-            )
+            return render(request, "auth/register.html", {"error": "Las contraseñas no coinciden"})
         if User.objects.filter(username=username).exists():
-            return render(
-                request, "auth/register.html", {"error": "El usuario ya existe"}
-            )
-        user = User.objects.create_user(
-            username=username, email=email, password=password
-        )
+            return render(request, "auth/register.html", {"error": "El usuario ya existe"})
+        user = User.objects.create_user(username=username, email=email, password=password)
         login(request, user)
         return redirect("home")
     return render(request, "auth/register.html")
@@ -319,6 +381,9 @@ def register(request):
 
 @require_http_methods(["GET", "POST"])
 def user_login(request):
+    """Autentica a un usuario con credenciales proporcionadas en el formulario.
+
+    En caso de fallo devuelve la plantilla con un mensaje de error."""
     if request.method == "POST":
         user = authenticate(
             request,
@@ -328,23 +393,21 @@ def user_login(request):
         if user:
             login(request, user)
             return redirect("home")
-        return render(
-            request, "auth/login.html", {"error": "Usuario o contraseña incorrectos"}
-        )
+        return render(request, "auth/login.html", {"error": "Usuario o contraseña incorrectos"})
     return render(request, "auth/login.html")
 
 
 def user_logout(request):
+    """Cierra la sesión del usuario y redirige a la página principal."""
     logout(request)
     return redirect("home")
 
 
 @login_required(login_url="login")
 def dashboard(request):
+    """Muestra el panel de usuario con las alertas asociadas."""
     alerts = request.user.alerts.all()
     return render(request, "dashboard.html", {"alerts": alerts})
-
-
 
 
 # ==========================================
@@ -354,6 +417,10 @@ def dashboard(request):
 
 @login_required(login_url="login")
 def search(request):
+    """Gestión de la búsqueda de cartas combinando DB local, JSON y API externa.
+
+    Soporta filtros por rareza, supertype, subtype y artista, y devuelve la
+    plantilla `search.html` con los resultados paginados."""
     query_raw = request.GET.get("q", "").strip()
     selected_sort = request.GET.get("sort", "")
     selected_supertype_id = request.GET.get("supertype", "")
@@ -378,10 +445,7 @@ def search(request):
     results = []
     total_pages = 1
 
-    # Pool unificado de cartas mapeadas por ID único
     unique_cards_map = {}
-
-    # 🌟 FUENTE 1: BASE DE DATOS LOCAL (Espejo estricto de las sugerencias)
     if (
         query_raw
         or selected_rarity_id
@@ -426,7 +490,6 @@ def search(request):
                 "artist": c.artist.name if c.artist else "Desconocido",
             }
 
-    # 🌟 FUENTE 2: API CENTRAL LIVE (Trae todo lo nuevo de internet de forma paralela)
     if api_query:
         try:
             api_data = fetch_cards(api_query)
@@ -438,7 +501,6 @@ def search(request):
         except Exception as e:
             logger.warning(f"API Externa no disponible o falló temporalmente: {e}")
 
-    # 🌟 FUENTE 3: ARCHIVO JSON LOCAL (Colchón de seguridad)
     json_path = os.path.join(settings.BASE_DIR, "todas_las_cartas_tcg.json")
     try:
         with open(json_path, "r", encoding="utf-8") as f:
@@ -477,26 +539,19 @@ def search(request):
                     card_name = card.get("name", "").lower()
                     if not any(term in card_name for term in target_terms):
                         match = False
-                if target_rarity and normalize(card.get("rarity")) != normalize(
-                    target_rarity
-                ):
+                if target_rarity and normalize(card.get("rarity")) != normalize(target_rarity):
                     match = False
                 if target_supertype and normalize(card.get("supertype")) != normalize(
                     target_supertype
                 ):
                     match = False
-                if target_artist and normalize(card.get("artist")) != normalize(
-                    target_artist
-                ):
+                if target_artist and normalize(card.get("artist")) != normalize(target_artist):
                     match = False
                 if target_subtype:
                     subtypes_list = card.get("subtypes", [])
                     if isinstance(subtypes_list, str):
                         subtypes_list = [subtypes_list]
-                    if not any(
-                        normalize(st) == normalize(target_subtype)
-                        for st in subtypes_list
-                    ):
+                    if not any(normalize(st) == normalize(target_subtype) for st in subtypes_list):
                         match = False
 
                 if match:
@@ -506,7 +561,6 @@ def search(request):
     except Exception as e:
         logger.warning(f"No se pudo procesar el JSON local ({e}).")
 
-    # Carga base inicial si no hay ninguna query activa
     if not unique_cards_map and not query_raw:
         try:
             api_data = fetch_cards("set.id:sv01")
@@ -515,10 +569,7 @@ def search(request):
         except Exception:
             pass
 
-    # Convertir el mapa de vuelta a lista ordenada
     all_cards = list(unique_cards_map.values())
-
-    # Asegurar que todos los valores de filtro se registren incluso para cartas fuera de la página actual
     for card_data in all_cards:
         resolve_card_relations(card_data)
 
@@ -545,21 +596,16 @@ def search(request):
             card_formatted = format_card(card_data)
 
             if not card_formatted.get("image_url"):
-                card_formatted["image_url"] = card_data.get(
-                    "image_url"
-                ) or card_data.get("images", {}).get("small", "")
-            if (
-                not card_formatted.get("set_name")
-                or card_formatted.get("set_name") == "Unknown"
-            ):
+                card_formatted["image_url"] = card_data.get("image_url") or card_data.get(
+                    "images", {}
+                ).get("small", "")
+            if not card_formatted.get("set_name") or card_formatted.get("set_name") == "Unknown":
                 card_formatted["set_name"] = card_data.get("set_name") or card_data.get(
                     "set", {}
                 ).get("name", "Unknown")
             if not card_formatted.get("price"):
                 card_formatted["price"] = (
-                    extract_market_price(
-                        card_data.get("tcgplayer", {}).get("prices", {})
-                    )
+                    extract_market_price(card_data.get("tcgplayer", {}).get("prices", {}))
                     if card_data.get("tcgplayer")
                     else card_data.get("price")
                 )
@@ -572,9 +618,7 @@ def search(request):
                 card_formatted["supertype"] = relations["supertype"].display_name
 
             card_formatted["id"] = (
-                card_data.get("id")
-                or card_data.get("pokemontcg_id")
-                or card_data.get("card_id")
+                card_data.get("id") or card_data.get("pokemontcg_id") or card_data.get("card_id")
             )
             results.append(card_formatted)
     else:
@@ -607,7 +651,14 @@ def search(request):
 
 @login_required(login_url="login")
 def search_suggestions(request):
-    """Sugerencias rápidas sincronizadas al 100% con la base de datos principal."""
+    """Proporciona sugerencias rápidas de cartas para autocompletar.
+
+    Flujo:
+    - Amplía el término de búsqueda con sinónimos y traducciones.
+    - Consulta la base de datos local y, si es necesario, la API externa.
+    - Devuelve hasta 10 resultados únicos ordenados por relevancia.
+
+    Devuelve JSON con campos: `name`, `image_url`, `set_name`, `pokemontcg_id`."""
     query = request.GET.get("q", "").strip()
     if not query or len(query) < 2:
         return JsonResponse([], safe=False)
@@ -658,13 +709,13 @@ def search_suggestions(request):
                 unique_cards.append(card)
 
         def score_card(card):
+            """Calcula una puntuación de relevancia simple para ordenar sugerencias.
+
+            Devuelve 0 si el nombre empieza por la query, 1 si la query está
+            contenida en el nombre, y 2 en caso contrario. Menor es mejor."""
             name_lower = card.get("name", "").lower()
             q_lower = query.lower()
-            return (
-                0
-                if name_lower.startswith(q_lower)
-                else (1 if q_lower in name_lower else 2)
-            )
+            return 0 if name_lower.startswith(q_lower) else (1 if q_lower in name_lower else 2)
 
         unique_cards.sort(key=score_card)
         unique_cards = unique_cards[:10]
@@ -687,12 +738,16 @@ def search_suggestions(request):
 @login_required(login_url="login")
 @require_POST
 def create_alert(request):
+    """Crea una alerta de precio para la carta indicada por el usuario.
+
+    Valida el porcentaje de descuento y el precio actual, sincroniza la carta
+    con la API si no existe localmente, y almacena la alerta activa en la DB."""
     pokemontcg_id = request.POST.get("pokemontcg_id")
     discount_percentage = request.POST.get("discount_percentage")
     current_price_str = request.POST.get("current_price")
 
     if not pokemontcg_id or not discount_percentage or current_price_str == "N/A":
-        messages.error(request, "❌ No se puede crear una alerta sin un precio válido.")
+        messages.error(request, "No se puede crear una alerta sin un precio válido.")
         return redirect("search")
 
     try:
@@ -717,7 +772,7 @@ def create_alert(request):
                     **relations,
                 )
             else:
-                messages.error(request, "❌ No se pudo obtener la carta de la API.")
+                messages.error(request, "No se pudo obtener la carta de la API.")
                 return redirect("search")
 
         PriceAlert.objects.create(
@@ -727,24 +782,35 @@ def create_alert(request):
             target_price=round(target_price, 2),
             is_active=True,
         )
-        messages.success(request, f"✅ Alerta creada para ${round(target_price, 2)}.")
+        messages.success(request, f"Alerta creada para ${round(target_price, 2)}.")
         return redirect("dashboard")
     except Exception as e:
-        messages.error(request, f"❌ Error: {str(e)}")
+        messages.error(request, f"Error: {str(e)}")
         return redirect("search")
 
 
 @login_required(login_url="login")
 @require_http_methods(["GET", "POST"])
 def edit_alert(request, alert_id):
+    """Permite editar el porcentaje de descuento de una alerta existente.
+
+    Actualiza el `discount_percentage` y recalcula el `target_price` sobre el
+    precio base de la carta, mostrando el histórico de precios disponibles."""
     alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
     historial = PriceHistory.objects.filter(card=alert.card).order_by("recorded_at")
+
     if request.method == "POST":
         discount_percentage = request.POST.get("discount_percentage")
         if discount_percentage and discount_percentage.isdigit():
-            alert.discount_percentage = int(discount_percentage)
+            nuevo_porcentaje = int(discount_percentage)
+            alert.discount_percentage = nuevo_porcentaje
+
+            precio_base = float(alert.card.price or 0.0)
+            alert.target_price = precio_base * (1.0 - (nuevo_porcentaje / 100.0))
+            # -----------------------------------------------------------------
+
             alert.save()
-            messages.success(request, "✅ Alerta actualizada correctamente.")
+            messages.success(request, "Alerta y precio objetivo actualizados correctamente.")
             return redirect("dashboard")
 
     context = {
@@ -754,37 +820,61 @@ def edit_alert(request, alert_id):
     }
     return render(request, "alerts/edit_alert.html", context)
 
+
 @login_required(login_url="login")
 def card_detail(request, card_id):
-    """
-    Renderiza el detalle de una carta Pokémon TCG.
+    """Renderiza el detalle de una carta Pokémon TCG.
     Aplica una estrategia de tres capas: Caché -> DB Local -> API/JSON Externo.
-    Garantiza el registro histórico diario bajo demanda para poblar el gráfico de precios.
-    """
+    Garantiza el registro histórico diario bajo demanda para poblar el gráfico de precios."""
     if not card_id:
         return render(
             request,
             "card_detail.html",
             {"card": {}, "market_price": "N/A", "error": "Identificador de carta no válido."},
         )
-        
+
     # 1. Estrategia de Caché Dinámica
     cache_key = f"card_detail_{card_id}"
     cached_context = cache.get(cache_key)
     if cached_context:
         logger.info(f"[CACHE HIT] Sirviendo detalles para la carta: {card_id}")
+        # Garantizar que exista un punto histórico para hoy aunque vengamos de la caché.
+        try:
+            card_obj = Card.objects.filter(pokemontcg_id=card_id).first()
+            try:
+                price_from_cache = float(cached_context.get("market_price") or 0)
+            except Exception:
+                price_from_cache = 0.0
+
+            if card_obj and price_from_cache > 0:
+                hoy = timezone.now().date()
+                if not PriceHistory.objects.filter(card=card_obj, recorded_at__date=hoy).exists():
+                    PriceHistory.objects.create(
+                        card=card_obj,
+                        price=price_from_cache,
+                        marketplace="tcgplayer",
+                    )
+                    # Invalidar la caché para forzar una próxima recarga fresca
+                    try:
+                        cache.delete(cache_key)
+                    except Exception:
+                        pass
+                    logger.info(
+                        f"[CACHE FIX] Creado PriceHistory desde caché para {card_id}: ${price_from_cache}"
+                    )
+        except Exception as e:
+            logger.warning(f"[CACHE FIX] No se pudo asegurar PriceHistory desde caché: {e}")
+
         return render(request, "card_detail.html", cached_context)
 
     error = None
     card_data_payload = {}
     market_price = "0.00"
     final_parsed_price = 0.0
-    
+
     # 2. Consulta en Base de Datos Local con Carga Optimizada
     card_obj = (
-        Card.objects.select_related(
-            "rarity", "supertype", "subtype", "artist", "pokemon_especie"
-        )
+        Card.objects.select_related("rarity", "supertype", "subtype", "artist", "pokemon_especie")
         .filter(pokemontcg_id=card_id)
         .first()
     )
@@ -795,7 +885,7 @@ def card_detail(request, card_id):
         has_image = bool(card_obj.image_url)
         has_valid_set = card_obj.set_name and card_obj.set_name.lower() != "desconocido"
         has_price_registered = card_obj.price is not None and float(card_obj.price) > 0
-        
+
         if has_image and has_valid_set and has_price_registered:
             is_local_data_valid = True
 
@@ -816,22 +906,30 @@ def card_detail(request, card_id):
             "number": card_obj.number,
         }
         market_price = f"{final_parsed_price:.2f}"
-        
+
     else:
         # 3. Datos locales inexistentes o deficientes: Pipeline de sincronización externa
         if card_obj:
-            logger.warning(f"[DATA CORRUPTION] Datos insuficientes en DB para {card_id}. Forzando actualización externa.")
+            logger.warning(
+                f"[DATA CORRUPTION] Datos insuficientes en DB para {card_id}. Forzando actualización externa."
+            )
         else:
             logger.info(f"[DATABASE MISS] Carta {card_id} ausente localmente.")
 
         api_response_source = get_local_card_by_id(card_id)
-        
-        if api_response_source and (not api_response_source.get("image_url") and not api_response_source.get("images")):
-            logger.warning(f"[JSON CORRUPT] El JSON estático carece de recursos multimedia para {card_id}. Escalando a API.")
+
+        if api_response_source and (
+            not api_response_source.get("image_url") and not api_response_source.get("images")
+        ):
+            logger.warning(
+                f"[JSON CORRUPT] El JSON estático carece de recursos multimedia para {card_id}. Escalando a API."
+            )
             api_response_source = None
 
         if api_response_source:
-            logger.info(f"[STATIC JSON HIT] Datos base recuperados del repositorio estático para {card_id}.")
+            logger.info(
+                f"[STATIC JSON HIT] Datos base recuperados del repositorio estático para {card_id}."
+            )
         else:
             logger.info(f"[API HIT] Consultando endpoints oficiales de Pokémon TCG para: {card_id}")
             try:
@@ -844,19 +942,31 @@ def card_detail(request, card_id):
         if api_response_source and not error:
             relations = resolve_card_relations(api_response_source)
             card_data_payload = format_card(api_response_source)
-            card_data_payload["id"] = card_id  
-            
+            card_data_payload["id"] = card_id
+
             extracted_price = card_data_payload.get("price") or api_response_source.get("price")
-            
-            if not extracted_price and "tcgplayer" in api_response_source and "prices" in api_response_source["tcgplayer"]:
+
+            if (
+                not extracted_price
+                and "tcgplayer" in api_response_source
+                and "prices" in api_response_source["tcgplayer"]
+            ):
                 tcg_market_prices = api_response_source["tcgplayer"]["prices"]
-                print_variants = ["holofoil", "reverseHolofoil", "normal", "1stEditionHolofoil", "unlimitedHolofoil"]
+                print_variants = [
+                    "holofoil",
+                    "reverseHolofoil",
+                    "normal",
+                    "1stEditionHolofoil",
+                    "unlimitedHolofoil",
+                ]
                 for variant in print_variants:
                     if variant in tcg_market_prices and tcg_market_prices[variant]:
-                        extracted_price = tcg_market_prices[variant].get("market") or tcg_market_prices[variant].get("mid")
+                        extracted_price = tcg_market_prices[variant].get(
+                            "market"
+                        ) or tcg_market_prices[variant].get("mid")
                         if extracted_price:
                             break
-            
+
             try:
                 final_parsed_price = float(extracted_price) if extracted_price else 0.0
             except (ValueError, TypeError):
@@ -870,29 +980,37 @@ def card_detail(request, card_id):
             if relations.get("artist"):
                 card_data_payload["artist"] = getattr(relations["artist"], "name", "Desconocido")
             if relations.get("supertype"):
-                card_data_payload["supertype"] = getattr(relations["supertype"], "display_name", "N/A")
+                card_data_payload["supertype"] = getattr(
+                    relations["supertype"], "display_name", "N/A"
+                )
             if relations.get("subtype"):
                 card_data_payload["subtype"] = getattr(relations["subtype"], "display_name", "N/A")
             if relations.get("pokemon_especie"):
-                card_data_payload["pokemon"] = getattr(relations["pokemon_especie"], "name_en", None)
-            
+                card_data_payload["pokemon"] = getattr(
+                    relations["pokemon_especie"], "name_en", None
+                )
+
             inferred_set_name = None
             if "set" in api_response_source and isinstance(api_response_source["set"], dict):
                 inferred_set_name = api_response_source["set"].get("name")
-            
+
             resolved_set_name = (
-                card_data_payload.get("set_name") or 
-                card_data_payload.get("set", {}).get("name") or 
-                inferred_set_name or 
-                api_response_source.get("set_name") or 
-                "Desconocido"
+                card_data_payload.get("set_name")
+                or card_data_payload.get("set", {}).get("name")
+                or inferred_set_name
+                or api_response_source.get("set_name")
+                or "Desconocido"
             )
             card_data_payload["set"] = {"name": resolved_set_name}
             card_data_payload["set_name"] = resolved_set_name
 
-            fallback_small = card_data_payload.get("image_url") or api_response_source.get("images", {}).get("small")
-            fallback_large = card_data_payload.get("image_url") or api_response_source.get("images", {}).get("large")
-            
+            fallback_small = card_data_payload.get("image_url") or api_response_source.get(
+                "images", {}
+            ).get("small")
+            fallback_large = card_data_payload.get("image_url") or api_response_source.get(
+                "images", {}
+            ).get("large")
+
             if "images" not in card_data_payload or not card_data_payload["images"]:
                 card_data_payload["images"] = {"small": fallback_small, "large": fallback_large}
             else:
@@ -900,7 +1018,7 @@ def card_detail(request, card_id):
                     card_data_payload["images"]["small"] = fallback_small
                 if not card_data_payload["images"].get("large"):
                     card_data_payload["images"]["large"] = fallback_large
-            
+
             # 4. Persistencia Atómica y Reparación del Registro Local
             card_obj, _ = Card.objects.update_or_create(
                 pokemontcg_id=card_id,
@@ -914,54 +1032,57 @@ def card_detail(request, card_id):
                 },
             )
             logger.info(f"[DB SYNCHRONIZED] Sincronización exitosa para {card_id}.")
-            
-        elif not api_response_source and not error:
-            error = "La carta solicitada no pudo ser localizada en los repositorios locales ni remotos."
 
-    # --- 🕒 INYECCIÓN PARA HISTÓRICO DE PRECIOS BAJO DEMANDA ---
+        elif not api_response_source and not error:
+            error = (
+                "La carta solicitada no pudo ser localizada en los repositorios locales ni remotos."
+            )
+
     if not error and card_obj and final_parsed_price > 0:
         hoy = timezone.now().date()
         ya_existe_hoy = PriceHistory.objects.filter(card=card_obj, recorded_at__date=hoy).exists()
-        
+
         if not ya_existe_hoy:
             PriceHistory.objects.create(
-                card=card_obj,
-                price=final_parsed_price,
-                marketplace="tcgplayer"
+                card=card_obj, price=final_parsed_price, marketplace="tcgplayer"
             )
-            logger.info(f"[📉 CHART UPDATE] Nuevo punto histórico creado hoy para {card_id}: ${final_parsed_price}")
+            logger.info(
+                f"[📉 CHART UPDATE] Nuevo punto histórico creado hoy para {card_id}: ${final_parsed_price}"
+            )
 
     # 5. Despacho y Almacenamiento en Caché del Contexto Final
     context = {"card": card_data_payload, "market_price": market_price, "error": error}
-    
+
     if not error and card_data_payload:
         # Almacenamiento TTL por 24 Horas
         cache.set(cache_key, context, 60 * 60 * 24)
-        
+
     return render(request, "card_detail.html", context)
 
 
 @login_required
 @require_POST
 def delete_alert(request, alert_id):
+    """Elimina una `PriceAlert` propiedad del usuario autenticado.
+
+    Valida la pertenencia (seguridad) y borra el registro. Redirige al
+    dashboard mostrando un mensaje de confirmación."""
     alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
     alert.delete()
-    messages.success(request, "✅ Alerta personalizada eliminada correctamente.")
+    messages.success(request, "Alerta personalizada eliminada correctamente.")
     return redirect("dashboard")
 
 
 @require_GET
 def card_price_history(_request, card_id):
-    """
-    Devuelve los datos de evolución de precios de los últimos 30 días para el gráfico.
-    """
+    """Devuelve los datos de evolución de precios de los últimos 30 días para el gráfico."""
     try:
         card = Card.objects.get(pokemontcg_id=card_id)
         last_30_days = timezone.now() - timedelta(days=30)
-        history = PriceHistory.objects.filter(
-            card=card, recorded_at__gte=last_30_days
-        ).order_by("recorded_at")
-        
+        history = PriceHistory.objects.filter(card=card, recorded_at__gte=last_30_days).order_by(
+            "recorded_at"
+        )
+
         return JsonResponse(
             {
                 "dates": [h.recorded_at.strftime("%d/%m") for h in history],

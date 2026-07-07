@@ -1,3 +1,5 @@
+"""Comando de administración para verificar precios de alertas activas y enviar notificaciones."""
+
 import os
 
 from django.core.management.base import BaseCommand
@@ -7,9 +9,19 @@ import requests
 
 
 class Command(BaseCommand):
+    """Comando que verifica precios de alertas activas y envía notificaciones.
+
+    `handle` itera las alertas activas, consulta la API externa para el precio
+    actual y compara con el objetivo del usuario. Si se cumple la condición,
+    envía un correo y desactiva la alerta."""
+
     help = "Verifica los precios y envía correos si bajan"
 
     def handle(self, *args, **options):
+        """Ejecuta la comprobación de precios y notifica por correo si procede.
+
+        Muestra mensajes por stdout para seguimiento manual y captura errores
+        para evitar abortos del comando."""
         # 1. Ver cuántas alertas hay activas
         alerts = PriceAlert.objects.filter(is_active=True)
         self.stdout.write("🔍 Buscando alertas activas en la Base de Datos...")
@@ -36,9 +48,7 @@ class Command(BaseCommand):
 
                 if current_price > 0 and current_price <= float(alert.target_price):
                     if alert.user.email:
-                        self.stdout.write(
-                            "🚀 ¡OFERTA DETECTADA! Intentando enviar correo real..."
-                        )
+                        self.stdout.write("🚀 ¡OFERTA DETECTADA! Intentando enviar correo real...")
 
                         send_mail(
                             subject=f"¡Alerta de Precio! 🔥 {alert.card.name} ha bajado",
@@ -48,9 +58,7 @@ class Command(BaseCommand):
                             fail_silently=False,
                         )
 
-                        self.stdout.write(
-                            f"✅ ¡Correo enviado con éxito a {alert.user.email}!"
-                        )
+                        self.stdout.write(f"✅ ¡Correo enviado con éxito a {alert.user.email}!")
                         alert.is_active = False
                         alert.save()
                 else:

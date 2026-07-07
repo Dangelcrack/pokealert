@@ -1,3 +1,6 @@
+"""Configuración de enrutamiento URL del proyecto.
+
+Define las rutas de administración, autenticación, API REST y vistas de frontend."""
 
 from django.contrib import admin
 from django.urls import path, include

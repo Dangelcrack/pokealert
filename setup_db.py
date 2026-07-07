@@ -1,3 +1,9 @@
+"""
+Script de configuración inicial de la base de datos.
+
+Ejecuta migraciones y crea un superusuario admin si no existe.
+"""
+
 import os
 import django
 from django.core.management import execute_from_command_line

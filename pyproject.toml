@@ -1,0 +1,83 @@
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py314']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directorios
+  \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip_gitignore = true
+known_first_party = ["cards", "alerts", "tasks", "users", "config"]
+
+[tool.flake8]
+max-line-length = 100
+exclude = [
+    ".git",
+    "__pycache__",
+    "venv",
+    "migrations",
+    ".venv",
+    "build",
+    "dist",
+]
+ignore = [
+    "E203",
+    "E501",
+    "W503",
+    "W504",
+]
+per-file-ignores = [
+    "__init__.py:F401",
+    "settings.py:E402",
+]
+
+[tool.pydocstyle]
+convention = "google"
+match = '(?!test_).*\.py'
+match-dir = '(?!tests|migrations|venv)'
+ignore = [
+    "D100",
+    "D104",
+    "D105",
+    "D107",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "--cov=cards --cov=alerts --cov=tasks --cov=users --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["cards", "alerts", "tasks", "users", "config"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if False:",
+]

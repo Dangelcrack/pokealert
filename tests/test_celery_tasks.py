@@ -1,3 +1,5 @@
+"""Pruebas de comandos y tareas Celery para la lógica de alertas y sincronización."""
+
 import pytest
 from django.core.management import call_command
 from django.contrib.auth.models import User
@@ -19,9 +21,7 @@ def setup_data(db):
 
 @pytest.mark.django_db
 def test_check_prices_command(setup_data):
-    """
-    Ejecuta el comando check_prices y verifica que no falle.
-    """
+    """Ejecuta el comando check_prices y verifica que no falle."""
 
     try:
         call_command("check_prices")

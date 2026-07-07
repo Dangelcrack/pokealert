@@ -1,3 +1,8 @@
+"""Serializadores de API para la aplicación `alerts`.
+
+Define la serialización de `PriceAlert` y `PriceHistory` para los endpoints
+de la API REST."""
+
 import os
 import requests
 from rest_framework import serializers
@@ -7,19 +12,31 @@ from cards.serializers import CardSerializer
 
 
 class PriceHistorySerializer(serializers.ModelSerializer):
+    """Serializador read-only para el modelo `PriceHistory`.
+
+    Incluye los campos mínimos necesarios para representar puntos del histórico
+    en las APIs públicas o internas."""
+
     class Meta:
+        """Meta para `PriceHistorySerializer` que define campos expuestos."""
+
         model = PriceHistory
         fields = ["id", "price", "source", "recorded_at"]
 
 
 class PriceAlertSerializer(serializers.ModelSerializer):
+    """Serializador para crear/leer `PriceAlert`.
+
+    - En creación valida la existencia de precio de mercado en la API externa.
+    - Evita duplicados por usuario y carta."""
+
     card = CardSerializer(read_only=True)
     pokemontcg_id = serializers.CharField(write_only=True)
-    discount_percentage = serializers.IntegerField(
-        write_only=True, min_value=1, max_value=99
-    )
+    discount_percentage = serializers.IntegerField(write_only=True, min_value=1, max_value=99)
 
     class Meta:
+        """Meta para `PriceAlertSerializer` que define campos y lecturas."""
+
         model = PriceAlert
         fields = [
             "id",
@@ -34,6 +51,14 @@ class PriceAlertSerializer(serializers.ModelSerializer):
         read_only_fields = ["user", "target_price", "is_active"]
 
     def create(self, validated_data):
+        """Crea una `PriceAlert` validando datos externos y duplicados.
+
+        Flujo:
+        1) Consulta la API externa para obtener `market_price`.
+        2) Normaliza rareza y asegura la existencia de `Card` local.
+        3) Calcula `target_price` según `discount_percentage`.
+        4) Crea la alerta si no existe ya para el usuario.
+        Levanta `serializers.ValidationError` en caso de fallo."""
         pokemontcg_id = validated_data.pop("pokemontcg_id")
         discount_percentage = validated_data.pop("discount_percentage")
         user = self.context["request"].user
@@ -54,9 +79,7 @@ class PriceAlertSerializer(serializers.ModelSerializer):
 
             if response.status_code != 200:
                 raise serializers.ValidationError(
-                    {
-                        "pokemontcg_id": f"La API devolvió código de error: {response.status_code}"
-                    }
+                    {"pokemontcg_id": f"La API devolvió código de error: {response.status_code}"}
                 )
 
             api_data = response.json().get("data", {})
@@ -66,9 +89,7 @@ class PriceAlertSerializer(serializers.ModelSerializer):
                 {"pokemontcg_id": f"Error de conexión con la API: {str(e)}"}
             )
         except Exception as e:
-            raise serializers.ValidationError(
-                {"pokemontcg_id": f"Error inesperado: {str(e)}"}
-            )
+            raise serializers.ValidationError({"pokemontcg_id": f"Error inesperado: {str(e)}"})
 
         # 2. Extraer precio de mercado
         tcgplayer_prices = api_data.get("tcgplayer", {}).get("prices", {})

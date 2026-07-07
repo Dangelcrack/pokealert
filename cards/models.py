@@ -1,60 +1,77 @@
+"""Modelos de la aplicación `cards`.
+
+Define cartas, atributos de referencia TCG y especies Pokémon usadas en la
+lógica de búsqueda y sincronización."""
+
 from django.db import models
 
 
 class Rarity(models.Model):
-    """Rarities disponibles del Pokémon TCG"""
+    """Rarities disponibles del Pokémon TCG."""
 
     name = models.CharField(max_length=50, unique=True)
     display_name = models.CharField(max_length=100)
 
     def __str__(self):
+        """Representación legible de la rareza (display_name)."""
         return self.display_name
 
     class Meta:
+        """Meta para `Rarity` que define representación plural y orden por nombre."""
+
         verbose_name_plural = "Rarities"
         ordering = ["name"]
 
 
 class Supertype(models.Model):
-    """Supertypes del TCG (Pokémon, Trainer, Energy, etc.)"""
+    """Supertypes del TCG (Pokémon, Trainer, Energy, etc.)."""
 
     name = models.CharField(max_length=100, unique=True)
     display_name = models.CharField(max_length=100)
 
     def __str__(self):
+        """Representación legible del supertipo (display_name)."""
         return self.display_name
 
     class Meta:
+        """Meta para `Supertype` que define orden por nombre."""
+
         ordering = ["name"]
 
 
 class Subtype(models.Model):
-    """Subtypes del TCG"""
+    """Subtypes del TCG."""
 
     name = models.CharField(max_length=100, unique=True)
     display_name = models.CharField(max_length=100)
 
     def __str__(self):
+        """Representación legible del subtipo (display_name)."""
         return self.display_name
 
     class Meta:
+        """Meta para `Subtype` que define orden por nombre."""
+
         ordering = ["name"]
 
 
 class Artist(models.Model):
-    """Artistas de las cartas"""
+    """Artistas de las cartas."""
 
     name = models.CharField(max_length=255, unique=True, db_index=True)
 
     def __str__(self):
+        """Representación legible del artista (nombre)."""
         return self.name
 
     class Meta:
+        """Meta para `Artist` que define orden por nombre."""
+
         ordering = ["name"]
 
 
 class PokemonEspecie(models.Model):
-    """Especies Pokémon del Pokédex"""
+    """Especies Pokémon del Pokédex."""
 
     numero_pokedex = models.IntegerField(unique=True)
     name_en = models.CharField(max_length=100, db_index=True)
@@ -64,16 +81,19 @@ class PokemonEspecie(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        """Representación legible de la especie con número de Pokédex y nombre en inglés."""
         return f"#{self.numero_pokedex} - {self.name_en}"
 
     class Meta:
+        """Meta para `PokemonEspecie` con nombres legibles y orden por número de Pokédex."""
+
         verbose_name = "Especie Pokémon"
         verbose_name_plural = "Especies Pokémon"
         ordering = ["numero_pokedex"]
 
 
 class Card(models.Model):
-    """Cartas del Pokémon TCG"""
+    """Cartas del Pokémon TCG."""
 
     # IDs y metadata básico
     pokemontcg_id = models.CharField(max_length=255, unique=True, db_index=True)
@@ -116,18 +136,19 @@ class Card(models.Model):
 
     # Metadata adicional
     hp = models.IntegerField(null=True, blank=True)
-    types = models.CharField(
-        max_length=255, null=True, blank=True
-    )  # JSON string o similar
+    types = models.CharField(max_length=255, null=True, blank=True)  # JSON string o similar
 
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        """Representación legible de la carta: nombre y set."""
         return f"{self.name} ({self.set_name})"
 
     class Meta:
+        """Meta para `Card`: orden por fecha y varios índices para búsquedas frecuentes."""
+
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=["pokemontcg_id"]),

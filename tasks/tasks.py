@@ -1,3 +1,8 @@
+"""Tareas periódicas del sistema.
+
+Incluye actualización de históricos de precio y sincronización de especies
+Pokémon para el modelo `PokemonEspecie`."""
+
 import os
 import logging
 import requests
@@ -7,9 +12,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 from django.db import IntegrityError
+from django.core.cache import cache
 
 from cards.models import Card, PokemonEspecie
-from cards.views import extract_market_price 
+from cards.views import extract_market_price
 from alerts.models import PriceAlert, PriceHistory
 
 logger = logging.getLogger(__name__)
@@ -19,10 +25,8 @@ TCG_API_URL = "https://api.pokemontcg.io/v2/cards"
 
 @shared_task
 def check_pokemon_prices():
-    """
-    Escanea cartas del sistema, actualiza sus precios de mercado en el histórico
-    y evalúa las alertas activas disparando correos si se cumple la condición.
-    """
+    """Escanea cartas del sistema, actualiza sus precios de mercado en el histórico
+    y evalúa las alertas activas disparando correos si se cumple la condición."""
     try:
         # Modificación: Buscamos todas las cartas que requieran seguimiento histórico (con o sin alertas activas)
         # para evitar congelar el gráfico una vez que la alerta del usuario se desactive.
@@ -59,16 +63,20 @@ def check_pokemon_prices():
 
                         # Actualizar precio base en la carta
                         card.price = market_price_float
-                        card.save(update_fields=['price'])
+                        card.save(update_fields=["price"])
+                        try:
+                            cache.delete(f"card_detail_{card.pokemontcg_id}")
+                        except Exception:
+                            pass
 
                         # Evitar duplicados del mismo día en la ejecución de la tarea
                         hoy = timezone.now().date()
-                        if not PriceHistory.objects.filter(card=card, recorded_at__date=hoy).exists():
+                        if not PriceHistory.objects.filter(
+                            card=card, recorded_at__date=hoy
+                        ).exists():
                             prices_to_create.append(
                                 PriceHistory(
-                                    card=card, 
-                                    price=market_price_float, 
-                                    marketplace="tcgplayer"
+                                    card=card, price=market_price_float, marketplace="tcgplayer"
                                 )
                             )
                         saved_count += 1
@@ -94,12 +102,12 @@ def check_pokemon_prices():
                         pass
 
         # 3. Evaluar y disparar correos electrónicos para alertas ACTIVAS
-        active_alerts = PriceAlert.objects.filter(is_active=True).select_related('card', 'user')
+        active_alerts = PriceAlert.objects.filter(is_active=True).select_related("card", "user")
         for alert in active_alerts:
             card = alert.card
             if card.pokemontcg_id in updated_prices_map:
                 live_price = updated_prices_map[card.pokemontcg_id]
-                
+
                 if alert.target_price:
                     target = float(alert.target_price)
                     is_triggered = live_price <= target
@@ -119,12 +127,12 @@ def check_pokemon_prices():
                             f"Precio actual de mercado: ${live_price:.2f}\n\n"
                             f"¡Es el momento ideal para comprar!"
                         ),
-                        from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'pokealert@example.com'),
+                        from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "pokealert@example.com"),
                         recipient_list=[alert.user.email],
                         fail_silently=False,
                     )
                     alert.is_active = False
-                    alert.save(update_fields=['is_active'])
+                    alert.save(update_fields=["is_active"])
 
         # 4. Limpieza automática de datos históricos obsoletos (> 90 días)
         deleted_count, _ = PriceHistory.objects.filter(
@@ -143,10 +151,8 @@ def check_pokemon_prices():
 
 @shared_task
 def actualizar_pokedex_automatica():
-    """
-    Sincroniza el listado básico de especies desde PokéAPI mapeando
-    directamente a tu modelo real PokemonEspecie.
-    """
+    """Sincroniza el listado básico de especies desde PokéAPI mapeando
+    directamente a tu modelo real PokemonEspecie."""
     url = "https://pokeapi.co/api/v2/pokemon?limit=1500"
 
     try:
@@ -160,12 +166,8 @@ def actualizar_pokedex_automatica():
                 url_imagen = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{index}.png"
 
                 obj, created = PokemonEspecie.objects.get_or_create(
-                    numero_pokedex=index, 
-                    defaults={
-                        "name_en": nombre_api, 
-                        "name_es": "", 
-                        "image": url_imagen
-                    }
+                    numero_pokedex=index,
+                    defaults={"name_en": nombre_api, "name_es": "", "image": url_imagen},
                 )
                 if created:
                     nuevos_count += 1

@@ -1,7 +1,7 @@
+"""Configuración principal de Django para el proyecto PokeAlert."""
+
 # config/settings.py (PRODUCCIÓN)
-"""
-Django settings for config project.
-"""
+"""Django settings for config project."""
 
 import os
 from pathlib import Path
@@ -37,24 +37,21 @@ INSTALLED_APPS = [
     "alerts",
     "tasks",
     "users",
-
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-
     "allauth.account.middleware.AccountMiddleware",
-
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -113,9 +110,9 @@ USE_I18N = True
 USE_TZ = True
 
 # ===================== STATIC FILES =====================
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -171,8 +168,7 @@ CELERY_BEAT_SCHEDULE = {
 
 # ===================== SECURITY =====================
 CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "http://localhost:8000,http://127.0.0.1:8000"
+    "CSRF_TRUSTED_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000"
 ).split(",")
 
 # En producción con HTTPS
@@ -242,11 +238,13 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.environ.get('GOOGLE_CLIENT_ID', 'tu-client-id-de-desarrollo-local'),
-            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', 'tu-client-secret-de-desarrollo-local'),
-            'key': ''
+    "google": {
+        "APP": {
+            "client_id": os.environ.get("GOOGLE_CLIENT_ID", "tu-client-id-de-desarrollo-local"),
+            "secret": os.environ.get(
+                "GOOGLE_CLIENT_SECRET", "tu-client-secret-de-desarrollo-local"
+            ),
+            "key": "",
         }
     }
 }

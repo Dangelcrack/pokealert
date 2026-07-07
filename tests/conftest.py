@@ -1,3 +1,5 @@
+"""Fixtures de pytest utilizadas por los tests de integración y APIs."""
+
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
