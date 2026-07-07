@@ -758,8 +758,8 @@ def edit_alert(request, alert_id):
 def card_detail(request, card_id):
     """
     Renderiza el detalle de una carta Pokémon TCG.
-    Aplica una estrategia de tres capas: Caché (Redis/Memcached) -> DB Local -> API/JSON Externo.
-    Garantiza la autorreparación de registros corruptos o incompletos de forma proactiva.
+    Aplica una estrategia de tres capas: Caché -> DB Local -> API/JSON Externo.
+    Garantiza el registro histórico diario bajo demanda para poblar el gráfico de precios.
     """
     if not card_id:
         return render(
@@ -778,8 +778,9 @@ def card_detail(request, card_id):
     error = None
     card_data_payload = {}
     market_price = "0.00"
+    final_parsed_price = 0.0
     
-    # 2. Consulta en Base de Datos Local con Carga Optimizada (select_related)
+    # 2. Consulta en Base de Datos Local con Carga Optimizada
     card_obj = (
         Card.objects.select_related(
             "rarity", "supertype", "subtype", "artist", "pokemon_especie"
@@ -800,12 +801,12 @@ def card_detail(request, card_id):
 
     if card_obj and is_local_data_valid:
         logger.info(f"[DATABASE HIT] Registro íntegro para {card_id}. Evitando tráfico de red.")
-        price = float(card_obj.price or 0)
+        final_parsed_price = float(card_obj.price or 0)
         card_data_payload = {
             "id": card_obj.pokemontcg_id,
             "name": card_obj.name,
             "images": {"small": card_obj.image_url, "large": card_obj.image_url},
-            "price": price,
+            "price": final_parsed_price,
             "rarity": card_obj.rarity.display_name if card_obj.rarity else "N/A",
             "artist": card_obj.artist.name if card_obj.artist else "Desconocido",
             "supertype": card_obj.supertype.display_name if card_obj.supertype else "N/A",
@@ -814,19 +815,17 @@ def card_detail(request, card_id):
             "set": {"name": card_obj.set_name},
             "number": card_obj.number,
         }
-        market_price = f"{price:.2f}"
+        market_price = f"{final_parsed_price:.2f}"
         
     else:
-        # 3. Datos locales inexistentes o deficientes: Activación del pipeline de sincronización externa
+        # 3. Datos locales inexistentes o deficientes: Pipeline de sincronización externa
         if card_obj:
             logger.warning(f"[DATA CORRUPTION] Datos insuficientes en DB para {card_id}. Forzando actualización externa.")
         else:
             logger.info(f"[DATABASE MISS] Carta {card_id} ausente localmente.")
 
-        # Intentar recuperación mediante fallback de JSON local de respaldo
         api_response_source = get_local_card_by_id(card_id)
         
-        # Validar anomalías estructurales en el JSON de respaldo local
         if api_response_source and (not api_response_source.get("image_url") and not api_response_source.get("images")):
             logger.warning(f"[JSON CORRUPT] El JSON estático carece de recursos multimedia para {card_id}. Escalando a API.")
             api_response_source = None
@@ -843,19 +842,14 @@ def card_detail(request, card_id):
                 api_response_source = None
 
         if api_response_source and not error:
-            # Procesamiento e inyección de dependencias de datos
             relations = resolve_card_relations(api_response_source)
             card_data_payload = format_card(api_response_source)
-            
-            # Sanitización del identificador único para inyección en scripts de Frontend
             card_data_payload["id"] = card_id  
             
-            # --- PARSEO SEGURO Y ROBUSTO DE PRECIOS DE MERCADO ---
             extracted_price = card_data_payload.get("price") or api_response_source.get("price")
             
             if not extracted_price and "tcgplayer" in api_response_source and "prices" in api_response_source["tcgplayer"]:
                 tcg_market_prices = api_response_source["tcgplayer"]["prices"]
-                # Secuencia de prioridad para variantes de impresión holográficas y convencionales
                 print_variants = ["holofoil", "reverseHolofoil", "normal", "1stEditionHolofoil", "unlimitedHolofoil"]
                 for variant in print_variants:
                     if variant in tcg_market_prices and tcg_market_prices[variant]:
@@ -870,9 +864,7 @@ def card_detail(request, card_id):
 
             card_data_payload["price"] = final_parsed_price
             market_price = f"{final_parsed_price:.2f}"
-            # -----------------------------------------------------
 
-            # Normalización y formateo de relaciones para el contexto de la plantilla
             if relations.get("rarity"):
                 card_data_payload["rarity"] = getattr(relations["rarity"], "display_name", "N/A")
             if relations.get("artist"):
@@ -884,7 +876,6 @@ def card_detail(request, card_id):
             if relations.get("pokemon_especie"):
                 card_data_payload["pokemon"] = getattr(relations["pokemon_especie"], "name_en", None)
             
-            # --- NORMALIZACIÓN ESTRUCTURAL DEL SET ---
             inferred_set_name = None
             if "set" in api_response_source and isinstance(api_response_source["set"], dict):
                 inferred_set_name = api_response_source["set"].get("name")
@@ -898,9 +889,7 @@ def card_detail(request, card_id):
             )
             card_data_payload["set"] = {"name": resolved_set_name}
             card_data_payload["set_name"] = resolved_set_name
-            # ------------------------------------------
 
-            # --- SANEAMIENTO Y COMPATIBILIDAD DE RECURSOS DE IMAGEN ---
             fallback_small = card_data_payload.get("image_url") or api_response_source.get("images", {}).get("small")
             fallback_large = card_data_payload.get("image_url") or api_response_source.get("images", {}).get("large")
             
@@ -911,10 +900,9 @@ def card_detail(request, card_id):
                     card_data_payload["images"]["small"] = fallback_small
                 if not card_data_payload["images"].get("large"):
                     card_data_payload["images"]["large"] = fallback_large
-            # ----------------------------------------------------------
             
             # 4. Persistencia Atómica y Reparación del Registro Local
-            Card.objects.update_or_create(
+            card_obj, _ = Card.objects.update_or_create(
                 pokemontcg_id=card_id,
                 defaults={
                     "name": card_data_payload["name"],
@@ -925,10 +913,23 @@ def card_detail(request, card_id):
                     **relations,
                 },
             )
-            logger.info(f"[DB SYNCHRONIZED] Sincronización exitosa para {card_id}. Set asignado: '{resolved_set_name}' | Precio: {final_parsed_price}")
+            logger.info(f"[DB SYNCHRONIZED] Sincronización exitosa para {card_id}.")
             
         elif not api_response_source and not error:
             error = "La carta solicitada no pudo ser localizada en los repositorios locales ni remotos."
+
+    # --- 🕒 INYECCIÓN PARA HISTÓRICO DE PRECIOS BAJO DEMANDA ---
+    if not error and card_obj and final_parsed_price > 0:
+        hoy = timezone.now().date()
+        ya_existe_hoy = PriceHistory.objects.filter(card=card_obj, recorded_at__date=hoy).exists()
+        
+        if not ya_existe_hoy:
+            PriceHistory.objects.create(
+                card=card_obj,
+                price=final_parsed_price,
+                marketplace="tcgplayer"
+            )
+            logger.info(f"[📉 CHART UPDATE] Nuevo punto histórico creado hoy para {card_id}: ${final_parsed_price}")
 
     # 5. Despacho y Almacenamiento en Caché del Contexto Final
     context = {"card": card_data_payload, "market_price": market_price, "error": error}
@@ -938,6 +939,7 @@ def card_detail(request, card_id):
         cache.set(cache_key, context, 60 * 60 * 24)
         
     return render(request, "card_detail.html", context)
+
 
 @login_required
 @require_POST
@@ -950,12 +952,16 @@ def delete_alert(request, alert_id):
 
 @require_GET
 def card_price_history(_request, card_id):
+    """
+    Devuelve los datos de evolución de precios de los últimos 30 días para el gráfico.
+    """
     try:
         card = Card.objects.get(pokemontcg_id=card_id)
         last_30_days = timezone.now() - timedelta(days=30)
         history = PriceHistory.objects.filter(
             card=card, recorded_at__gte=last_30_days
         ).order_by("recorded_at")
+        
         return JsonResponse(
             {
                 "dates": [h.recorded_at.strftime("%d/%m") for h in history],
