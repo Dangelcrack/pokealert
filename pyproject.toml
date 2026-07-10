@@ -50,7 +50,7 @@ per-file-ignores = [
 convention = "google"
 match = '(?!test_).*\.py'
 match-dir = '(?!tests|migrations|venv)'
-ignore = [
+add-ignore = [
     "D100",
     "D104",
     "D105",
