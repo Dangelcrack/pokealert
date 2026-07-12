@@ -6,7 +6,8 @@ respuesta para el resto de la aplicación."""
 import logging
 import requests
 from typing import Any, Dict, List, Optional
-from django.conf import settings  # 🌟 Corregido: Import oficial y seguro de Django
+from django.conf import settings
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 logger = logging.getLogger(__name__)
 
@@ -26,24 +27,35 @@ def _get_headers() -> dict:
     return headers
 
 
+@retry(
+    reraise=True,
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=1, max=6),
+    retry=retry_if_exception_type((requests.exceptions.HTTPError, requests.exceptions.Timeout))
+)
+def _execute_request(url: str, headers: dict, params: Optional[dict], timeout: int) -> requests.Response:
+    """Dispara la petición y evalúa si se debe reintentar basado en códigos de estado."""
+    response = requests.get(url, headers=headers, params=params, timeout=timeout)
+    if response.status_code >= 500:
+        response.raise_for_status()
+        
+    return response
+
+
 def _get(url: str, params: Optional[dict] = None, timeout: int = 5) -> Optional[Dict[str, Any]]:
     """Wrapper único para todas las llamadas HTTP.
     Centraliza headers, timeouts cortos y captura errores para evitar colgar el servidor."""
     try:
-        response = requests.get(
-            url,
-            headers=_get_headers(),
-            params=params,
-            timeout=timeout,
-        )
-        response.raise_for_status()
+        response = _execute_request(url, headers=_get_headers(), params=params, timeout=timeout)
+        
+        if response.status_code != 200:
+            logger.error(f"Error {response.status_code} no reintentable en API Pokémon TCG para la URL: {url}")
+            return None
+            
         return response.json()
 
-    except requests.exceptions.Timeout:
-        return None
-    except requests.exceptions.HTTPError:
-        return None
-    except requests.exceptions.RequestException:
+    except (requests.exceptions.Timeout, requests.exceptions.HTTPError, requests.exceptions.RequestException) as e:
+        logger.error(f" La petición falló definitivamente tras los reintentos: {str(e)}")
         return None
 
 
@@ -57,7 +69,7 @@ def fetch_cards(query: str, page: int = 1, page_size: int = 20) -> List[dict]:
             "page": page,
             "pageSize": page_size,
         },
-        timeout=8,  # Margen ligeramente mayor por ser paginación o búsqueda normal
+        timeout=8,
     )
 
     if not data:

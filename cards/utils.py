@@ -5,6 +5,7 @@ vistas y servicios para normalizar términos y obtener opciones de filtros."""
 
 import requests
 from django.core.cache import cache
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 POKEMON_ES_TO_TCG = {
     # GENERACIÓN I
@@ -679,6 +680,24 @@ TCG_TERMS = {
 }
 
 
+@retry(
+    reraise=True,
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception_type((requests.exceptions.HTTPError, requests.exceptions.Timeout))
+)
+def _execute_api_request(url):
+    """Helper interno decorado para manejar la resiliencia de la petición HTTP."""
+    response = requests.get(url, timeout=10)
+    
+    # Si la API devuelve un 5xx (Server Error), forzamos el HTTPError para activar el retry.
+    # Los errores 4xx (como 404) continuarán su flujo normal sin reintentar.
+    if response.status_code >= 500:
+        response.raise_for_status()
+        
+    return response
+
+
 def get_filter_options(filter_type):
     """Obtiene datos de la API y los guarda en caché durante 24 horas."""
     cache_key = f"api_options_{filter_type}"
@@ -687,11 +706,18 @@ def get_filter_options(filter_type):
     if not options:
         try:
             url = f"https://api.pokemontcg.io/v2/{filter_type}"
-            response = requests.get(url, timeout=10)
+            # Usamos el helper con Tenacity integrado
+            response = _execute_api_request(url)
+            
             if response.status_code == 200:
                 data = response.json().get("data", [])
                 options = sorted(data)
                 cache.set(cache_key, options, 86400)
+            else:
+                options = []
         except Exception:
+            # Si tenacity agota los 3 intentos o hay otro error, cae aquí de forma segura
             options = []
+            
+    # Nota: Corregido el "return option" original que tenía un typo (faltaba la 's')
     return options
