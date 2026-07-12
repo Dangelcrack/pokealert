@@ -24,6 +24,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 
 ## 📖 Tabla de Contenidos
 
+- [Capturas](#-capturas)
 - [Características](#-características)
 - [Tecnologías](#-tecnologías)
 - [Arquitectura](#-arquitectura)
@@ -39,6 +40,22 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 - [Contribuir](#-contribuir)
 - [Autor](#-autor)
 - [Licencia](#-licencia)
+
+---
+
+## 📸 Capturas
+
+### Página de inicio
+![Home de PokeAlert](docs/screenshots/home.png)
+
+### Dashboard con histórico de precios
+![Dashboard de PokeAlert](docs/screenshots/dashboard.png)
+
+### Crear alerta de precio
+![Formulario de alerta](docs/screenshots/alert-form.png)
+
+### Búsqueda de cartas
+![Búsqueda de cartas](docs/screenshots/search.png)
 
 ---
 
@@ -319,6 +336,7 @@ pokealert/
 ├── static/
 ├── tests/
 ├── docs/
+│   ├── screenshots/
 │   ├── PROJECT_DOCUMENTATION.md
 │   ├── CELERY.md
 │   └── CODE_QUALITY.md
