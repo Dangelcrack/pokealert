@@ -300,8 +300,10 @@ Todos los módulos, clases y funciones siguen el formato de docstrings de Google
 ---
 
 ## 📁 Estructura del Proyecto
+
+```text
 pokealert/
-├── cards/                     # Catálogo de cartas
+├── cards/
 │   ├── models.py              # Card, Rarity, Supertype, Subtype, Artist...
 │   ├── views.py
 │   ├── serializers.py
@@ -315,25 +317,31 @@ pokealert/
 │   │   ├── card_formatter.py
 │   │   ├── card_detail_service.py
 │   │   └── search_service.py
-│   └── management/commands/
-│       └── descargar_cartas_json.py
-├── alerts/                    # Alertas de precio
+│   └── management/
+│       └── commands/
+│           └── descargar_cartas_json.py
+
+├── alerts/
 │   ├── models.py              # PriceAlert, PriceHistory
 │   ├── serializers.py
 │   ├── services.py
 │   └── views.py
-├── tasks/                     # Tareas periódicas
-│   ├── tasks.py                # check_pokemon_prices, actualizar_pokedex_automatica
-│   ├── views.py                # Endpoints HTTP para disparo vía cron externo
+
+├── tasks/
+│   ├── tasks.py               # check_pokemon_prices
+│   ├── views.py               # Endpoints HTTP
 │   └── urls.py
-├── users/                     # Autenticación y perfiles
+
+├── users/
 │   ├── models.py
 │   ├── views.py
 │   └── forms.py
-├── config/                    # Configuración del proyecto
+
+├── config/
 │   ├── settings.py
 │   ├── celery.py
 │   └── urls.py
+
 ├── templates/
 ├── static/
 ├── tests/
@@ -342,13 +350,13 @@ pokealert/
 │   ├── PROJECT_DOCUMENTATION.md
 │   ├── CELERY.md
 │   └── CODE_QUALITY.md
+
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── pyproject.toml
 ├── .flake8
 └── validate.py
-
----
+```
 
 ## ☁ Despliegue
 
