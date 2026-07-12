@@ -36,6 +36,7 @@ urlpatterns = [
     # API REST
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
+    path("api/tasks/", include("tasks.urls")),
     # Frontend
     path("", home, name="home"),
     path("register/", register, name="register"),
