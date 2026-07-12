@@ -1,3 +1,4 @@
+<!-- README revisado: se recomienda revisar enlaces e imágenes -->
 <div align="center">
 
 # 🔔 PokéAlert
@@ -22,7 +23,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📚 Tabla de Contenidos
 
 - [Capturas](#-capturas)
 - [Características](#-características)
@@ -57,6 +58,9 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 ### Búsqueda de cartas
 ![Búsqueda de cartas](docs/screenshots/search.png)
 
+### Tendencias del mercado
+![Tendencias del mercado](docs/screenshots/tendencias.png)
+
 ---
 
 ## 🌟 Características
@@ -68,6 +72,8 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 ✅ Sistema de alertas configurables por descuento porcentual o precio objetivo.
 
 ✅ Histórico de precios con gráficos interactivos (Chart.js), actualizado también en producción.
+
+✅ Ranking de tendencias de mercado: cartas con mayores subidas y bajadas de precio en los últimos 30 días.
 
 ✅ Sincronización automática con la API de Pokémon TCG.
 
@@ -102,32 +108,29 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 ---
 
 ## 🏗 Arquitectura
-
-```
 Pokémon TCG API
-       │
-       ▼
+│
+▼
 Sincronización de cartas (management commands)
-       │
-       ▼
+│
+▼
 Normalización de datos (Rarity, Supertype, Subtype, Artist, Especie)
-       │
-       ▼
-   ┌─────────────────────┬─────────────────────────────────┐
-   │   Local              │   Producción (Render free)       │
-   │ Celery Beat ──6h──►   │ cron-job.org ──24h──► endpoint   │
-   │ check_pokemon_prices  │ /api/tasks/check-prices/         │
-   └─────────────────────┴─────────────────────────────────┘
-       │
-       ▼
+│
+▼
+┌─────────────────────┬─────────────────────────────────┐
+│   Local              │   Producción (Render free)       │
+│ Celery Beat ──6h──►   │ cron-job.org ──24h──► endpoint   │
+│ check_pokemon_prices  │ /api/tasks/check-prices/         │
+└─────────────────────┴─────────────────────────────────┘
+│
+▼
 PriceHistory / Alertas
-       │
-       ▼
+│
+▼
 Django REST API
-       │
-       ▼
+│
+▼
 Frontend (Tailwind + Chart.js) / Notificaciones por email
-```
 
 El proyecto está organizado en apps Django independientes por dominio: `cards` (catálogo), `alerts` (alertas y notificaciones), `tasks` (tareas periódicas) y `users` (autenticación y perfiles).
 
@@ -249,19 +252,14 @@ Variables de entorno principales (`.env`):
 ### En producción: endpoints HTTP + cron externo
 
 El plan gratuito de Render no permite mantener un worker ni un scheduler de Celery corriendo en segundo plano. Para resolverlo sin salir del free tier, ambas tareas están expuestas como endpoints HTTP que las ejecutan de forma síncrona, protegidos por token:
-
-```
 GET /api/tasks/check-prices/?token=<CRON_SECRET_TOKEN>
 GET /api/tasks/update-pokedex/?token=<CRON_SECRET_TOKEN>
-```
 
 Un cronjob gratuito en **cron-job.org** llama a `check-prices` una vez al día, disparando la actualización de precios y del histórico en producción sin necesidad de Celery Worker/Beat activos. El propio código evita duplicar entradas de histórico si la tarea se ejecutara más de una vez el mismo día.
 
 ---
 
 ## 🔌 API REST
-
-```
 GET    /api/cards/                     # Listar cartas (con filtros)
 GET    /api/cards/{id}/                # Detalle de carta
 GET    /api/cards/{id}/price-history/  # Histórico de precios
@@ -272,7 +270,6 @@ DELETE /api/alerts/{id}/               # Eliminar alerta
 GET    /api/search/suggestions/        # Autocompletado de búsqueda
 GET    /api/tasks/check-prices/        # Dispara check_pokemon_prices (requiere token)
 GET    /api/tasks/update-pokedex/      # Dispara actualizar_pokedex_automatica (requiere token)
-```
 
 Documentación interactiva (Swagger UI): `http://localhost:8000/api/docs/`
 
@@ -303,22 +300,27 @@ Todos los módulos, clases y funciones siguen el formato de docstrings de Google
 ---
 
 ## 📁 Estructura del Proyecto
-
-```
 pokealert/
 ├── cards/                     # Catálogo de cartas
 │   ├── models.py              # Card, Rarity, Supertype, Subtype, Artist...
-│   ├── views.py                
+│   ├── views.py
 │   ├── serializers.py
 │   ├── services/
 │   │   ├── pokemontcg_service.py
 │   │   ├── pricing.py
-│   │   └── card_formatter.py
+│   │   ├── pricing_trends.py
+│   │   ├── text_utils.py
+│   │   ├── catalog_service.py
+│   │   ├── card_service.py
+│   │   ├── card_formatter.py
+│   │   ├── card_detail_service.py
+│   │   └── search_service.py
 │   └── management/commands/
 │       └── descargar_cartas_json.py
 ├── alerts/                    # Alertas de precio
 │   ├── models.py              # PriceAlert, PriceHistory
 │   ├── serializers.py
+│   ├── services.py
 │   └── views.py
 ├── tasks/                     # Tareas periódicas
 │   ├── tasks.py                # check_pokemon_prices, actualizar_pokedex_automatica
@@ -345,7 +347,6 @@ pokealert/
 ├── pyproject.toml
 ├── .flake8
 └── validate.py
-```
 
 ---
 
@@ -401,7 +402,7 @@ python manage.py descargar_cartas_json
 - [x] Traducción ES→EN de nombres de cartas basada en Wikidex
 - [x] Autocompletado con soporte de prefijos en español
 - [x] Actualización de precios en producción sin Celery Worker/Beat (endpoints HTTP + cron-job.org)
-- [ ] Dashboard con métricas agregadas de mercado
+- [x] Dashboard con métricas agregadas de mercado
 - [ ] Notificaciones push además de email
 - [ ] Documentación de API ampliada (OpenAPI)
 
