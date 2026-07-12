@@ -21,6 +21,12 @@ def format_card(card_data: dict) -> dict:
     else:
         card_identifier = raw_id or card_data.get("pokemontcg_id") or card_data.get("card_id")
 
+    resolved_set_name = (
+        set_info.get("name", "Unknown")
+        if isinstance(set_info, dict)
+        else card_data.get("set_name", "Unknown")
+    )
+
     return {
         "id": card_identifier,
         "pokemontcg_id": card_identifier,
@@ -29,11 +35,11 @@ def format_card(card_data: dict) -> dict:
         "images": card_data.get("images", {}),
         "price": float(price),
         "rarity": card_data.get("rarity", "N/A"),
-        "set_name": (
-            set_info.get("name", "Unknown")
-            if isinstance(set_info, dict)
-            else card_data.get("set_name", "Unknown")
-        ),
+        "set_name": resolved_set_name,
+        "set": {
+            "name": resolved_set_name,
+            "series": set_info.get("series", "") if isinstance(set_info, dict) else "",
+        },
         "artist": card_data.get("artist", "Desconocido"),
         "supertype": card_data.get("supertype", "N/A"),
         "subtype": (

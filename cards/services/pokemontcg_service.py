@@ -31,16 +31,21 @@ def _get_headers() -> dict:
     reraise=True,
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=1, min=1, max=6),
-    retry=retry_if_exception_type((requests.exceptions.HTTPError, requests.exceptions.Timeout)),
+    retry=retry_if_exception_type(
+        (
+            requests.exceptions.HTTPError,
+            requests.exceptions.Timeout,
+            requests.exceptions.ConnectionError,
+        )
+    ),
 )
 def _execute_request(
     url: str, headers: dict, params: Optional[dict], timeout: int
 ) -> requests.Response:
     """Dispara la petición y evalúa si se debe reintentar basado en códigos de estado."""
     response = requests.get(url, headers=headers, params=params, timeout=timeout)
-    if response.status_code >= 500:
+    if response.status_code >= 500 or response.status_code == 429:
         response.raise_for_status()
-
     return response
 
 

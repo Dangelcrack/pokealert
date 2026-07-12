@@ -15,7 +15,7 @@ from django.db import IntegrityError
 from django.core.cache import cache
 
 from cards.models import Card, PokemonEspecie
-from cards.views import extract_market_price
+from cards.services.pricing import extract_market_price
 from alerts.models import PriceAlert, PriceHistory
 
 logger = logging.getLogger(__name__)
