@@ -57,12 +57,6 @@ add-ignore = [
     "D107",
 ]
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
-python_files = ["tests.py", "test_*.py", "*_tests.py"]
-addopts = "--cov=cards --cov=alerts --cov=tasks --cov=users --cov-report=term-missing"
-testpaths = ["tests"]
-
 [tool.coverage.run]
 source = ["cards", "alerts", "tasks", "users", "config"]
 omit = [

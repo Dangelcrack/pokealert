@@ -21,7 +21,7 @@ class PriceAlertViewSet(viewsets.ModelViewSet):
         """Devuelve las alertas del usuario autenticado.
 
         Restringe el queryset a `self.request.user` para privacidad."""
-        return PriceAlert.objects.filter(user=self.request.user)
+        return PriceAlert.objects.filter(user=self.request.user).order_by("-id")
 
 
 class PriceHistoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -37,5 +37,5 @@ class PriceHistoryViewSet(viewsets.ReadOnlyModelViewSet):
         caso contrario devuelve todo el histórico."""
         card_id = self.request.query_params.get("card_id")
         if card_id:
-            return PriceHistory.objects.filter(card_id=card_id)
-        return PriceHistory.objects.all()
+            return PriceHistory.objects.filter(card_id=card_id).order_by("-id")
+        return PriceHistory.objects.all().order_by("-id")
