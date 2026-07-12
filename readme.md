@@ -29,7 +29,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 - [Arquitectura](#-arquitectura)
 - [Instalación](#-instalación)
 - [Configuración](#-configuración)
-- [Tareas Periódicas](#-tareas-periódicas-celery)
+- [Tareas Periódicas](#-tareas-periódicas)
 - [API REST](#-api-rest)
 - [Desarrollo y Calidad de Código](#-desarrollo-y-calidad-de-código)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
@@ -50,7 +50,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 
 ✅ Sistema de alertas configurables por descuento porcentual o precio objetivo.
 
-✅ Histórico de precios con gráficos interactivos (Chart.js).
+✅ Histórico de precios con gráficos interactivos (Chart.js), actualizado también en producción.
 
 ✅ Sincronización automática con la API de Pokémon TCG.
 
@@ -60,7 +60,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 
 ✅ API REST documentada con Swagger para integraciones externas.
 
-✅ Tareas periódicas con Celery + Beat para actualización de precios y datos.
+✅ Tareas periódicas con Celery + Beat en local, y endpoints HTTP + cron externo en producción (ver [Tareas Periódicas](#-tareas-periódicas)).
 
 ✅ Suite de tests y linting automatizado (ruff, black, flake8, pydocstyle) con CI en GitHub Actions.
 
@@ -73,7 +73,8 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 | Python / Django | Backend y lógica de negocio |
 | Django REST Framework | API REST |
 | PostgreSQL | Base de datos (SQLite en despliegue de demo) |
-| Celery + Redis | Tareas periódicas y caché |
+| Celery + Redis | Tareas periódicas y caché (entorno local) |
+| cron-job.org | Disparo de tareas periódicas en producción |
 | Chart.js | Visualización de histórico de precios |
 | django-allauth | Autenticación y OAuth con Google |
 | Tailwind CSS | Estilos de interfaz |
@@ -95,7 +96,14 @@ Sincronización de cartas (management commands)
 Normalización de datos (Rarity, Supertype, Subtype, Artist, Especie)
        │
        ▼
-Celery Beat ──► check_pokemon_prices (cada 6h) ──► PriceHistory / Alertas
+   ┌─────────────────────┬─────────────────────────────────┐
+   │   Local              │   Producción (Render free)       │
+   │ Celery Beat ──6h──►   │ cron-job.org ──24h──► endpoint   │
+   │ check_pokemon_prices  │ /api/tasks/check-prices/         │
+   └─────────────────────┴─────────────────────────────────┘
+       │
+       ▼
+PriceHistory / Alertas
        │
        ▼
 Django REST API
@@ -104,7 +112,7 @@ Django REST API
 Frontend (Tailwind + Chart.js) / Notificaciones por email
 ```
 
-El proyecto está organizado en apps Django independientes por dominio: `cards` (catálogo), `alerts` (alertas y notificaciones), `tasks` (tareas Celery) y `users` (autenticación y perfiles).
+El proyecto está organizado en apps Django independientes por dominio: `cards` (catálogo), `alerts` (alertas y notificaciones), `tasks` (tareas periódicas) y `users` (autenticación y perfiles).
 
 ---
 
@@ -148,6 +156,12 @@ Genera una `SECRET_KEY`:
 
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Genera un `CRON_SECRET_TOKEN` (protege los endpoints de disparo manual de tareas):
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
 ### 5. Inicializar base de datos
@@ -202,18 +216,29 @@ Variables de entorno principales (`.env`):
 | `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` | Credenciales SMTP para notificaciones |
 | `POKEMON_TCG_API_KEY` | Clave de la API de Pokémon TCG |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Credenciales OAuth de Google |
+| `CRON_SECRET_TOKEN` | Token que protege los endpoints `/api/tasks/*` usados por el cron externo |
 
 ---
 
-## ⏱ Tareas Periódicas (Celery)
+## ⏱ Tareas Periódicas
 
-### `check_pokemon_prices` — cada 6 horas
-Obtiene precios actuales desde la API de Pokémon TCG, los compara con las alertas configuradas por los usuarios y envía notificaciones cuando se cumplen las condiciones.
+### En local: Celery + Beat
 
-### `actualizar_pokedex_automatica` — diaria
-Sincroniza datos de especies Pokémon y actualiza atributos TCG (rarezas, tipos, etc).
+- **`check_pokemon_prices`** (cada 6h): obtiene precios actuales desde la API de Pokémon TCG, los compara con las alertas configuradas por los usuarios y envía notificaciones cuando se cumplen las condiciones.
+- **`actualizar_pokedex_automatica`** (diaria): sincroniza datos de especies Pokémon y actualiza atributos TCG (rarezas, tipos, etc).
 
 > Más detalles en [docs/CELERY.md](docs/CELERY.md).
+
+### En producción: endpoints HTTP + cron externo
+
+El plan gratuito de Render no permite mantener un worker ni un scheduler de Celery corriendo en segundo plano. Para resolverlo sin salir del free tier, ambas tareas están expuestas como endpoints HTTP que las ejecutan de forma síncrona, protegidos por token:
+
+```
+GET /api/tasks/check-prices/?token=<CRON_SECRET_TOKEN>
+GET /api/tasks/update-pokedex/?token=<CRON_SECRET_TOKEN>
+```
+
+Un cronjob gratuito en **cron-job.org** llama a `check-prices` una vez al día, disparando la actualización de precios y del histórico en producción sin necesidad de Celery Worker/Beat activos. El propio código evita duplicar entradas de histórico si la tarea se ejecutara más de una vez el mismo día.
 
 ---
 
@@ -228,6 +253,8 @@ GET    /api/alerts/                    # Listar alertas del usuario
 PUT    /api/alerts/{id}/               # Actualizar alerta
 DELETE /api/alerts/{id}/               # Eliminar alerta
 GET    /api/search/suggestions/        # Autocompletado de búsqueda
+GET    /api/tasks/check-prices/        # Dispara check_pokemon_prices (requiere token)
+GET    /api/tasks/update-pokedex/      # Dispara actualizar_pokedex_automatica (requiere token)
 ```
 
 Documentación interactiva (Swagger UI): `http://localhost:8000/api/docs/`
@@ -276,9 +303,10 @@ pokealert/
 │   ├── models.py              # PriceAlert, PriceHistory
 │   ├── serializers.py
 │   └── views.py
-├── tasks/                     # Tareas Celery
+├── tasks/                     # Tareas periódicas
 │   ├── tasks.py                # check_pokemon_prices, actualizar_pokedex_automatica
-│   └── views.py
+│   ├── views.py                # Endpoints HTTP para disparo vía cron externo
+│   └── urls.py
 ├── users/                     # Autenticación y perfiles
 │   ├── models.py
 │   ├── views.py
@@ -310,7 +338,7 @@ Desplegado en **Render** (plan gratuito) en [pokealert.onrender.com](https://pok
 - **Build command:** `pip install -r requirements.txt && python setup_db.py && python manage.py collectstatic --noinput`
 - **Start command:** `gunicorn config.wsgi:application`
 
-> **Nota:** en el plan gratuito de Render no hay worker ni scheduler de Celery activos, por lo que las tareas periódicas (y por tanto la actualización del histórico de precios) no se ejecutan automáticamente en producción. En local, todo el pipeline funciona con Celery Worker + Beat.
+> **Nota:** el plan gratuito de Render no permite tener Celery Worker ni Beat corriendo en segundo plano. Para no perder la actualización periódica de precios en producción, las tareas se exponen como endpoints HTTP protegidos por token y se disparan mediante un cronjob externo gratuito (cron-job.org), una vez al día. Ver [Tareas Periódicas](#-tareas-periódicas) para el detalle. En local, todo el pipeline sigue funcionando con Celery Worker + Beat sin cambios.
 
 ---
 
@@ -338,6 +366,12 @@ python manage.py migrate
 python manage.py descargar_cartas_json
 ```
 
+### `ModuleNotFoundError: No module named 'tasks.urls'`
+```bash
+# Falta el archivo tasks/urls.py, o está en la ruta incorrecta.
+# Debe existir en tasks/urls.py, al mismo nivel que tasks/tasks.py y tasks/views.py
+```
+
 ---
 
 ## 🚧 Roadmap
@@ -348,7 +382,7 @@ python manage.py descargar_cartas_json
 - [x] Histórico de precios con Celery Beat + Chart.js
 - [x] Traducción ES→EN de nombres de cartas basada en Wikidex
 - [x] Autocompletado con soporte de prefijos en español
-- [ ] Worker/Beat de Celery en producción (plan de pago o alternativa)
+- [x] Actualización de precios en producción sin Celery Worker/Beat (endpoints HTTP + cron-job.org)
 - [ ] Dashboard con métricas agregadas de mercado
 - [ ] Notificaciones push además de email
 - [ ] Documentación de API ampliada (OpenAPI)
