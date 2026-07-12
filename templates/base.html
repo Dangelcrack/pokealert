@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Busca cartas Pokémon, compara precios y recibe alertas de precio de Pokémon TCG en PokeAlert.">
@@ -21,8 +22,9 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="poke-logo">
-                        🃏 PokeAlert
+                    <a href="{% url 'home' %}" class="poke-logo flex items-center gap-2">
+                        <img src="{% static 'favicon.png' %}" alt="PokeAlert" class="w-8 h-8 sm:w-9 sm:h-9">
+                        <span>PokeAlert</span>
                     </a>
                 </div>
 
