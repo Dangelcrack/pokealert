@@ -11,6 +11,7 @@ from cards.views import (
     delete_alert,
     edit_alert,
     home,
+    market_trends,
     register,
     search_suggestions,
     user_login,
@@ -54,4 +55,5 @@ urlpatterns = [
         card_price_history,
         name="card_price_history",
     ),
+    path("mercado/", market_trends, name="market_trends"),
 ]

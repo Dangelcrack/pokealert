@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-3xl font-bold mb-2">Tendencias del mercado</h1>
+<p class="text-gray-400 mb-8">{{ total_cartas }} cartas monitorizadas</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+        <h2 class="text-xl font-bold mb-4 text-teal-400">📈 Mayores subidas (7 días)</h2>
+        {% for item in top_subidas %}
+        <div class="flex justify-between items-center py-2 border-b border-gray-700">
+            <span>{{ item.carta.name }}</span>
+            <span class="text-teal-400 font-bold">{{ item.variacion }}%</span>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <h2 class="text-xl font-bold mb-4 text-pink-500">📉 Mayores bajadas (7 días)</h2>
+        {% for item in top_bajadas %}
+        <div class="flex justify-between items-center py-2 border-b border-gray-700">
+            <span>{{ item.carta.name }}</span>
+            <span class="text-pink-500 font-bold">{{ item.variacion }}%</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

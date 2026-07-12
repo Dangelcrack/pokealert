@@ -11,10 +11,11 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-# Cargar variables de entorno
+# 1. CARGAR VARIABLES DE ENTORNO AL PRINCIPIO
 load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+# Ahora sí leerá correctamente la variable de tu entorno o del archivo .env
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-si-no-hay-env")
 
@@ -85,7 +86,7 @@ if DATABASE_URL:
         "default": dj_database_url.parse(
             DATABASE_URL,
             conn_max_age=600,
-            ssl_require=True,
+            ssl_require=False,  # Cambiado a False si ejecutas en local para evitar fallos de certificados TLS/SSL
         )
     }
 else:
@@ -95,6 +96,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+
 # ===================== PASSWORD VALIDATION =====================
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -179,10 +181,9 @@ CSRF_TRUSTED_ORIGINS = os.getenv(
     "CSRF_TRUSTED_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000"
 ).split(",")
 
-# En producción con HTTPS
 if not DEBUG:
-    SECURE_SSL_REDIRECT = False  # AlwaysData maneja SSL
-    SESSION_COOKIE_SECURE = False  # AlwaysData maneja cookies
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_SECURITY_POLICY = {
@@ -220,7 +221,6 @@ LOGGING = {
 }
 
 # ===================== DJANGO ALLAUTH =====================
-
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -229,19 +229,12 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-# El nuevo estándar para definir cómo se inicia sesión
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
-
-# El nuevo estándar para exigir campos en el registro
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
-
 ACCOUNT_EMAIL_VERIFICATION = "none"
-
-# Configuración de inicio de sesión social automático por Email
 ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-
 SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_LOGIN_ON_GET = True
 

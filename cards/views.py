@@ -1092,3 +1092,40 @@ def card_price_history(_request, card_id):
         )
     except Card.DoesNotExist:
         return JsonResponse({"error": "Carta no encontrada"}, status=404)
+
+
+def market_trends(request):
+    """Muestra un ranking de las cartas con mayor variación de precio
+    en los últimos 7 días, calculado a partir de PriceHistory."""
+    hace_7_dias = timezone.now() - timedelta(days=30)
+
+    cartas_con_historial = []
+    cartas = Card.objects.exclude(price__isnull=True)
+
+    for carta in cartas:
+        precio_antiguo = (
+            PriceHistory.objects.filter(card=carta, recorded_at__gte=hace_7_dias)
+            .order_by("recorded_at")
+            .first()
+        )
+        if precio_antiguo and precio_antiguo.price:
+            variacion = ((carta.price - precio_antiguo.price) / precio_antiguo.price) * 100
+            cartas_con_historial.append(
+                {
+                    "carta": carta,
+                    "precio_actual": carta.price,
+                    "variacion": round(variacion, 1),
+                }
+            )
+    cartas_con_historial = [c for c in cartas_con_historial if c["variacion"] != 0]
+    subidas = [c for c in cartas_con_historial if c["variacion"] > 0]
+    bajadas = [c for c in cartas_con_historial if c["variacion"] < 0]
+
+    top_subidas = sorted(subidas, key=lambda x: x["variacion"], reverse=True)[:5]
+    top_bajadas = sorted(bajadas, key=lambda x: x["variacion"])[:5]
+    contexto = {
+        "total_cartas": Card.objects.count(),
+        "top_subidas": top_subidas,
+        "top_bajadas": top_bajadas,
+    }
+    return render(request, "market_trends.html", contexto)

@@ -30,6 +30,9 @@
 
                 <!-- Menu derecha -->
                 <div class="flex items-center gap-6">
+                    <a href="{% url 'market_trends' %}" class="nav-link">
+                        Tendencias
+                    </a>
                     {% if user.is_authenticated %}
                         <a href="{% url 'dashboard' %}" class="nav-link">
                             Mi Dashboard
