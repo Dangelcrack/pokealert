@@ -7,6 +7,7 @@ Pokémon para el modelo PokemonEspecie.
 import os
 import logging
 import requests
+import time
 from datetime import timedelta
 from celery import shared_task
 from django.core.mail import send_mail
@@ -59,7 +60,7 @@ def check_pokemon_prices():
         # Iteración eficiente por lotes (evita Out of Memory)
         for card in tracked_cards.iterator(chunk_size=100):
             try:
-                response = session.get(f"{TCG_API_URL}/{card.pokemontcg_id}", timeout=5)
+                response = session.get(f"{TCG_API_URL}/{card.pokemontcg_id}", timeout=30)
 
                 if response.status_code == 200:
                     data = response.json().get("data", {})
@@ -96,6 +97,7 @@ def check_pokemon_prices():
             except Exception as e:
                 error_count += 1
                 logger.error(f"❌ Error procesando {card.name}: {e}")
+            time.sleep(0.2)
 
         # 2. Guardado masivo en la Base de Datos (Atomicidad y Eficiencia)
         with transaction.atomic():
