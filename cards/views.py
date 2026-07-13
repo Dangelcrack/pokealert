@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.http import require_POST, require_http_methods, require_GET
 from django.utils import timezone
-
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
 from rest_framework import viewsets
 
@@ -40,6 +40,52 @@ from .serializers import CardSerializer
 # ==========================================
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="Listar cartas",
+        description=(
+            "Devuelve el catálogo de cartas almacenado localmente. Soporta "
+            "búsqueda por nombre y filtrado por rareza, supertype, subtype y artista."
+        ),
+        parameters=[
+            OpenApiParameter(
+                name="search",
+                description="Búsqueda por nombre de carta (coincidencia parcial).",
+                required=False,
+                type=str,
+            ),
+            OpenApiParameter(
+                name="rarity",
+                description="ID de la rareza para filtrar (ver /api/cards/ para valores existentes).",
+                required=False,
+                type=int,
+            ),
+            OpenApiParameter(
+                name="supertype",
+                description="ID del supertype (Pokémon, Trainer, Energy...).",
+                required=False,
+                type=int,
+            ),
+            OpenApiParameter(
+                name="subtype", description="ID del subtype.", required=False, type=int
+            ),
+            OpenApiParameter(
+                name="artist", description="ID del artista.", required=False, type=int
+            ),
+        ],
+    ),
+    retrieve=extend_schema(
+        summary="Detalle de una carta",
+        description="Devuelve los datos completos de una carta por su ID interno de base de datos.",
+    ),
+    create=extend_schema(
+        summary="Crear carta manualmente",
+        description="Crea un registro de carta directamente en la DB local (uso administrativo).",
+    ),
+    update=extend_schema(summary="Actualizar carta (reemplazo completo)"),
+    partial_update=extend_schema(summary="Actualizar carta (parcial)"),
+    destroy=extend_schema(summary="Eliminar carta"),
+)
 class CardViewSet(viewsets.ModelViewSet):
     """API REST para `Card` con operaciones CRUD y campos de búsqueda/filtrado."""
 
