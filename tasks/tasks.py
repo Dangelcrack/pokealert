@@ -62,7 +62,7 @@ def check_pokemon_prices():
         cards_dict = {c.pokemontcg_id: c for c in tracked_cards}
 
         # Procesaremos las cartas agrupadas en bloques para no saturar la API externa
-        tamanio_lote = 25
+        tamanio_lote = 10
 
         for i in range(0, len(card_ids), tamanio_lote):
             lote_ids = card_ids[i : i + tamanio_lote]
@@ -73,7 +73,7 @@ def check_pokemon_prices():
             try:
                 # Solicitamos el lote completo de cartas en una sola llamada HTTP
                 response = session.get(
-                    TCG_API_URL, params={"q": query_string, "pageSize": tamanio_lote}, timeout=15
+                    TCG_API_URL, params={"q": query_string, "pageSize": tamanio_lote}, timeout=30
                 )
 
                 if response.status_code == 200:
