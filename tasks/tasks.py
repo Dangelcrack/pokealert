@@ -57,47 +57,74 @@ def check_pokemon_prices():
         session = requests.Session()
         session.headers.update(headers)
 
-        # Iteración eficiente por lotes (evita Out of Memory)
-        for card in tracked_cards.iterator(chunk_size=100):
+        # Convertimos el QuerySet a una lista de IDs y mapeamos las cartas en memoria
+        card_ids = list(tracked_cards.values_list("pokemontcg_id", flat=True))
+        cards_dict = {c.pokemontcg_id: c for c in tracked_cards}
+
+        # Procesaremos las cartas agrupadas en bloques para no saturar la API externa
+        tamanio_lote = 25
+
+        for i in range(0, len(card_ids), tamanio_lote):
+            lote_ids = card_ids[i : i + tamanio_lote]
+
+            # Construimos la query masiva: "id:id1 OR id:id2 OR id:id3..."
+            query_string = " OR ".join([f"id:{pid}" for pid in lote_ids])
+
             try:
-                response = session.get(f"{TCG_API_URL}/{card.pokemontcg_id}", timeout=30)
+                # Solicitamos el lote completo de cartas en una sola llamada HTTP
+                response = session.get(
+                    TCG_API_URL, params={"q": query_string, "pageSize": tamanio_lote}, timeout=15
+                )
 
                 if response.status_code == 200:
-                    data = response.json().get("data", {})
-                    tcgplayer_data = data.get("tcgplayer", {}).get("prices", {})
-                    market_price = extract_market_price(tcgplayer_data)
+                    data_list = response.json().get("data", [])
 
-                    if market_price:
-                        market_price_float = float(market_price)
-                        updated_prices_map[card.pokemontcg_id] = market_price_float
+                    for card_data in data_list:
+                        pid = card_data.get("id")
+                        card = cards_dict.get(pid)
 
-                        # Modificar objeto en memoria
-                        card.price = market_price_float
-                        cards_to_update.append(card)
+                        if not card:
+                            continue
 
-                        # Invalidar caché de forma segura
-                        try:
-                            cache.delete(f"card_detail_{card.pokemontcg_id}")
-                        except Exception:
-                            pass
+                        tcgplayer_data = card_data.get("tcgplayer", {}).get("prices", {})
+                        market_price = extract_market_price(tcgplayer_data)
 
-                        # Verificar en el set local (O(1)) si ya se procesó hoy
-                        if card.id not in historicos_hoy:
-                            prices_to_create.append(
-                                PriceHistory(
-                                    card=card, price=market_price_float, marketplace="tcgplayer"
+                        if market_price:
+                            market_price_float = float(market_price)
+                            updated_prices_map[pid] = market_price_float
+
+                            # Modificar objeto en memoria
+                            card.price = market_price_float
+                            cards_to_update.append(card)
+
+                            # Invalidar caché de forma segura
+                            try:
+                                cache.delete(f"card_detail_{pid}")
+                            except Exception:
+                                pass
+
+                            # Verificar en el set local (O(1)) si ya se procesó hoy
+                            if card.id not in historicos_hoy:
+                                prices_to_create.append(
+                                    PriceHistory(
+                                        card=card, price=market_price_float, marketplace="tcgplayer"
+                                    )
                                 )
-                            )
-                        saved_count += 1
-                    else:
-                        error_count += 1
+                            saved_count += 1
+                        else:
+                            error_count += 1
                 else:
-                    error_count += 1
+                    error_count += len(lote_ids)
+                    logger.error(
+                        f"❌ Error de API de Pokémon. Código de estado: {response.status_code}"
+                    )
 
             except Exception as e:
-                error_count += 1
-                logger.error(f"❌ Error procesando {card.name}: {e}")
-            time.sleep(0.2)
+                error_count += len(lote_ids)
+                logger.error(f"❌ Error crítico procesando lote de cartas: {e}")
+
+            # Pausa de 1 segundo entre bloques para cumplir las buenas prácticas de la API
+            time.sleep(1.0)
 
         # 2. Guardado masivo en la Base de Datos (Atomicidad y Eficiencia)
         with transaction.atomic():
@@ -129,8 +156,6 @@ def check_pokemon_prices():
                     target = float(alert.target_price)
                     target_display = f"${target:.2f}"
                 else:
-                    # NOTA: Si usas alertas por porcentaje, se recomienda usar un campo 'initial_price' fijo
-                    # en el modelo Alert en lugar del precio dinámico de la carta para evitar fallos lógicos.
                     base_price = float(card.price or 0)
                     target = base_price * (1 - (alert.discount_percentage / 100))
                     target_display = f"${target:.2f} ({alert.discount_percentage}% desc.)"
