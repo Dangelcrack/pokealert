@@ -109,33 +109,29 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 | Render | Despliegue en producción |
 
 ---
-
 ## 🏗 Arquitectura
-Pokémon TCG API
-│
-▼
-Sincronización de cartas (management commands)
-│
-▼
-Normalización de datos (Rarity, Supertype, Subtype, Artist, Especie)
-│
-▼
-┌─────────────────────┬─────────────────────────────────┐
-│   Local              │   Producción (Render free)       │
-│ Celery Beat ──6h──►   │ cron-job.org ──24h──► endpoint   │
-│ check_pokemon_prices  │ /api/tasks/check-prices/         │
-└─────────────────────┴─────────────────────────────────┘
-│
-▼
-PriceHistory / Alertas
-│
-▼
-Django REST API
-│
-▼
-Frontend (Tailwind + Chart.js) / Notificaciones por email
 
-El proyecto está organizado en apps Django independientes por dominio: `cards` (catálogo), `alerts` (alertas y notificaciones), `tasks` (tareas periódicas) y `users` (autenticación y perfiles). Dentro de `cards` y `alerts`, la lógica de negocio vive en una capa de `services/` separada de las vistas (ver [Estructura del Proyecto](#-estructura-del-proyecto)).
+| Capa                                      | Responsabilidad                                                                                                                              |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pokémon TCG API**                       | Fuente de datos de cartas y precios.                                                                                                         |
+| **Sincronización**                        | Management commands para importar y actualizar cartas.                                                                                       |
+| **Normalización**                         | Estandarización de Rarity, Supertype, Subtype, Artist y Species antes de guardar en la base de datos.                                        |
+| **Actualización de precios (Local)**      | **Celery Beat** ejecuta `check_pokemon_prices` cada **6 horas**.                                                                             |
+| **Actualización de precios (Producción)** | **cron-job.org** llama cada **24 horas** a `/api/tasks/check-prices/` (Render Free no permite tareas programadas).                           |
+| **Persistencia**                          | Se almacenan los cambios en `PriceHistory` y se gestionan las `Alertas`.                                                                     |
+| **API**                                   | Django REST Framework expone los endpoints consumidos por el frontend.                                                                       |
+| **Frontend**                              | Interfaz desarrollada con **Tailwind CSS** y **Chart.js**, con envío de notificaciones por correo electrónico cuando se cumplen las alertas. |
+
+El proyecto está organizado en aplicaciones Django independientes por dominio:
+
+| App      | Responsabilidad                                 |
+| -------- | ----------------------------------------------- |
+| `cards`  | Catálogo de cartas, sincronización y consultas. |
+| `alerts` | Alertas de precio y notificaciones.             |
+| `tasks`  | Tareas programadas y procesos automáticos.      |
+| `users`  | Autenticación y gestión de perfiles.            |
+
+La lógica de negocio de `cards` y `alerts` se encuentra en una capa `services/`, separada de las vistas para facilitar el mantenimiento, las pruebas y la reutilización del código (ver [Estructura del Proyecto](#-estructura-del-proyecto)).
 
 ---
 
@@ -263,21 +259,24 @@ Un cronjob gratuito en **cron-job.org** llama a `check-prices` una vez al día, 
 ---
 
 ## 🔌 API REST
-GET    /api/cards/                          # Listar cartas (con filtros)
-POST   /api/cards/                          # Crear carta manualmente
-GET    /api/cards/{id}/                     # Detalle de carta
-PUT    /api/cards/{id}/                     # Actualizar carta
-DELETE /api/cards/{id}/                     # Eliminar carta
-GET    /api/card/{card_id}/price-history/   # Histórico de precios de una carta (30 días)
-POST   /api/alerts/                         # Crear alerta de precio
-GET    /api/alerts/                         # Listar alertas del usuario autenticado
-GET    /api/alerts/{id}/                    # Detalle de una alerta
-PUT    /api/alerts/{id}/                    # Actualizar alerta
-DELETE /api/alerts/{id}/                    # Eliminar alerta
-GET    /api/price-history/                  # Listar histórico de precios (filtrable por ?card_id=)
-GET    /search-suggestions/                 # Autocompletado de búsqueda
-GET    /api/tasks/check-prices/             # Dispara check_pokemon_prices (requiere token)
-GET    /api/tasks/update-pokedex/           # Dispara actualizar_pokedex_automatica (requiere token)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/cards/` | Listar cartas (con filtros) |
+| POST | `/api/cards/` | Crear carta manualmente |
+| GET | `/api/cards/{id}/` | Obtener detalle de una carta |
+| PUT | `/api/cards/{id}/` | Actualizar una carta |
+| DELETE | `/api/cards/{id}/` | Eliminar una carta |
+| GET | `/api/card/{card_id}/price-history/` | Histórico de precios de una carta (30 días) |
+| POST | `/api/alerts/` | Crear una alerta de precio |
+| GET | `/api/alerts/` | Listar las alertas del usuario autenticado |
+| GET | `/api/alerts/{id}/` | Obtener detalle de una alerta |
+| PUT | `/api/alerts/{id}/` | Actualizar una alerta |
+| DELETE | `/api/alerts/{id}/` | Eliminar una alerta |
+| GET | `/api/price-history/` | Listar histórico de precios (filtrable con `?card_id=`) |
+| GET | `/search-suggestions/` | Autocompletado de búsqueda |
+| GET | `/api/tasks/check-prices/` | Ejecutar `check_pokemon_prices` (requiere token) |
+| GET | `/api/tasks/update-pokedex/` | Ejecutar `actualizar_pokedex_automatica` (requiere token) |
 
 Documentación interactiva generada automáticamente con **drf-spectacular** (OpenAPI 3.0):
 
