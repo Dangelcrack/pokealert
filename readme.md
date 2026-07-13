@@ -1,4 +1,3 @@
-<!-- README revisado: se recomienda revisar enlaces e imágenes -->
 <div align="center">
 
 # 🔔 PokéAlert
@@ -75,15 +74,17 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 
 ✅ Ranking de tendencias de mercado: cartas con mayores subidas y bajadas de precio en los últimos 30 días.
 
-✅ Sincronización automática con la API de Pokémon TCG.
+✅ Sincronización automática con la API de Pokémon TCG, con reintentos automáticos (tenacity) ante fallos temporales.
 
 ✅ Autenticación de usuarios, incluyendo login con Google (OAuth vía django-allauth).
 
 ✅ Notificaciones por email cuando una alerta se activa.
 
-✅ API REST documentada con Swagger para integraciones externas.
+✅ API REST documentada con OpenAPI 3.0 (drf-spectacular): Swagger UI y Redoc navegables.
 
 ✅ Tareas periódicas con Celery + Beat en local, y endpoints HTTP + cron externo en producción (ver [Tareas Periódicas](#-tareas-periódicas)).
+
+✅ Arquitectura por capas de servicios: la lógica de negocio vive en `services/`, separada de las vistas.
 
 ✅ Suite de tests y linting automatizado (ruff, black, flake8, pydocstyle) con CI en GitHub Actions.
 
@@ -95,6 +96,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 |------------|-----|
 | Python / Django | Backend y lógica de negocio |
 | Django REST Framework | API REST |
+| drf-spectacular | Documentación OpenAPI 3.0 (Swagger UI / Redoc) |
 | PostgreSQL | Base de datos (SQLite en despliegue de demo) |
 | Celery + Redis | Tareas periódicas y caché (entorno local) |
 | cron-job.org | Disparo de tareas periódicas en producción |
@@ -102,6 +104,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 | django-allauth | Autenticación y OAuth con Google |
 | Tailwind CSS | Estilos de interfaz |
 | Pokémon TCG API | Fuente de datos de cartas y precios |
+| tenacity | Reintentos automáticos ante fallos de la API externa |
 | GitHub Actions | Integración continua (lint + tests) |
 | Render | Despliegue en producción |
 
@@ -132,7 +135,7 @@ Django REST API
 ▼
 Frontend (Tailwind + Chart.js) / Notificaciones por email
 
-El proyecto está organizado en apps Django independientes por dominio: `cards` (catálogo), `alerts` (alertas y notificaciones), `tasks` (tareas periódicas) y `users` (autenticación y perfiles).
+El proyecto está organizado en apps Django independientes por dominio: `cards` (catálogo), `alerts` (alertas y notificaciones), `tasks` (tareas periódicas) y `users` (autenticación y perfiles). Dentro de `cards` y `alerts`, la lógica de negocio vive en una capa de `services/` separada de las vistas (ver [Estructura del Proyecto](#-estructura-del-proyecto)).
 
 ---
 
@@ -251,7 +254,7 @@ Variables de entorno principales (`.env`):
 
 ### En producción: endpoints HTTP + cron externo
 
-El plan gratuito de Render no permite mantener un worker ni un scheduler de Celery corriendo en segundo plano. Para resolverlo sin salir del free tier, ambas tareas están expuestas como endpoints HTTP que las ejecutan de forma síncrona, protegidos por token:
+El plan gratuito de Render no permite mantener un worker ni un scheduler de Celery corriendo en segundo plano. Para resolverlo sin salir del free tier, ambas tareas están expuestas como endpoints HTTP protegidos por token que lanzan la ejecución **en segundo plano** (en un hilo) y responden de inmediato, para evitar timeouts del cronjob externo:
 GET /api/tasks/check-prices/?token=<CRON_SECRET_TOKEN>
 GET /api/tasks/update-pokedex/?token=<CRON_SECRET_TOKEN>
 
@@ -260,18 +263,27 @@ Un cronjob gratuito en **cron-job.org** llama a `check-prices` una vez al día, 
 ---
 
 ## 🔌 API REST
-GET    /api/cards/                     # Listar cartas (con filtros)
-GET    /api/cards/{id}/                # Detalle de carta
-GET    /api/cards/{id}/price-history/  # Histórico de precios
-POST   /api/alerts/                    # Crear alerta
-GET    /api/alerts/                    # Listar alertas del usuario
-PUT    /api/alerts/{id}/               # Actualizar alerta
-DELETE /api/alerts/{id}/               # Eliminar alerta
-GET    /api/search/suggestions/        # Autocompletado de búsqueda
-GET    /api/tasks/check-prices/        # Dispara check_pokemon_prices (requiere token)
-GET    /api/tasks/update-pokedex/      # Dispara actualizar_pokedex_automatica (requiere token)
+GET    /api/cards/                          # Listar cartas (con filtros)
+POST   /api/cards/                          # Crear carta manualmente
+GET    /api/cards/{id}/                     # Detalle de carta
+PUT    /api/cards/{id}/                     # Actualizar carta
+DELETE /api/cards/{id}/                     # Eliminar carta
+GET    /api/card/{card_id}/price-history/   # Histórico de precios de una carta (30 días)
+POST   /api/alerts/                         # Crear alerta de precio
+GET    /api/alerts/                         # Listar alertas del usuario autenticado
+GET    /api/alerts/{id}/                    # Detalle de una alerta
+PUT    /api/alerts/{id}/                    # Actualizar alerta
+DELETE /api/alerts/{id}/                    # Eliminar alerta
+GET    /api/price-history/                  # Listar histórico de precios (filtrable por ?card_id=)
+GET    /search-suggestions/                 # Autocompletado de búsqueda
+GET    /api/tasks/check-prices/             # Dispara check_pokemon_prices (requiere token)
+GET    /api/tasks/update-pokedex/           # Dispara actualizar_pokedex_automatica (requiere token)
 
-Documentación interactiva (Swagger UI): `http://localhost:8000/api/docs/`
+Documentación interactiva generada automáticamente con **drf-spectacular** (OpenAPI 3.0):
+
+- **Swagger UI:** `http://localhost:8000/api/docs/`
+- **Redoc:** `http://localhost:8000/api/redoc/`
+- **Schema JSON crudo:** `http://localhost:8000/api/schema/`
 
 ---
 
@@ -308,15 +320,15 @@ pokealert/
 │   ├── views.py
 │   ├── serializers.py
 │   ├── services/
-│   │   ├── pokemontcg_service.py
-│   │   ├── pricing.py
-│   │   ├── pricing_trends.py
-│   │   ├── text_utils.py
-│   │   ├── catalog_service.py
-│   │   ├── card_service.py
-│   │   ├── card_formatter.py
-│   │   ├── card_detail_service.py
-│   │   └── search_service.py
+│   │   ├── pokemontcg_service.py    # Cliente HTTP con reintentos (tenacity)
+│   │   ├── pricing.py                # Extracción de precio de mercado
+│   │   ├── pricing_trends.py         # Cálculo de variaciones de precio
+│   │   ├── text_utils.py             # Normalización y expansión de búsqueda
+│   │   ├── catalog_service.py        # Opciones de filtro + caché
+│   │   ├── card_service.py           # Relaciones de carta y JSON local
+│   │   ├── card_formatter.py         # Normalización de respuesta de la API
+│   │   ├── card_detail_service.py    # Estrategia de 3 capas (caché/DB/API)
+│   │   └── search_service.py         # Búsqueda combinando 3 fuentes de datos
 │   └── management/
 │       └── commands/
 │           └── descargar_cartas_json.py
@@ -324,12 +336,12 @@ pokealert/
 ├── alerts/
 │   ├── models.py              # PriceAlert, PriceHistory
 │   ├── serializers.py
-│   ├── services.py
+│   ├── services.py            # Creación/actualización de alertas
 │   └── views.py
 
 ├── tasks/
-│   ├── tasks.py               # check_pokemon_prices
-│   ├── views.py               # Endpoints HTTP
+│   ├── tasks.py                # check_pokemon_prices, actualizar_pokedex_automatica
+│   ├── views.py                 # Endpoints HTTP (ejecución en background)
 │   └── urls.py
 
 ├── users/
@@ -365,7 +377,7 @@ Desplegado en **Render** (plan gratuito) en [pokealert.onrender.com](https://pok
 - **Build command:** `pip install -r requirements.txt && python setup_db.py && python manage.py collectstatic --noinput`
 - **Start command:** `gunicorn config.wsgi:application`
 
-> **Nota:** el plan gratuito de Render no permite tener Celery Worker ni Beat corriendo en segundo plano. Para no perder la actualización periódica de precios en producción, las tareas se exponen como endpoints HTTP protegidos por token y se disparan mediante un cronjob externo gratuito (cron-job.org), una vez al día. Ver [Tareas Periódicas](#-tareas-periódicas) para el detalle. En local, todo el pipeline sigue funcionando con Celery Worker + Beat sin cambios.
+> **Nota:** el plan gratuito de Render no permite tener Celery Worker ni Beat corriendo en segundo plano, y además "duerme" el servicio tras ~15 minutos de inactividad (el primer request tras dormir puede tardar en responder). Para no perder la actualización periódica de precios en producción, las tareas se exponen como endpoints HTTP protegidos por token, ejecutadas en segundo plano para evitar timeouts, y se disparan mediante un cronjob externo gratuito (cron-job.org) una vez al día. Ver [Tareas Periódicas](#-tareas-periódicas) para el detalle. En local, todo el pipeline sigue funcionando con Celery Worker + Beat sin cambios.
 
 ---
 
@@ -399,6 +411,15 @@ python manage.py descargar_cartas_json
 # Debe existir en tasks/urls.py, al mismo nivel que tasks/tasks.py y tasks/views.py
 ```
 
+### Timeout en el cronjob de `check-prices` (cron-job.org)
+```bash
+# El plan gratuito de Render "duerme" el servicio tras inactividad.
+# El endpoint ya ejecuta la tarea en un hilo en segundo plano y responde
+# de inmediato, pero si el cold start de Render tarda demasiado, sube el
+# timeout del cronjob en cron-job.org, o añade un segundo cronjob que
+# "despierte" el servicio 1-2 minutos antes.
+```
+
 ---
 
 ## 🚧 Roadmap
@@ -411,8 +432,8 @@ python manage.py descargar_cartas_json
 - [x] Autocompletado con soporte de prefijos en español
 - [x] Actualización de precios en producción sin Celery Worker/Beat (endpoints HTTP + cron-job.org)
 - [x] Dashboard con métricas agregadas de mercado
+- [x] Documentación de API ampliada (OpenAPI con drf-spectacular)
 - [ ] Notificaciones push además de email
-- [ ] Documentación de API ampliada (OpenAPI)
 
 ---
 
