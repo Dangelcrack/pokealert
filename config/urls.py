@@ -22,6 +22,7 @@ from cards.views import (
     card_detail,
 )
 from alerts.views import PriceAlertViewSet, PriceHistoryViewSet
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 router = DefaultRouter()
 router.register(r"cards", CardViewSet)
@@ -38,6 +39,10 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
     path("api/tasks/", include("tasks.urls")),
+    # Documentación OpenAPI
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     # Frontend
     path("", home, name="home"),
     path("register/", register, name="register"),

@@ -3,12 +3,20 @@
 Define la serialización de `PriceAlert` y `PriceHistory` para los endpoints
 de la API REST."""
 
-import os
-import requests
+from django.db import IntegrityError
 from rest_framework import serializers
-from .models import PriceAlert, PriceHistory
+
 from cards.models import Card
 from cards.serializers import CardSerializer
+from cards.services.pokemontcg_service import fetch_card
+from cards.services.pricing import extract_market_price
+
+from .models import PriceAlert, PriceHistory
+from .services import (
+    AlertaSinPrecioValidoError,
+    CartaNoEncontradaError,
+    crear_alerta,
+)
 
 
 class PriceHistorySerializer(serializers.ModelSerializer):
@@ -21,14 +29,15 @@ class PriceHistorySerializer(serializers.ModelSerializer):
         """Meta para `PriceHistorySerializer` que define campos expuestos."""
 
         model = PriceHistory
-        fields = ["id", "price", "source", "recorded_at"]
+        fields = ["id", "card", "price", "marketplace", "recorded_at"]
 
 
 class PriceAlertSerializer(serializers.ModelSerializer):
     """Serializador para crear/leer `PriceAlert`.
 
-    - En creación valida la existencia de precio de mercado en la API externa.
-    - Evita duplicados por usuario y carta."""
+    En creación delega en `alerts.services.crear_alerta`, la misma lógica de
+    negocio que usa el formulario web, para evitar duplicar reglas entre la
+    API REST y el frontend."""
 
     card = CardSerializer(read_only=True)
     pokemontcg_id = serializers.CharField(write_only=True)
@@ -50,93 +59,58 @@ class PriceAlertSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["user", "target_price", "is_active"]
 
-    def create(self, validated_data):
-        """Crea una `PriceAlert` validando datos externos y duplicados.
+    def _obtener_precio_actual(self, pokemontcg_id: str) -> float:
+        """Obtiene el precio de mercado ACTUAL de la carta consultando la API.
 
-        Flujo:
-        1) Consulta la API externa para obtener `market_price`.
-        2) Normaliza rareza y asegura la existencia de `Card` local.
-        3) Calcula `target_price` según `discount_percentage`.
-        4) Crea la alerta si no existe ya para el usuario.
-        Levanta `serializers.ValidationError` en caso de fallo."""
-        pokemontcg_id = validated_data.pop("pokemontcg_id")
-        discount_percentage = validated_data.pop("discount_percentage")
-        user = self.context["request"].user
+        No usa el precio guardado en la DB local aunque exista: `Card.price`
+        solo se refresca cuando corre `check_pokemon_prices` (hasta 24h de
+        antigüedad en producción), y una alerta de precio debe calcularse
+        sobre el precio real del mercado en el momento de crearla, no sobre
+        un dato potencialmente desactualizado.
 
-        # 1. Consultar API de Pokémon TCG
-        url = f"https://api.pokemontcg.io/v2/cards/{pokemontcg_id}"
-
-        try:
-            # Leer API Key de forma segura desde .env
-            api_key = os.getenv("POKEMON_TCG_API_KEY")
-            if not api_key:
-                raise serializers.ValidationError(
-                    {"pokemontcg_id": "Error de configuración: falta la API Key"}
-                )
-
-            headers = {"User-Agent": "PokeAlertApp/1.0", "X-Api-Key": api_key}
-            response = requests.get(url, headers=headers, timeout=30)
-
-            if response.status_code != 200:
-                raise serializers.ValidationError(
-                    {"pokemontcg_id": f"La API devolvió código de error: {response.status_code}"}
-                )
-
-            api_data = response.json().get("data", {})
-
-        except requests.exceptions.RequestException as e:
+        De paso, actualiza `Card.price` con el valor fresco obtenido, para
+        que la carta quede al día sin esperar al próximo ciclo del cron."""
+        card_data = fetch_card(pokemontcg_id)
+        if not card_data:
             raise serializers.ValidationError(
-                {"pokemontcg_id": f"Error de conexión con la API: {str(e)}"}
+                {"pokemontcg_id": "No se pudo obtener la carta de la API."}
             )
-        except Exception as e:
-            raise serializers.ValidationError({"pokemontcg_id": f"Error inesperado: {str(e)}"})
 
-        # 2. Extraer precio de mercado
-        tcgplayer_prices = api_data.get("tcgplayer", {}).get("prices", {})
-        market_price = None
-        if "holofoil" in tcgplayer_prices:
-            market_price = tcgplayer_prices["holofoil"].get("market")
-        elif "normal" in tcgplayer_prices:
-            market_price = tcgplayer_prices["normal"].get("market")
+        precio = extract_market_price(
+            card_data.get("tcgplayer", {}).get("prices", {})
+        ) or card_data.get("price")
 
-        if not market_price:
+        if not precio:
             raise serializers.ValidationError(
                 {"pokemontcg_id": "Esta carta no tiene precio de mercado disponible."}
             )
 
-        # 3. Normalizar rareza
-        raw_rarity = api_data.get("rarity", "").lower()
-        if "holo" in raw_rarity:
-            db_rarity = "holorare"
-        elif "rare" in raw_rarity:
-            db_rarity = "rare"
-        elif "uncommon" in raw_rarity:
-            db_rarity = "uncommon"
-        else:
-            db_rarity = "common"
+        precio = float(precio)
 
-        # 4. Crear o obtener carta
-        card, created = Card.objects.get_or_create(
-            pokemontcg_id=pokemontcg_id,
-            defaults={
-                "name": api_data.get("name"),
-                "image_url": api_data.get("images", {}).get("small", ""),
-                "rarity": db_rarity,
-            },
-        )
+        # Refresca Card.price si la carta ya existe localmente, para no
+        # dejarla desactualizada hasta el próximo ciclo del cron.
+        Card.objects.filter(pokemontcg_id=pokemontcg_id).update(price=precio)
 
-        # 5. Calcular precio objetivo
-        calculated_target = float(market_price) * (1 - (discount_percentage / 100.0))
+        return precio
 
-        # 6. Validar que no exista alerta duplicada
-        if PriceAlert.objects.filter(user=user, card=card).exists():
+    def create(self, validated_data):
+        """Crea una `PriceAlert` delegando en el servicio central `crear_alerta`."""
+        pokemontcg_id = validated_data.pop("pokemontcg_id")
+        discount_percentage = validated_data.pop("discount_percentage")
+        user = self.context["request"].user
+
+        current_price = self._obtener_precio_actual(pokemontcg_id)
+
+        try:
+            return crear_alerta(
+                user=user,
+                pokemontcg_id=pokemontcg_id,
+                discount_percentage=str(discount_percentage),
+                current_price_str=str(current_price),
+            )
+        except (AlertaSinPrecioValidoError, CartaNoEncontradaError) as e:
+            raise serializers.ValidationError({"pokemontcg_id": str(e)})
+        except IntegrityError:
             raise serializers.ValidationError(
                 {"pokemontcg_id": "Ya tienes una alerta para esta carta."}
             )
-
-        # 7. Crear alerta
-        price_alert = PriceAlert.objects.create(
-            user=user, card=card, target_price=calculated_target, **validated_data
-        )
-
-        return price_alert

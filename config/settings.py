@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_filters",
     "rest_framework",
+    "drf_spectacular",
     "cards",
     "alerts",
     "tasks",
@@ -144,6 +145,18 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# ===================== DRF SPECTACULAR (OpenAPI / Swagger) =====================
+SPECTACULAR_SETTINGS = {
+    "TITLE": "PokéAlert API",
+    "DESCRIPTION": (
+        "API REST para consultar cartas del Pokémon TCG, gestionar alertas "
+        "de precio y consultar el histórico de precios registrado."
+    ),
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 # ===================== CELERY =====================
