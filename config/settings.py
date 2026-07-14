@@ -205,20 +205,16 @@ if not DEBUG:
     # SECURE_HSTS_PRELOAD = True # Actívalo solo cuando estés seguro
     SECURE_BROWSER_XSS_FILTER = True
 
-SECURE_CONTENT_SECURITY_POLICY = {
-    "default-src": ("'self'",),
-    "img-src": ("'self'", "https://images.pokemontcg.io", "https://wsrv.nl"),
-    "script-src": ("'self'", "https://cdn.tailwindcss.com"),
-    "style-src": ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'"),
-    "font-src": ("'self'", "https://fonts.gstatic.com"),
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ("'self'",),
+        "font-src": ("'self'", "https://fonts.gstatic.com"),
+        "img-src": ("'self'", "https://images.pokemontcg.io", "https://wsrv.nl"),
+        "script-src": ("'self'", "https://cdn.tailwindcss.com"),
+        "style-src": ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'"),
+    }
 }
-
-
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'", "https://images.pokemontcg.io", "https://wsrv.nl")
-CSP_SCRIPT_SRC = ("'self'", "https://cdn.tailwindcss.com")
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
 
 
 # ===================== LOGGING =====================
