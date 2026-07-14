@@ -12,7 +12,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    {% if debug %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <script src="https://cdn.tailwindcss.com"></script>
+    {% else %}
+        <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    {% endif %}
 </head>
 <body class="poke-body">
     
