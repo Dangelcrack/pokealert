@@ -7,15 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Busca cartas Pokémon, compara precios y recibe alertas de precio de Pokémon TCG en PokeAlert.">
     <title>{% block title %}PokeAlert - Alertas de Precios de Pokémon{% endblock %}</title>
-    <link rel="preconnect" href="https://images.pokemontcg.io" crossorigin>
-
+    
+    <link rel="preconnect" href="https://wsrv.nl" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Script de Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- TU ARCHIVO CSS REAL -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
 </head>
 <body class="poke-body">
     
@@ -45,19 +42,18 @@
                         </a>
                         
                         <div class="nav-user-zone">
-                            <!-- Enlace al Perfil con Avatar de Pokémon Dinámico -->
                             <a href="{% url 'profile' %}" class="profile-link group">
                                 <div class="avatar-container">
                                     {% if request.session.pokemon_avatar == 'charizard' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard" width="32" height="32" loading="lazy" decoding="async">
+                                        <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png&w=64&output=webp&q=80" alt="Charizard" width="32" height="32" loading="lazy" decoding="async">
                                     {% elif request.session.pokemon_avatar == 'gengar' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar" width="32" height="32" loading="lazy" decoding="async">
+                                        <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png&w=64&output=webp&q=80" alt="Gengar" width="32" height="32" loading="lazy" decoding="async">
                                     {% elif request.session.pokemon_avatar == 'mewtwo' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" width="32" height="32" loading="lazy" decoding="async">
+                                        <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png&w=64&output=webp&q=80" alt="Mewtwo" width="32" height="32" loading="lazy" decoding="async">
                                     {% elif request.session.pokemon_avatar == 'lugia' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" width="32" height="32" loading="lazy" decoding="async">
+                                        <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png&w=64&output=webp&q=80" alt="Lugia" width="32" height="32" loading="lazy" decoding="async">
                                     {% else %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu" width="32" height="32" loading="lazy" decoding="async">
+                                        <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png&w=64&output=webp&q=80" alt="Pikachu" width="32" height="32" loading="lazy" decoding="async">
                                     {% endif %}
                                 </div>
                                 <span class="hidden sm:inline">{{ user.username }}</span>

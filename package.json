@@ -1,0 +1,8 @@
+{
+  "name": "pokealert",
+  "version": "1.0.0",
+  "description": "Compilacion automatica de Tailwind en Render",
+  "dependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
