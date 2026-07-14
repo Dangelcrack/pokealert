@@ -22,33 +22,31 @@
 <body class="poke-body">
     
     <!-- Navbar -->
-    <nav class="poke-navbar">
+    <nav class="poke-navbar bg-[#090b10] border-b border-gray-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="poke-logo flex items-center gap-2">
-                        <img src="{% static 'logo.png' %}" alt="PokeAlert" class="w-8 h-8 sm:w-9 sm:h-9" width="36" height="36" decoding="async">
+                    <a href="{% url 'home' %}" class="flex items-center gap-2 font-bold text-xl hover:text-pink-500 transition-colors text-white no-underline">
+                        <img src="{% static 'logo.webp' %}" alt="PokeAlert Logo" class="w-8 h-8 sm:w-9 sm:h-9" width="36" height="36" decoding="async">
                         <span>PokeAlert</span>
                     </a>
                 </div>
 
-                <!-- Menu derecha -->
                 <div class="flex items-center gap-6">
-                    <a href="{% url 'market_trends' %}" class="nav-link">
+                    <a href="{% url 'market_trends' %}" class="text-gray-300 hover:text-white font-medium no-underline transition-colors">
                         Tendencias
                     </a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'dashboard' %}" class="nav-link">
+                        <a href="{% url 'dashboard' %}" class="text-gray-300 hover:text-white font-medium no-underline transition-colors">
                             Mi Dashboard
                         </a>
-                        <a href="{% url 'search' %}" class="nav-link">
+                        <a href="{% url 'search' %}" class="text-gray-300 hover:text-white font-medium no-underline transition-colors">
                             Buscar Cartas
                         </a>
                         
-                        <div class="nav-user-zone">
-                            <a href="{% url 'profile' %}" class="profile-link group">
-                                <div class="avatar-container">
+                        <div class="flex items-center gap-3">
+                            <a href="{% url 'profile' %}" class="flex items-center gap-2 text-white no-underline group">
+                                <div class="w-8 h-8 rounded-full overflow-hidden bg-gray-700 border border-gray-600">
                                     {% if request.session.pokemon_avatar == 'charizard' %}
                                         <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png&w=64&output=webp&q=80" alt="Charizard" width="32" height="32" loading="lazy" decoding="async">
                                     {% elif request.session.pokemon_avatar == 'gengar' %}
@@ -61,18 +59,18 @@
                                         <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png&w=64&output=webp&q=80" alt="Pikachu" width="32" height="32" loading="lazy" decoding="async">
                                     {% endif %}
                                 </div>
-                                <span class="hidden sm:inline">{{ user.username }}</span>
+                                <span class="hidden sm:inline text-gray-200 group-hover:text-white">{{ user.username }}</span>
                             </a>
                             <span class="text-gray-600">|</span>
-                            <a href="{% url 'logout' %}" class="btn-logout">
+                            <a href="{% url 'logout' %}" class="text-sm bg-red-950/40 hover:bg-red-900/60 text-red-400 px-3 py-1.5 rounded-lg font-medium transition-colors no-underline">
                                 Salir
                             </a>
                         </div>
                     {% else %}
-                        <a href="{% url 'login' %}" class="nav-link">
+                        <a href="{% url 'login' %}" class="text-gray-300 hover:text-white font-medium no-underline transition-colors">
                             Iniciar Sesión
                         </a>
-                        <a href="{% url 'register' %}" class="btn-register">
+                        <a href="{% url 'register' %}" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-pink-600/20 transition-all duration-200 no-underline">
                             Registrarse
                         </a>
                     {% endif %}
