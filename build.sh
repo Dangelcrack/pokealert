@@ -8,3 +8,6 @@ npx tailwindcss -i ./static/css/style.css -o ./static/css/style.min.css --minify
 
 python manage.py collectstatic --no-input
 python manage.py migrate
+
+python manage.py descargar_cartas_json
+python manage.py populate_relations

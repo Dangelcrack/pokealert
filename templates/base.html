@@ -13,9 +13,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     {% if debug %}
+        <!-- Solo para local -->
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <script src="https://cdn.tailwindcss.com"></script>
     {% else %}
+        <!-- Para producción en Render -->
         <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
     {% endif %}
 </head>
