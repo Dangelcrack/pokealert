@@ -1,77 +1,71 @@
-"""Servicio de gestión de opciones de filtro (catálogo).
+"""Servicio de gestión de opciones de filtro (catálogo)."""
 
-Sincroniza rarezas, supertypes, subtypes y artistas con la API externa,
-y gestiona la caché de opciones usada por los menús de filtro del
-frontend.
-"""
-
+import logging
 from django.core.cache import cache
-
 from cards.models import Rarity, Supertype, Subtype, Artist
 from cards.services.text_utils import normalize
 from cards.utils import get_filter_options as get_api_filter_options
+
+logger = logging.getLogger(__name__)
 
 CACHE_KEY = "filter_options_all"
 CACHE_TTL_SECONDS = 3600
 
 
 def invalidate_filter_options_cache() -> None:
-    """Elimina la entrada en caché que contiene las opciones de filtro.
-
-    Se usa después de crear nuevos registros relacionados con filtros
-    para forzar recálculo en la siguiente petición.
-    """
+    """Elimina la entrada en caché."""
     cache.delete(CACHE_KEY)
 
 
 def sync_api_filter_values() -> None:
-    """Solicita valores de filtros a la API externa y los persiste en la DB
-    local.
-
-    Crea `Supertypes`, `Subtypes` y `Rarities` si no existen para
-    asegurar que los menús de filtro muestren todas las opciones
-    disponibles.
-    """
+    """Solicita valores a la API y persiste localmente."""
     mapping = [
         (Supertype, "supertypes", "display_name"),
         (Subtype, "subtypes", "display_name"),
         (Rarity, "rarities", "display_name"),
     ]
     for model, filter_type, display_field in mapping:
-        options = get_api_filter_options(filter_type)
-        for label in options:
-            if not label:
+        try:
+            options = get_api_filter_options(filter_type)
+            if not options:
                 continue
-            normalized = normalize(label)
-            model.objects.get_or_create(
-                name=normalized,
-                defaults={display_field: label},
-            )
+            for label in options:
+                if not label:
+                    continue
+                normalized = normalize(label)
+                model.objects.get_or_create(
+                    name=normalized,
+                    defaults={display_field: label},
+                )
+        except Exception as e:
+            logger.error(f"Error sincronizando {filter_type}: {e}")
 
 
 def get_filter_options(filter_name: str | None = None):
-    """Devuelve las opciones de filtro (cached) para filtros de la interfaz.
-
-    Si la caché está vacía o la base de datos no parece completa,
-    sincroniza los valores con la API externa antes de construir el
-    resultado. Si se pasa `filter_name`, devuelve solo ese subconjunto.
-    """
+    """Devuelve opciones de filtro, asegurando sincronización inicial."""
     filters = cache.get(CACHE_KEY)
 
-    db_complete = (
-        Supertype.objects.count() >= 3
-        and Subtype.objects.count() >= 20
-        and Rarity.objects.count() >= 20
-    )
+    if filters is None:
+        # Verificamos si tenemos datos base en DB
+        db_has_data = Supertype.objects.exists() and Rarity.objects.exists()
 
-    if filters is None or not db_complete:
-        sync_api_filter_values()
+        if not db_has_data:
+            # Sincronización inicial solo si está totalmente vacío
+            sync_api_filter_values()
 
+        # Construimos el diccionario usando .values_list para ahorrar memoria
+        # No guardes objetos QuerySet en caché, guarda strings/listas simples
         filters = {
-            "supertypes": list(Supertype.objects.all().order_by("display_name")),
-            "subtypes": list(Subtype.objects.all().order_by("display_name")),
-            "rarities": list(Rarity.objects.all().order_by("display_name")),
-            "artists": list(Artist.objects.all().order_by("name")),
+            "supertypes": list(
+                Supertype.objects.values_list("display_name", flat=True).order_by("display_name")
+            ),
+            "subtypes": list(
+                Subtype.objects.values_list("display_name", flat=True).order_by("display_name")
+            ),
+            "rarities": list(
+                Rarity.objects.values_list("display_name", flat=True).order_by("display_name")
+            ),
+            "artists": list(Artist.objects.values_list("name", flat=True).order_by("name")),
         }
         cache.set(CACHE_KEY, filters, CACHE_TTL_SECONDS)
 
