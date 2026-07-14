@@ -12,7 +12,7 @@ import os
 
 from django.conf import settings
 from django.db.models import Q
-
+from django.views.decorators.cache import cache_page
 from cards.models import Artist, Card, Rarity, Subtype, Supertype
 from cards.services.card_formatter import format_card
 from cards.services.card_service import resolve_card_relations
@@ -299,6 +299,7 @@ def _formatear_pagina(page_cards: list) -> list:
     return results
 
 
+@cache_page(60 * 15)
 def buscar_cartas(
     query_raw: str = "",
     selected_sort: str = "",

@@ -23,6 +23,7 @@ from cards.views import (
 )
 from alerts.views import PriceAlertViewSet, PriceHistoryViewSet
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from django.views.decorators.cache import cache_page
 
 router = DefaultRouter()
 router.register(r"cards", CardViewSet)
@@ -49,10 +50,10 @@ urlpatterns = [
     path("login/", user_login, name="login"),
     path("logout/", user_logout, name="logout"),
     path("dashboard/", dashboard, name="dashboard"),
-    path("search/", search, name="search"),
+    path("search/", cache_page(900)(search), name="search"),
     path("create-alert/", create_alert, name="create_alert"),
     path("search-suggestions/", search_suggestions, name="search_suggestions"),
-    path("card/<str:card_id>/", card_detail, name="card_detail"),
+    path("card/<str:card_id>/", cache_page(900)(card_detail), name="card_detail"),
     path("alerts/edit/<int:alert_id>/", edit_alert, name="edit_alert"),
     path("alerts/delete/<int:alert_id>/", delete_alert, name="delete_alert"),
     path(
@@ -60,5 +61,5 @@ urlpatterns = [
         card_price_history,
         name="card_price_history",
     ),
-    path("mercado/", market_trends, name="market_trends"),
+    path("mercado/", cache_page(900)(market_trends), name="market_trends"),
 ]
