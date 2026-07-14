@@ -15,6 +15,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
 /*====================================================
@@ -2309,6 +2310,16 @@ img{
 }
 
 .poke-logo img {
-    width: 100px;
-    height: 100px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.navbar-logo-custom {
+    width: 110px !important;
+    height: 110px !important;
+    max-height: none !important;
+    object-fit: contain;
+    image-rendering: auto;
+    margin-top: -10px;
+    margin-bottom: -10px;
 }
