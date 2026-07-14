@@ -12,12 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    {% if "onrender.com" not in request.META.HTTP_HOST %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <script src="https://cdn.tailwindcss.com"></script>
-    {% else %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% endif %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.2">
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="poke-body">
     
@@ -27,7 +24,7 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="poke-logo flex items-center gap-2">
+                    <a href="{% url 'home' %}" class="poke-logo flex items-center gap-2" style="max-height: 64px;">
                         <img src="{% static 'logo.webp' %}?v=8" 
                             alt="PokeAlert" 
                             class="navbar-logo-custom"
