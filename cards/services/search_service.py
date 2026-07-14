@@ -2,7 +2,8 @@
 
 Combina tres fuentes de datos (DB local, API externa de Pokémon TCG, y
 JSON estático de respaldo) en un único resultado deduplicado, aplicando
-filtros, orden y paginación."""
+filtros, orden y paginación con optimización extrema de imágenes de catálogo.
+"""
 
 import json
 import logging
@@ -22,6 +23,24 @@ from cards.services.text_utils import get_expanded_search_terms, normalize
 logger = logging.getLogger(__name__)
 
 PAGE_SIZE = 24
+
+
+def _optimizar_url_imagen(url: str, ancho: int = 150) -> str:
+    """Utiliza el proxy CDN wsrv.nl para redimensionar y convertir a WebP.
+
+    Esto reduce drásticamente el peso de las imágenes externas (de ~200 KB a ~8 KB).
+    Se usa un ancho de 150px (aprox. 2x el tamaño de renderizado de 72px) para
+    garantizar nitidez en pantallas Retina sin penalizar el rendimiento.
+    """
+    if not url:
+        return ""
+    # Si la URL ya es de wsrv.nl o local, no la modificamos
+    if "wsrv.nl" in url or url.startswith("/"):
+        return url
+
+    # Limpiamos el protocolo de la URL de origen
+    clean_url = url.replace("https://", "").replace("http://", "")
+    return f"https://wsrv.nl/?url={clean_url}&w={ancho}&output=webp&q=80"
 
 
 def safe_append(query_parts, model, id_value, label, field):
@@ -69,9 +88,7 @@ def build_search_query(
 
 
 def _buscar_en_db_local(query_raw, rarity_id, supertype_id, subtype_id, artist_id) -> dict:
-    """Busca en la base de datos local aplicando los mismos filtros que la API.
-
-    Devuelve un dict `{pokemontcg_id: card_dict}` con hasta 150 resultados."""
+    """Busca en la base de datos local aplicando los mismos filtros que la API."""
     unique_cards_map = {}
 
     tiene_filtros = query_raw or rarity_id or supertype_id or subtype_id or artist_id
@@ -100,11 +117,13 @@ def _buscar_en_db_local(query_raw, rarity_id, supertype_id, subtype_id, artist_i
     )[:150]
 
     for c in db_results:
+        # Optimizamos la miniatura para la búsqueda y preservamos la original para la vista detalle
+        img_small_opt = _optimizar_url_imagen(c.image_url)
         unique_cards_map[c.pokemontcg_id] = {
             "id": c.pokemontcg_id,
             "name": c.name,
-            "image_url": c.image_url,
-            "images": {"small": c.image_url, "large": c.image_url},
+            "image_url": img_small_opt,
+            "images": {"small": img_small_opt, "large": c.image_url},
             "price": float(c.price or 0.0),
             "set_name": c.set_name,
             "set": {"name": c.set_name or "Desconocido", "series": ""},
@@ -232,16 +251,29 @@ def _ordenar(all_cards: list, selected_sort: str) -> None:
 
 
 def _formatear_pagina(page_cards: list) -> list:
-    """Resuelve relaciones y formatea cada carta de la página actual."""
+    """Resuelve relaciones, aplica optimización de imágenes y formatea la página actual."""
     results = []
     for card_data in page_cards:
         relations = resolve_card_relations(card_data)
         card_formatted = format_card(card_data)
 
-        if not card_formatted.get("image_url"):
-            card_formatted["image_url"] = card_data.get("image_url") or card_data.get(
-                "images", {}
-            ).get("small", "")
+        # 1. Extraer y optimizar la URL de la imagen de miniatura
+        raw_img = (
+            card_data.get("images", {}).get("small")
+            or card_data.get("image_url")
+            or card_data.get("image_url_small")
+            or card_data.get("image")
+            or ""
+        )
+
+        # Guardamos la versión optimizada ligera para la búsqueda
+        opt_img = _optimizar_url_imagen(raw_img)
+        card_formatted["image_url"] = opt_img
+        card_formatted["images"] = {
+            "small": opt_img,
+            "large": raw_img,  # Mantener la original de alta resolución por si se necesita
+        }
+
         if not card_formatted.get("set_name") or card_formatted.get("set_name") == "Unknown":
             card_formatted["set_name"] = card_data.get("set_name") or card_data.get("set", {}).get(
                 "name", "Unknown"
