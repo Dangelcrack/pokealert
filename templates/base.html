@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.2">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
 </head>
 <body class="poke-body">
     
@@ -51,19 +51,19 @@
                         <div class="nav-user-zone">
                             <!-- Enlace al Perfil con Avatar de Pokémon Dinámico -->
                             <a href="{% url 'profile' %}" class="profile-link group">
-                                <div class="avatar-container">
-                                    {% if request.session.pokemon_avatar == 'charizard' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard">
-                                    {% elif request.session.pokemon_avatar == 'gengar' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar">
-                                    {% elif request.session.pokemon_avatar == 'mewtwo' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo">
-                                    {% elif request.session.pokemon_avatar == 'lugia' %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia">
-                                    {% else %}
-                                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu">
-                                    {% endif %}
-                                </div>
+                            <div class="avatar-container">
+                                {% if request.session.pokemon_avatar == 'charizard' %}
+                                    <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png&w=64&output=webp&q=80" alt="Charizard" width="32" height="32" loading="lazy" decoding="async">
+                                {% elif request.session.pokemon_avatar == 'gengar' %}
+                                    <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png&w=64&output=webp&q=80" alt="Gengar" width="32" height="32" loading="lazy" decoding="async">
+                                {% elif request.session.pokemon_avatar == 'mewtwo' %}
+                                    <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png&w=64&output=webp&q=80" alt="Mewtwo" width="32" height="32" loading="lazy" decoding="async">
+                                {% elif request.session.pokemon_avatar == 'lugia' %}
+                                    <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png&w=64&output=webp&q=80" alt="Lugia" width="32" height="32" loading="lazy" decoding="async">
+                                {% else %}
+                                    <img src="https://wsrv.nl/?url=raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png&w=64&output=webp&q=80" alt="Pikachu" width="32" height="32" loading="lazy" decoding="async">
+                                {% endif %}
+                            </div>
                                 <span class="hidden sm:inline">{{ user.username }}</span>
                             </a>
                             <span class="text-gray-600">|</span>
