@@ -118,13 +118,13 @@
                         
                         <div class="card-thumb-container">
                             {% if card.images and card.images.small %}
-                                <img src="{{ card.images.small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
+                                <img src="{{ card.images.small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="72" height="100">
                             {% elif card.image_url_small %}
-                                <img src="{{ card.image_url_small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
+                                <img src="{{ card.image_url_small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="72" height="100">
                             {% elif card.image_url %}
-                                <img src="{{ card.image_url }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
+                                <img src="{{ card.image_url }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="72" height="100">
                             {% elif card.image %}
-                                <img src="{{ card.image }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
+                                <img src="{{ card.image }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="72" height="100">
                             {% else %}
                                 <div class="text-gray-500 dark:text-gray-400 italic text-sm py-10 text-center">Sin imagen</div>
                             {% endif %}
@@ -203,7 +203,7 @@
                     suggestions.forEach(suggestion => {
                         const item = document.createElement('div');
                         item.className = 'suggestion-item';
-                        item.innerHTML = `<img src="${suggestion.image || suggestion.image_url}" class="suggestion-thumb"><span class="font-medium">${suggestion.name}</span>`;
+                        item.innerHTML = `<img src="${suggestion.image || suggestion.image_url}" class="suggestion-thumb" loading="lazy" decoding="async" width="40" height="56"><span class="font-medium">${suggestion.name}</span>`;
                         item.onclick = () => {
                             searchInput.value = suggestion.name;
                             searchInput.closest('form').submit();
