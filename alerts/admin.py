@@ -8,7 +8,9 @@ from .models import PriceAlert, PriceHistory
 class PriceAlertAdmin(admin.ModelAdmin):
     """Admin de Django para gestionar `PriceAlert`.
 
-    Muestra campos clave en la lista y permite búsqueda por usuario y carta."""
+    Muestra campos clave en la lista y permite búsqueda por usuario y
+    carta.
+    """
 
     list_display = ("user", "card", "target_price", "discount_percentage", "is_active")
     list_filter = ("is_active", "created_at")
@@ -19,7 +21,9 @@ class PriceAlertAdmin(admin.ModelAdmin):
 class PriceHistoryAdmin(admin.ModelAdmin):
     """Admin de Django para `PriceHistory`.
 
-    Presenta el histórico de precios por carta y marca campos de solo lectura donde procede."""
+    Presenta el histórico de precios por carta y marca campos de solo
+    lectura donde procede.
+    """
 
     list_display = ("card", "price", "marketplace", "recorded_at")
     list_filter = ("marketplace", "recorded_at")

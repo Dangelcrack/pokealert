@@ -23,7 +23,8 @@ def setup_data(db):
 
 @pytest.mark.django_db
 def test_price_alert_creation(setup_data):
-    """Comprueba la creación correcta de una `PriceAlert` y su representación."""
+    """Comprueba la creación correcta de una `PriceAlert` y su
+    representación."""
     user, card = setup_data
 
     alert = PriceAlert.objects.create(
@@ -38,7 +39,8 @@ def test_price_alert_creation(setup_data):
 
 @pytest.mark.django_db
 def test_unique_together_constraint(setup_data):
-    """Verifica que un usuario no pueda tener dos alertas para la misma carta."""
+    """Verifica que un usuario no pueda tener dos alertas para la misma
+    carta."""
     user, card = setup_data
 
     PriceAlert.objects.create(user=user, card=card, discount_percentage=10)
@@ -49,7 +51,8 @@ def test_unique_together_constraint(setup_data):
 
 @pytest.mark.django_db
 def test_price_history_creation(setup_data):
-    """Verifica que `PriceHistory` se crea correctamente y contiene datos esperados."""
+    """Verifica que `PriceHistory` se crea correctamente y contiene datos
+    esperados."""
     _, card = setup_data
 
     history = PriceHistory.objects.create(card=card, price=15.99, marketplace="tcgplayer")

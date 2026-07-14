@@ -1,7 +1,8 @@
 """Módulo de integración con la API de Pokémon TCG.
 
-Centraliza las llamadas HTTP, manejo de headers y transformación mínima de
-respuesta para el resto de la aplicación."""
+Centraliza las llamadas HTTP, manejo de headers y transformación mínima
+de respuesta para el resto de la aplicación.
+"""
 
 import logging
 import requests
@@ -42,7 +43,8 @@ def _get_headers() -> dict:
 def _execute_request(
     url: str, headers: dict, params: Optional[dict], timeout: int
 ) -> requests.Response:
-    """Dispara la petición y evalúa si se debe reintentar basado en códigos de estado."""
+    """Dispara la petición y evalúa si se debe reintentar basado en códigos de
+    estado."""
     response = requests.get(url, headers=headers, params=params, timeout=timeout)
     if response.status_code >= 500 or response.status_code == 429:
         response.raise_for_status()
@@ -51,7 +53,10 @@ def _execute_request(
 
 def _get(url: str, params: Optional[dict] = None, timeout: int = 5) -> Optional[Dict[str, Any]]:
     """Wrapper único para todas las llamadas HTTP.
-    Centraliza headers, timeouts cortos y captura errores para evitar colgar el servidor."""
+
+    Centraliza headers, timeouts cortos y captura errores para evitar
+    colgar el servidor.
+    """
     try:
         response = _execute_request(url, headers=_get_headers(), params=params, timeout=timeout)
 
@@ -74,7 +79,9 @@ def _get(url: str, params: Optional[dict] = None, timeout: int = 5) -> Optional[
 
 def fetch_cards(query: str, page: int = 1, page_size: int = 20) -> List[dict]:
     """Devuelve lista de cartas filtradas por query.
-    Optimizado con un page_size menor por defecto para evitar Timeouts."""
+
+    Optimizado con un page_size menor por defecto para evitar Timeouts.
+    """
     data = _get(
         API_URL,
         params={
@@ -103,7 +110,8 @@ def fetch_card(card_id: str) -> Dict[str, Any]:
 
 
 def search_cards(query: str, page_size: int = 10) -> List[dict]:
-    """Búsqueda súper ligera para componentes en tiempo real (ej: autocomplete o previews)."""
+    """Búsqueda súper ligera para componentes en tiempo real (ej: autocomplete
+    o previews)."""
     data = _get(
         API_URL,
         params={

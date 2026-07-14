@@ -1,7 +1,9 @@
 """Servicio de gestión de opciones de filtro (catálogo).
 
 Sincroniza rarezas, supertypes, subtypes y artistas con la API externa,
-y gestiona la caché de opciones usada por los menús de filtro del frontend."""
+y gestiona la caché de opciones usada por los menús de filtro del
+frontend.
+"""
 
 from django.core.cache import cache
 
@@ -17,15 +19,19 @@ def invalidate_filter_options_cache() -> None:
     """Elimina la entrada en caché que contiene las opciones de filtro.
 
     Se usa después de crear nuevos registros relacionados con filtros
-    para forzar recálculo en la siguiente petición."""
+    para forzar recálculo en la siguiente petición.
+    """
     cache.delete(CACHE_KEY)
 
 
 def sync_api_filter_values() -> None:
-    """Solicita valores de filtros a la API externa y los persiste en la DB local.
+    """Solicita valores de filtros a la API externa y los persiste en la DB
+    local.
 
-    Crea `Supertypes`, `Subtypes` y `Rarities` si no existen para asegurar que
-    los menús de filtro muestren todas las opciones disponibles."""
+    Crea `Supertypes`, `Subtypes` y `Rarities` si no existen para
+    asegurar que los menús de filtro muestren todas las opciones
+    disponibles.
+    """
     mapping = [
         (Supertype, "supertypes", "display_name"),
         (Subtype, "subtypes", "display_name"),
@@ -46,9 +52,10 @@ def sync_api_filter_values() -> None:
 def get_filter_options(filter_name: str | None = None):
     """Devuelve las opciones de filtro (cached) para filtros de la interfaz.
 
-    Si la caché está vacía o la base de datos no parece completa, sincroniza
-    los valores con la API externa antes de construir el resultado. Si se pasa
-    `filter_name`, devuelve solo ese subconjunto."""
+    Si la caché está vacía o la base de datos no parece completa,
+    sincroniza los valores con la API externa antes de construir el
+    resultado. Si se pasa `filter_name`, devuelve solo ese subconjunto.
+    """
     filters = cache.get(CACHE_KEY)
 
     db_complete = (

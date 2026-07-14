@@ -16,8 +16,8 @@ from cards.services.catalog_service import (
 
 @pytest.fixture(autouse=True)
 def limpiar_cache():
-    """Limpia la caché de opciones de filtro antes y después de cada test,
-    para que un test no contamine al siguiente."""
+    """Limpia la caché de opciones de filtro antes y después de cada test, para
+    que un test no contamine al siguiente."""
     cache.delete(CACHE_KEY)
     yield
     cache.delete(CACHE_KEY)
@@ -25,8 +25,8 @@ def limpiar_cache():
 
 @pytest.mark.django_db
 def test_sync_api_filter_values_crea_registros_desde_la_api_mockeada():
-    """sync_api_filter_values debe crear Rarity/Supertype/Subtype a partir
-    de lo que devuelva la API externa (mockeada aquí, sin red real)."""
+    """sync_api_filter_values debe crear Rarity/Supertype/Subtype a partir de
+    lo que devuelva la API externa (mockeada aquí, sin red real)."""
 
     def fake_api(filter_type):
         return {
@@ -45,7 +45,8 @@ def test_sync_api_filter_values_crea_registros_desde_la_api_mockeada():
 
 @pytest.mark.django_db
 def test_sync_api_filter_values_ignora_labels_vacios():
-    """Un label vacío o None en la respuesta de la API no debe intentar crear un registro."""
+    """Un label vacío o None en la respuesta de la API no debe intentar crear
+    un registro."""
 
     def fake_api(filter_type):
         return {"supertypes": ["", None, "Pokémon"], "subtypes": [], "rarities": []}[filter_type]
@@ -59,7 +60,8 @@ def test_sync_api_filter_values_ignora_labels_vacios():
 
 @pytest.mark.django_db
 def test_get_filter_options_sincroniza_si_db_incompleta():
-    """Si la DB tiene menos registros de los esperados, debe disparar la sincronización."""
+    """Si la DB tiene menos registros de los esperados, debe disparar la
+    sincronización."""
 
     def fake_api(filter_type):
         # Suficientes para superar el umbral de "DB completa" en get_filter_options
@@ -76,7 +78,8 @@ def test_get_filter_options_sincroniza_si_db_incompleta():
 
 @pytest.mark.django_db
 def test_get_filter_options_usa_cache_si_db_ya_completa():
-    """Si la DB ya está completa, la segunda llamada debe usar caché sin volver a llamar a la API."""
+    """Si la DB ya está completa, la segunda llamada debe usar caché sin volver
+    a llamar a la API."""
     for i in range(3):
         Supertype.objects.create(name=f"st{i}", display_name=f"ST{i}")
     for i in range(20):

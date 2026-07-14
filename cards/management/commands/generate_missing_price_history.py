@@ -1,7 +1,9 @@
 """Comando de gestión para generar históricos de precio ausentes.
 
-Este comando crea entradas de `PriceHistory` para cartas que no tienen registros
-previos, usando `Card.price` como referencia cuando está disponible."""
+Este comando crea entradas de `PriceHistory` para cartas que no tienen
+registros previos, usando `Card.price` como referencia cuando está
+disponible.
+"""
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -13,9 +15,11 @@ from alerts.models import PriceHistory
 class Command(BaseCommand):
     """Comando para generar `PriceHistory` faltantes a partir de `Card.price`.
 
-    Útil para rellenar series históricas cuando se migró desde un sistema que
-    no generaba históricos diarios. Soporta el argumento `--days` para limitar
-    la creación a cartas sin histórico en los últimos N días."""
+    Útil para rellenar series históricas cuando se migró desde un
+    sistema que no generaba históricos diarios. Soporta el argumento
+    `--days` para limitar la creación a cartas sin histórico en los
+    últimos N días.
+    """
 
     help = (
         "Genera entradas de PriceHistory para cartas que no tienen histórico. "
@@ -34,7 +38,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Ejecuta la creación de `PriceHistory` según el precio almacenado.
 
-        Si `--days` se especifica, omite cartas con historial en ese rango."""
+        Si `--days` se especifica, omite cartas con historial en ese
+        rango.
+        """
         days = options.get("days") or 0
         cutoff = None
         if days > 0:

@@ -33,8 +33,9 @@ def test_check_prices_invalid_token(client, monkeypatch):
 
 @pytest.mark.django_db
 def test_check_prices_valid_token_lanza_hilo_en_background(client, monkeypatch):
-    """Con token válido debe lanzar un hilo con check_pokemon_prices y responder
-    de inmediato con status 'started', sin esperar a que el hilo termine."""
+    """Con token válido debe lanzar un hilo con check_pokemon_prices y
+    responder de inmediato con status 'started', sin esperar a que el hilo
+    termine."""
     monkeypatch.setenv("CRON_SECRET_TOKEN", "mi-token")
 
     with patch("tasks.views.threading.Thread") as mock_thread_class:
@@ -61,7 +62,8 @@ def test_check_prices_valid_token_lanza_hilo_en_background(client, monkeypatch):
 
 @pytest.mark.django_db
 def test_check_prices_valid_token_responde_500_si_thread_falla(client, monkeypatch):
-    """Si threading.Thread lanza una excepción al crearse, debe devolver 500."""
+    """Si threading.Thread lanza una excepción al crearse, debe devolver
+    500."""
     monkeypatch.setenv("CRON_SECRET_TOKEN", "mi-token")
 
     with patch("tasks.views.threading.Thread", side_effect=RuntimeError("boom")):

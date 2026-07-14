@@ -1,7 +1,9 @@
-"""Comando de gestión para descargar cartas desde PokéTCG y generar un JSON local.
+"""Comando de gestión para descargar cartas desde PokéTCG y generar un JSON
+local.
 
 El JSON generado es compatible con la lógica de búsqueda y normalización de
-`cards/views.py` y sirve como respaldo local si la API no está disponible."""
+`cards/views.py` y sirve como respaldo local si la API no está disponible.
+"""
 
 import os
 import json
@@ -13,15 +15,18 @@ from django.conf import settings
 class Command(BaseCommand):
     """Comando que descarga cartas desde la API y genera un JSON local.
 
-    Genera un archivo `todas_las_cartas_tcg.json` con información simplificada
-    pensada para búsquedas locales y como respaldo cuando la API no esté disponible."""
+    Genera un archivo `todas_las_cartas_tcg.json` con información
+    simplificada pensada para búsquedas locales y como respaldo cuando
+    la API no esté disponible.
+    """
 
     help = "Descarga cartas de la API y genera el JSON con textos planos para views.py"
 
     def handle(self, *args, **options):
         """Ejecuta la descarga y escritura del JSON local.
 
-        Maneja errores de conexión y muestra progreso por stdout."""
+        Maneja errores de conexión y muestra progreso por stdout.
+        """
         self.stdout.write("Iniciando descarga de cartas...")
 
         # Traemos un buen lote de cartas para tu buscador

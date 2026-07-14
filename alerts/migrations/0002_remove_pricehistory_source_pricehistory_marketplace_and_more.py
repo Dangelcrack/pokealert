@@ -6,9 +6,12 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    """Migración que ajusta `PriceHistory`: elimina campos antiguos y añade `marketplace`.
+    """Migración que ajusta `PriceHistory`: elimina campos antiguos y añade
+    `marketplace`.
 
-    Incluye adición de índices para optimizar consultas por carta y fecha."""
+    Incluye adición de índices para optimizar consultas por carta y
+    fecha.
+    """
 
     dependencies = [
         ("alerts", "0001_initial"),

@@ -8,7 +8,9 @@ from .models import Card
 class CardAdmin(admin.ModelAdmin):
     """Configuración del admin para `Card`.
 
-    Presenta columnas relevantes y permite búsquedas por nombre e ID TCG."""
+    Presenta columnas relevantes y permite búsquedas por nombre e ID
+    TCG.
+    """
 
     list_display = ("name", "pokemontcg_id", "rarity", "created_at")
     list_filter = ("rarity",)

@@ -8,10 +8,12 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    """Migración inicial de la app `alerts` que crea modelos PriceAlert y PriceHistory.
+    """Migración inicial de la app `alerts` que crea modelos PriceAlert y
+    PriceHistory.
 
-    Este docstring facilita la comprensión del propósito de la migración cuando se
-    inspeccionan archivos en control de versiones."""
+    Este docstring facilita la comprensión del propósito de la migración
+    cuando se inspeccionan archivos en control de versiones.
+    """
 
     initial = True
 

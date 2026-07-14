@@ -10,7 +10,8 @@ from cards.models import Card
 
 @pytest.mark.django_db
 def test_alert_list_api():
-    """Verifica que el endpoint de lista de alertas responde 200 para usuario autenticado."""
+    """Verifica que el endpoint de lista de alertas responde 200 para usuario
+    autenticado."""
     user = User.objects.create_user(username="testuser", password="password")
 
     card = Card.objects.create(

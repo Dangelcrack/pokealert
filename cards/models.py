@@ -1,7 +1,8 @@
 """Modelos de la aplicación `cards`.
 
-Define cartas, atributos de referencia TCG y especies Pokémon usadas en la
-lógica de búsqueda y sincronización."""
+Define cartas, atributos de referencia TCG y especies Pokémon usadas en
+la lógica de búsqueda y sincronización.
+"""
 
 from django.db import models
 
@@ -17,7 +18,8 @@ class Rarity(models.Model):
         return self.display_name
 
     class Meta:
-        """Meta para `Rarity` que define representación plural y orden por nombre."""
+        """Meta para `Rarity` que define representación plural y orden por
+        nombre."""
 
         verbose_name_plural = "Rarities"
         ordering = ["name"]
@@ -81,11 +83,13 @@ class PokemonEspecie(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        """Representación legible de la especie con número de Pokédex y nombre en inglés."""
+        """Representación legible de la especie con número de Pokédex y nombre
+        en inglés."""
         return f"#{self.numero_pokedex} - {self.name_en}"
 
     class Meta:
-        """Meta para `PokemonEspecie` con nombres legibles y orden por número de Pokédex."""
+        """Meta para `PokemonEspecie` con nombres legibles y orden por número
+        de Pokédex."""
 
         verbose_name = "Especie Pokémon"
         verbose_name_plural = "Especies Pokémon"
@@ -147,7 +151,8 @@ class Card(models.Model):
         return f"{self.name} ({self.set_name})"
 
     class Meta:
-        """Meta para `Card`: orden por fecha y varios índices para búsquedas frecuentes."""
+        """Meta para `Card`: orden por fecha y varios índices para búsquedas
+        frecuentes."""
 
         ordering = ["-created_at"]
         indexes = [

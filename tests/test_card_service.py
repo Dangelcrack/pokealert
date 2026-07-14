@@ -10,7 +10,8 @@ from cards.services.card_service import get_local_card_by_id, resolve_card_relat
 
 @pytest.mark.django_db
 def test_resolve_card_relations_crea_rarity_si_no_existe():
-    """Si la rareza no existe en la DB, debe crearse con el name normalizado."""
+    """Si la rareza no existe en la DB, debe crearse con el name
+    normalizado."""
     relations = resolve_card_relations({"rarity": "Rare Holo"})
 
     assert relations["rarity"].display_name == "Rare Holo"
@@ -29,7 +30,8 @@ def test_resolve_card_relations_reutiliza_rarity_existente():
 
 @pytest.mark.django_db
 def test_resolve_card_relations_crea_supertype_y_subtype():
-    """Debe crear Supertype y Subtype (usando el primer elemento de la lista) si vienen en el payload."""
+    """Debe crear Supertype y Subtype (usando el primer elemento de la lista)
+    si vienen en el payload."""
     relations = resolve_card_relations({"supertype": "Pokémon", "subtypes": ["Basic", "EX"]})
 
     assert relations["supertype"].display_name == "Pokémon"

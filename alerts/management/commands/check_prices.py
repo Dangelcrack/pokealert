@@ -1,4 +1,5 @@
-"""Comando de administración para verificar precios de alertas activas y enviar notificaciones."""
+"""Comando de administración para verificar precios de alertas activas y enviar
+notificaciones."""
 
 import os
 
@@ -11,17 +12,19 @@ import requests
 class Command(BaseCommand):
     """Comando que verifica precios de alertas activas y envía notificaciones.
 
-    `handle` itera las alertas activas, consulta la API externa para el precio
-    actual y compara con el objetivo del usuario. Si se cumple la condición,
-    envía un correo y desactiva la alerta."""
+    `handle` itera las alertas activas, consulta la API externa para el
+    precio actual y compara con el objetivo del usuario. Si se cumple la
+    condición, envía un correo y desactiva la alerta.
+    """
 
     help = "Verifica los precios y envía correos si bajan"
 
     def handle(self, *args, **options):
         """Ejecuta la comprobación de precios y notifica por correo si procede.
 
-        Muestra mensajes por stdout para seguimiento manual y captura errores
-        para evitar abortos del comando."""
+        Muestra mensajes por stdout para seguimiento manual y captura
+        errores para evitar abortos del comando.
+        """
         # 1. Ver cuántas alertas hay activas
         alerts = PriceAlert.objects.filter(is_active=True)
         self.stdout.write("🔍 Buscando alertas activas en la Base de Datos...")

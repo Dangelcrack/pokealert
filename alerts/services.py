@@ -1,7 +1,8 @@
 """Servicio de gestión de alertas de precio.
 
 Contiene la lógica de negocio para crear y actualizar `PriceAlert`,
-incluyendo la sincronización de la carta si aún no existe localmente."""
+incluyendo la sincronización de la carta si aún no existe localmente.
+"""
 
 from cards.models import Card
 from cards.services.card_formatter import format_card
@@ -16,16 +17,19 @@ class AlertaSinPrecioValidoError(Exception):
 
 
 class CartaNoEncontradaError(Exception):
-    """Se lanza cuando la carta no existe localmente ni se pudo obtener de la API."""
+    """Se lanza cuando la carta no existe localmente ni se pudo obtener de la
+    API."""
 
 
 def crear_alerta(
     user, pokemontcg_id: str, discount_percentage: str, current_price_str: str
 ) -> PriceAlert:
-    """Crea una `PriceAlert` para el usuario, sincronizando la carta si hace falta.
+    """Crea una `PriceAlert` para el usuario, sincronizando la carta si hace
+    falta.
 
     Lanza `AlertaSinPrecioValidoError` si faltan datos de precio, o
-    `CartaNoEncontradaError` si la carta no se pudo obtener de la API."""
+    `CartaNoEncontradaError` si la carta no se pudo obtener de la API.
+    """
     if not pokemontcg_id or not discount_percentage or current_price_str == "N/A":
         raise AlertaSinPrecioValidoError("No se puede crear una alerta sin un precio válido.")
 
@@ -61,10 +65,12 @@ def crear_alerta(
 
 
 def actualizar_descuento_alerta(alert: PriceAlert, discount_percentage: str) -> PriceAlert:
-    """Actualiza el porcentaje de descuento de una alerta y recalcula su `target_price`.
+    """Actualiza el porcentaje de descuento de una alerta y recalcula su
+    `target_price`.
 
     Devuelve la misma instancia de `alert`, ya guardada. No hace nada si
-    `discount_percentage` no es un dígito válido."""
+    `discount_percentage` no es un dígito válido.
+    """
     if not discount_percentage or not str(discount_percentage).isdigit():
         return alert
 

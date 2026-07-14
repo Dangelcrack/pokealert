@@ -1,7 +1,9 @@
 """Vistas y utilidades principales de la aplicación `cards`.
 
-Este módulo combina helpers de búsqueda, normalización, sincronización con la API,
-views frontend y endpoints de API REST para cartas y alertas."""
+Este módulo combina helpers de búsqueda, normalización, sincronización
+con la API, views frontend y endpoints de API REST para cartas y
+alertas.
+"""
 
 from datetime import timedelta
 
@@ -87,7 +89,8 @@ from .serializers import CardSerializer
     destroy=extend_schema(summary="Eliminar carta"),
 )
 class CardViewSet(viewsets.ModelViewSet):
-    """API REST para `Card` con operaciones CRUD y campos de búsqueda/filtrado."""
+    """API REST para `Card` con operaciones CRUD y campos de
+    búsqueda/filtrado."""
 
     queryset = Card.objects.all()
     serializer_class = CardSerializer
@@ -104,7 +107,9 @@ def home(request):
 def register(request):
     """Registra un nuevo usuario y realiza login automático.
 
-    Valida que las contraseñas coincidan y que el nombre de usuario no exista."""
+    Valida que las contraseñas coincidan y que el nombre de usuario no
+    exista.
+    """
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
@@ -124,7 +129,8 @@ def register(request):
 def user_login(request):
     """Autentica a un usuario con credenciales proporcionadas en el formulario.
 
-    En caso de fallo devuelve la plantilla con un mensaje de error."""
+    En caso de fallo devuelve la plantilla con un mensaje de error.
+    """
     if request.method == "POST":
         user = authenticate(
             request,
@@ -158,7 +164,8 @@ def dashboard(request):
 
 @login_required(login_url="login")
 def search(request):
-    """Gestión de la búsqueda de cartas combinando DB local, JSON y API externa."""
+    """Gestión de la búsqueda de cartas combinando DB local, JSON y API
+    externa."""
     query_raw = request.GET.get("q", "").strip()
     selected_sort = request.GET.get("sort", "")
     selected_supertype_id = request.GET.get("supertype", "")
@@ -213,7 +220,8 @@ def search_suggestions(request):
     - Consulta la base de datos local y, si es necesario, la API externa.
     - Devuelve hasta 10 resultados únicos ordenados por relevancia.
 
-    Devuelve JSON con campos: `name`, `image_url`, `set_name`, `pokemontcg_id`."""
+    Devuelve JSON con campos: `name`, `image_url`, `set_name`, `pokemontcg_id`.
+    """
     query = request.GET.get("q", "").strip()
     if not query or len(query) < 2:
         return JsonResponse([], safe=False)
@@ -264,10 +272,13 @@ def search_suggestions(request):
                 unique_cards.append(card)
 
         def score_card(card):
-            """Calcula una puntuación de relevancia simple para ordenar sugerencias.
+            """Calcula una puntuación de relevancia simple para ordenar
+            sugerencias.
 
-            Devuelve 0 si el nombre empieza por la query, 1 si la query está
-            contenida en el nombre, y 2 en caso contrario. Menor es mejor."""
+            Devuelve 0 si el nombre empieza por la query, 1 si la query
+            está contenida en el nombre, y 2 en caso contrario. Menor es
+            mejor.
+            """
             name_lower = card.get("name", "").lower()
             q_lower = query.lower()
             return 0 if name_lower.startswith(q_lower) else (1 if q_lower in name_lower else 2)
@@ -344,7 +355,8 @@ def delete_alert(request, alert_id):
     """Elimina una `PriceAlert` propiedad del usuario autenticado.
 
     Valida la pertenencia (seguridad) y borra el registro. Redirige al
-    dashboard mostrando un mensaje de confirmación."""
+    dashboard mostrando un mensaje de confirmación.
+    """
     alert = get_object_or_404(PriceAlert, id=alert_id, user=request.user)
     alert.delete()
     messages.success(request, "Alerta personalizada eliminada correctamente.")
@@ -353,7 +365,8 @@ def delete_alert(request, alert_id):
 
 @require_GET
 def card_price_history(_request, card_id):
-    """Devuelve los datos de evolución de precios de los últimos 30 días para el gráfico."""
+    """Devuelve los datos de evolución de precios de los últimos 30 días para
+    el gráfico."""
     try:
         card = Card.objects.get(pokemontcg_id=card_id)
         last_30_days = timezone.now() - timedelta(days=30)
@@ -373,8 +386,8 @@ def card_price_history(_request, card_id):
 
 
 def market_trends(request):
-    """Muestra un ranking de las cartas con mayor variación de precio
-    en los últimos 30 días, calculado a partir de PriceHistory."""
+    """Muestra un ranking de las cartas con mayor variación de precio en los
+    últimos 30 días, calculado a partir de PriceHistory."""
     top_subidas, top_bajadas = obtener_top_movimientos(dias=30, top_n=5)
 
     contexto = {

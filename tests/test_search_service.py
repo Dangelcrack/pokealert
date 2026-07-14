@@ -64,8 +64,8 @@ def test_build_search_query_sin_nada_devuelve_cadena_vacia():
 
 @pytest.mark.django_db
 def test_buscar_cartas_encuentra_resultado_en_db_local():
-    """Una carta que coincide por nombre en la DB local debe aparecer en los resultados,
-    aunque la API externa y el JSON local no devuelvan nada."""
+    """Una carta que coincide por nombre en la DB local debe aparecer en los
+    resultados, aunque la API externa y el JSON local no devuelvan nada."""
     Card.objects.create(
         pokemontcg_id="base1-4",
         name="Charizard",
@@ -85,7 +85,8 @@ def test_buscar_cartas_encuentra_resultado_en_db_local():
 
 @pytest.mark.django_db
 def test_buscar_cartas_sin_resultados_devuelve_lista_vacia():
-    """Sin coincidencias en ninguna fuente, results debe quedar vacío y total_pages=1."""
+    """Sin coincidencias en ninguna fuente, results debe quedar vacío y
+    total_pages=1."""
     with (
         patch("cards.services.search_service.fetch_cards", return_value=[]),
         patch("cards.services.search_service._buscar_en_json_local", return_value={}),
@@ -99,7 +100,8 @@ def test_buscar_cartas_sin_resultados_devuelve_lista_vacia():
 
 @pytest.mark.django_db
 def test_buscar_cartas_pagina_correctamente():
-    """Con más de PAGE_SIZE resultados, debe paginar y marcar has_next=True en la página 1."""
+    """Con más de PAGE_SIZE resultados, debe paginar y marcar has_next=True en
+    la página 1."""
     for i in range(30):
         Card.objects.create(
             pokemontcg_id=f"pikachu-{i}",
@@ -151,7 +153,8 @@ def test_buscar_cartas_ordena_por_precio_ascendente():
 
 @pytest.mark.django_db
 def test_buscar_cartas_fallback_a_set_reciente_sin_query_ni_resultados():
-    """Sin query y sin resultados en ninguna fuente, debe intentar el fallback de set reciente."""
+    """Sin query y sin resultados en ninguna fuente, debe intentar el fallback
+    de set reciente."""
     fallback_card = {
         "id": "sv01-1",
         "name": "Sprigatito",
@@ -175,8 +178,8 @@ def test_buscar_cartas_fallback_a_set_reciente_sin_query_ni_resultados():
 
 @pytest.mark.django_db
 def test_buscar_en_json_local_no_pisa_resultados_de_db(tmp_path, settings):
-    """El JSON local debe rellenar huecos pero nunca sobrescribir una carta
-    ya encontrada en la DB local (comportamiento setdefault)."""
+    """El JSON local debe rellenar huecos pero nunca sobrescribir una carta ya
+    encontrada en la DB local (comportamiento setdefault)."""
     Card.objects.create(
         pokemontcg_id="pikachu-1",
         name="Pikachu (DB)",

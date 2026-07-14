@@ -1,7 +1,9 @@
 """Servicio de obtención de detalle de carta.
 
-Implementa la estrategia de tres capas (Caché -> DB Local -> API/JSON Externo)
-y garantiza el registro histórico diario de precio bajo demanda."""
+Implementa la estrategia de tres capas (Caché -> DB Local -> API/JSON
+Externo) y garantiza el registro histórico diario de precio bajo
+demanda.
+"""
 
 import logging
 from django.core.cache import cache
@@ -48,7 +50,8 @@ def obtener_contexto_card_detail(card_id: str) -> dict:
 
     Aplica la estrategia de tres capas: Caché -> DB Local -> API/JSON Externo.
     Garantiza el registro histórico diario bajo demanda para poblar el
-    gráfico de precios. Devuelve un dict con `card`, `market_price` y `error`."""
+    gráfico de precios. Devuelve un dict con `card`, `market_price` y `error`.
+    """
     if not card_id:
         return {"card": {}, "market_price": "N/A", "error": "Identificador de carta no válido."}
 

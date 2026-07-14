@@ -2,7 +2,8 @@
 
 Aísla la lógica de negocio de `market_trends` (comparación de precios
 actuales contra el histórico) para que sea testeable sin necesidad de
-simular un request HTTP."""
+simular un request HTTP.
+"""
 
 from datetime import timedelta
 
@@ -13,14 +14,16 @@ from cards.models import Card
 
 
 def calcular_variaciones_precio(dias: int = 30) -> list[dict]:
-    """Calcula la variación porcentual de precio de cada carta en el rango dado.
+    """Calcula la variación porcentual de precio de cada carta en el rango
+    dado.
 
     Parámetros:
     - dias: ventana de días hacia atrás para buscar el precio de referencia.
 
     Devuelve una lista de dicts con `carta`, `precio_actual` y `variacion`
     (redondeada a 1 decimal), excluyendo cartas sin variación (0%) o sin
-    histórico suficiente en el rango."""
+    histórico suficiente en el rango.
+    """
     fecha_limite = timezone.now() - timedelta(days=dias)
     cartas_con_historial = []
 
@@ -55,7 +58,8 @@ def obtener_top_movimientos(dias: int = 30, top_n: int = 5) -> tuple[list[dict],
     Devuelve una tupla `(top_subidas, top_bajadas)`. Cada lista contiene
     solo cartas con variación positiva o negativa respectivamente — nunca
     se mezclan, y si no hay suficientes, la lista sale corta en vez de
-    rellenarse con el signo contrario."""
+    rellenarse con el signo contrario.
+    """
     cartas_con_historial = calcular_variaciones_precio(dias=dias)
 
     subidas = [c for c in cartas_con_historial if c["variacion"] > 0]

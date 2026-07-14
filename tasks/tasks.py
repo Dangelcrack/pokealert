@@ -1,7 +1,8 @@
-"""Tareas periódicas del sistema optimizadas para bajo consumo de memoria y tiempo.
+"""Tareas periódicas del sistema optimizadas para bajo consumo de memoria y
+tiempo.
 
-Incluye actualización de históricos de precio y sincronización de especies
-Pokémon para el modelo PokemonEspecie.
+Incluye actualización de históricos de precio y sincronización de
+especies Pokémon para el modelo PokemonEspecie.
 """
 
 import os
@@ -27,9 +28,9 @@ TCG_API_URL = "https://api.pokemontcg.io/v2/cards"
 
 @shared_task
 def check_pokemon_prices():
-    """Escanea cartas del sistema, actualiza sus precios de mercado en el histórico
-    y evalúa las alertas activas disparando correos si se cumple la condición.
-    """
+    """Escanea cartas del sistema, actualiza sus precios de mercado en el
+    histórico y evalúa las alertas activas disparando correos si se cumple la
+    condición."""
     try:
         # 1. Preparar datos iniciales y optimizar queries
         tracked_cards = Card.objects.all()
@@ -201,8 +202,7 @@ def check_pokemon_prices():
 @shared_task
 def actualizar_pokedex_automatica():
     """Sincroniza el listado básico de especies desde PokéAPI mapeando
-    directamente a tu modelo real PokemonEspecie.
-    """
+    directamente a tu modelo real PokemonEspecie."""
     url = "https://pokeapi.co/api/v2/pokemon?limit=1500"
 
     try:

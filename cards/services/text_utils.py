@@ -1,7 +1,9 @@
 """Utilidades de normalización y expansión de texto para búsqueda.
 
-Funciones puras (sin dependencia de request/response) usadas para comparar,
-normalizar y traducir términos de búsqueda entre español e inglés (TCG)."""
+Funciones puras (sin dependencia de request/response) usadas para
+comparar, normalizar y traducir términos de búsqueda entre español e
+inglés (TCG).
+"""
 
 import unicodedata
 
@@ -12,10 +14,12 @@ from cards.utils import POKEMON_ES_TO_TCG, TCG_TERMS
 
 
 def normalize(text) -> str:
-    """Normaliza una cadena para comparaciones: devuelve minúsculas sin acentos.
+    """Normaliza una cadena para comparaciones: devuelve minúsculas sin
+    acentos.
 
-    Retorna una cadena vacía si la entrada es falsy. Utiliza NFD para separar
-    diacríticos y filtra los caracteres de marca."""
+    Retorna una cadena vacía si la entrada es falsy. Utiliza NFD para
+    separar diacríticos y filtra los caracteres de marca.
+    """
     if not text:
         return ""
     text = str(text).lower().strip()
@@ -27,7 +31,8 @@ def get_expanded_search_terms(query_raw: str) -> set:
 
     Devuelve un conjunto de términos en minúsculas que incluye la cadena
     original normalizada y coincidencias encontradas en los mapeos
-    `POKEMON_ES_TO_TCG` y `TCG_TERMS`."""
+    `POKEMON_ES_TO_TCG` y `TCG_TERMS`.
+    """
     if not query_raw:
         return set()
 
@@ -46,11 +51,13 @@ def get_expanded_search_terms(query_raw: str) -> set:
 
 
 def translate_query(query_raw: str) -> str:
-    """Traduce un término de búsqueda desde español a su equivalente TCG (inglés).
+    """Traduce un término de búsqueda desde español a su equivalente TCG
+    (inglés).
 
-    Busca coincidencias en el modelo `PokemonEspecie` y en los diccionarios de
-    mapeo del proyecto. Si no encuentra traducción, devuelve el término original
-    recortado."""
+    Busca coincidencias en el modelo `PokemonEspecie` y en los
+    diccionarios de mapeo del proyecto. Si no encuentra traducción,
+    devuelve el término original recortado.
+    """
     if not query_raw:
         return ""
     q = normalize(query_raw)

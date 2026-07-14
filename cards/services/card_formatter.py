@@ -1,11 +1,15 @@
-"""Normaliza y transforma la respuesta de la API Pokémon TCG al formato interno de la aplicación."""
+"""Normaliza y transforma la respuesta de la API Pokémon TCG al formato interno
+de la aplicación."""
 
 from cards.services.pricing import extract_market_price
 
 
 def format_card(card_data: dict) -> dict:
     """Normaliza datos de la API de Pokémon TCG a un formato único interno.
-    Garantiza compatibilidad absoluta con plantillas que usen card.id o card.pokemontcg_id."""
+
+    Garantiza compatibilidad absoluta con plantillas que usen card.id o
+    card.pokemontcg_id.
+    """
     if not card_data:
         return {}
 

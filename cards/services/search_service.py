@@ -2,7 +2,8 @@
 
 Combina tres fuentes de datos (DB local, API externa de Pokémon TCG, y
 JSON estático de respaldo) en un único resultado deduplicado, aplicando
-filtros, orden y paginación con optimización extrema de imágenes de catálogo.
+filtros, orden y paginación con optimización extrema de imágenes de
+catálogo.
 """
 
 import json
@@ -27,9 +28,10 @@ PAGE_SIZE = 24
 def _optimizar_url_imagen(url: str, ancho: int = 150) -> str:
     """Utiliza el proxy CDN wsrv.nl para redimensionar y convertir a WebP.
 
-    Esto reduce drásticamente el peso de las imágenes externas (de ~200 KB a ~8 KB).
-    Se usa un ancho de 150px (aprox. 2x el tamaño de renderizado de 72px) para
-    garantizar nitidez en pantallas Retina sin penalizar el rendimiento.
+    Esto reduce drásticamente el peso de las imágenes externas (de ~200
+    KB a ~8 KB). Se usa un ancho de 150px (aprox. 2x el tamaño de
+    renderizado de 72px) para garantizar nitidez en pantallas Retina sin
+    penalizar el rendimiento.
     """
     if not url:
         return ""
@@ -45,8 +47,9 @@ def _optimizar_url_imagen(url: str, ancho: int = 150) -> str:
 def safe_append(query_parts, model, id_value, label, field):
     """Evita que IDs vacíos o inválidos rompan la construcción de la consulta.
 
-    Si `id_value` no es un entero válido o el objeto no existe, la función
-    no modifica `query_parts` y devuelve silenciosamente."""
+    Si `id_value` no es un entero válido o el objeto no existe, la
+    función no modifica `query_parts` y devuelve silenciosamente.
+    """
     if not id_value or not str(id_value).isdigit():
         return
     try:
@@ -59,7 +62,8 @@ def safe_append(query_parts, model, id_value, label, field):
 def build_search_query(
     query_raw: str, rarity=None, supertype=None, subtype=None, artist=None
 ) -> str:
-    """Construye una consulta Lucene para la API externa a partir de filtros."""
+    """Construye una consulta Lucene para la API externa a partir de
+    filtros."""
     query_parts = []
 
     if query_raw:
@@ -87,7 +91,8 @@ def build_search_query(
 
 
 def _buscar_en_db_local(query_raw, rarity_id, supertype_id, subtype_id, artist_id) -> dict:
-    """Busca en la base de datos local aplicando los mismos filtros que la API."""
+    """Busca en la base de datos local aplicando los mismos filtros que la
+    API."""
     unique_cards_map = {}
 
     tiene_filtros = query_raw or rarity_id or supertype_id or subtype_id or artist_id
@@ -137,7 +142,10 @@ def _buscar_en_db_local(query_raw, rarity_id, supertype_id, subtype_id, artist_i
 
 
 def _buscar_en_api_externa(api_query: str) -> dict:
-    """Consulta la API externa de Pokémon TCG. Devuelve `{}` si falla o está vacía."""
+    """Consulta la API externa de Pokémon TCG.
+
+    Devuelve `{}` si falla o está vacía.
+    """
     unique_cards_map = {}
     if not api_query:
         return unique_cards_map
@@ -235,7 +243,8 @@ def _fallback_set_reciente() -> dict:
 
 
 def _ordenar(all_cards: list, selected_sort: str) -> None:
-    """Ordena `all_cards` in-place según `selected_sort` ('price', '-price', 'name')."""
+    """Ordena `all_cards` in-place según `selected_sort` ('price', '-price',
+    'name')."""
     if selected_sort in ["price", "-price"]:
         all_cards.sort(
             key=lambda x: float(
@@ -250,7 +259,8 @@ def _ordenar(all_cards: list, selected_sort: str) -> None:
 
 
 def _formatear_pagina(page_cards: list) -> list:
-    """Resuelve relaciones, aplica optimización de imágenes y formatea la página actual."""
+    """Resuelve relaciones, aplica optimización de imágenes y formatea la
+    página actual."""
     results = []
     for card_data in page_cards:
         relations = resolve_card_relations(card_data)
@@ -309,8 +319,9 @@ def buscar_cartas(
 ) -> dict:
     """Orquesta la búsqueda combinando las tres fuentes de datos.
 
-    Devuelve un dict con `results` (lista de cartas formateadas de la página
-    actual), `total_pages`, `has_next` y `has_previous`."""
+    Devuelve un dict con `results` (lista de cartas formateadas de la
+    página actual), `total_pages`, `has_next` y `has_previous`.
+    """
     api_query = build_search_query(query_raw, rarity_id, supertype_id, subtype_id, artist_id)
 
     unique_cards_map = {}

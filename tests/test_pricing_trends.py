@@ -13,7 +13,8 @@ def _crear_carta_con_historial(pokemontcg_id, precio_actual, precio_hace_dias, d
     """Crea una Card con un punto de PriceHistory retrasado `dias_atras` días.
 
     `recorded_at` es auto_now_add, así que se crea primero y se retrasa
-    después con un `update()` directo sobre el queryset."""
+    después con un `update()` directo sobre el queryset.
+    """
     from alerts.models import PriceHistory
 
     card = Card.objects.create(
@@ -45,10 +46,12 @@ def test_variacion_positiva_va_solo_en_subidas():
 
 @pytest.mark.django_db
 def test_variacion_negativa_va_solo_en_bajadas():
-    """Una carta que baja de precio debe aparecer solo en top_bajadas, nunca en top_subidas.
+    """Una carta que baja de precio debe aparecer solo en top_bajadas, nunca en
+    top_subidas.
 
     Este es el bug de Wartortle que arreglamos manualmente antes: una bajada
-    no debe colarse en la lista de subidas para 'rellenar' el top 5."""
+    no debe colarse en la lista de subidas para 'rellenar' el top 5.
+    """
     _crear_carta_con_historial(
         "wartortle-down", precio_actual=8.0, precio_hace_dias=10.0, dias_atras=5
     )
@@ -63,7 +66,8 @@ def test_variacion_negativa_va_solo_en_bajadas():
 
 @pytest.mark.django_db
 def test_variacion_cero_se_excluye():
-    """Una carta sin cambio de precio no debe aparecer en ninguna de las dos listas."""
+    """Una carta sin cambio de precio no debe aparecer en ninguna de las dos
+    listas."""
     _crear_carta_con_historial(
         "sin-cambio", precio_actual=10.0, precio_hace_dias=10.0, dias_atras=5
     )
@@ -75,7 +79,8 @@ def test_variacion_cero_se_excluye():
 
 @pytest.mark.django_db
 def test_historial_fuera_de_ventana_se_ignora():
-    """Un punto de histórico más antiguo que la ventana de días no debe contar."""
+    """Un punto de histórico más antiguo que la ventana de días no debe
+    contar."""
     _crear_carta_con_historial(
         "historico-viejo", precio_actual=20.0, precio_hace_dias=5.0, dias_atras=60
     )
@@ -87,7 +92,8 @@ def test_historial_fuera_de_ventana_se_ignora():
 
 @pytest.mark.django_db
 def test_carta_sin_precio_se_excluye():
-    """Cartas con price=None no deben entrar en el cálculo (Card.objects.exclude(price__isnull=True))."""
+    """Cartas con price=None no deben entrar en el cálculo
+    (Card.objects.exclude(price__isnull=True))."""
     Card.objects.create(
         pokemontcg_id="sin-precio",
         name="Sin Precio",

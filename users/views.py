@@ -1,7 +1,8 @@
 """Vistas relacionadas con el perfil de usuario.
 
 Contiene la vista `profile` que permite actualizar datos del usuario y
-presentar métricas simples (número de alertas, rango de usuario)."""
+presentar métricas simples (número de alertas, rango de usuario).
+"""
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -17,7 +18,8 @@ def profile(request):
     - GET: renderiza el formulario con los datos actuales del usuario.
     - POST: valida y guarda cambios; actualiza `pokemon_avatar` en la sesión.
 
-    Retorna la plantilla `users/profile.html` con el formulario y metadatos."""
+    Retorna la plantilla `users/profile.html` con el formulario y metadatos.
+    """
     if request.method == "POST":
         form = UserUpdateForm(request.POST, instance=request.user)
         if form.is_valid():

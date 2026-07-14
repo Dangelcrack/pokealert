@@ -1,4 +1,5 @@
-"""Formularios de usuario para actualización de perfil y selección de avatar."""
+"""Formularios de usuario para actualización de perfil y selección de
+avatar."""
 
 from django import forms
 from django.contrib.auth.models import User
@@ -16,7 +17,8 @@ class UserUpdateForm(forms.ModelForm):
     """Formulario para actualizar perfil de usuario y seleccionar avatar.
 
     Campos personalizados: `pokemon_avatar` y validaciones mínimas. Asigna
-    clases CSS a los widgets en `__init__`."""
+    clases CSS a los widgets en `__init__`.
+    """
 
     username = forms.CharField(label="Nombre de Usuario / Alias", required=True)
     first_name = forms.CharField(label="Nombre", required=False)

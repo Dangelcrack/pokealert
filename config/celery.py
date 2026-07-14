@@ -1,6 +1,7 @@
 """Configuración mínima de Celery para el proyecto.
 
-Define la aplicación Celery y carga la configuración desde `settings`."""
+Define la aplicación Celery y carga la configuración desde `settings`.
+"""
 
 import os
 from celery import Celery

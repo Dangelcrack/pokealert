@@ -1,6 +1,7 @@
 """Vistas para ejecutar tareas periódicas mediante endpoints HTTP.
 
-Modificado para ejecutar tareas pesadas en segundo plano y evitar HTTP Timeouts.
+Modificado para ejecutar tareas pesadas en segundo plano y evitar HTTP
+Timeouts.
 """
 
 import logging
@@ -30,7 +31,6 @@ def _authorized(request):
 @require_GET
 def trigger_check_prices(request):
     """Lanza la actualización de precios en segundo plano."""
-
     if not _authorized(request):
         return JsonResponse({"error": "No autorizado"}, status=403)
 
@@ -64,7 +64,6 @@ def trigger_check_prices(request):
 @require_GET
 def trigger_update_pokedex(request):
     """Lanza la sincronización de especies en segundo plano."""
-
     if not _authorized(request):
         return JsonResponse({"error": "No autorizado"}, status=403)
 

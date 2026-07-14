@@ -1,7 +1,9 @@
 """Utilidades y mapeos estáticos para la aplicación de `cards`.
 
 Contiene mapeos de nombres y funciones auxiliares ligeras usadas por las
-vistas y servicios para normalizar términos y obtener opciones de filtros."""
+vistas y servicios para normalizar términos y obtener opciones de
+filtros.
+"""
 
 import requests
 from django.core.cache import cache
@@ -687,7 +689,8 @@ TCG_TERMS = {
     retry=retry_if_exception_type((requests.exceptions.HTTPError, requests.exceptions.Timeout)),
 )
 def _execute_api_request(url):
-    """Helper interno decorado para manejar la resiliencia de la petición HTTP."""
+    """Helper interno decorado para manejar la resiliencia de la petición
+    HTTP."""
     response = requests.get(url, timeout=10)
 
     # Si la API devuelve un 5xx (Server Error), forzamos el HTTPError para activar el retry.

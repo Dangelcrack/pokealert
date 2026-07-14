@@ -1,7 +1,8 @@
 """Serializadores de API para la aplicación `alerts`.
 
-Define la serialización de `PriceAlert` y `PriceHistory` para los endpoints
-de la API REST."""
+Define la serialización de `PriceAlert` y `PriceHistory` para los
+endpoints de la API REST.
+"""
 
 from django.db import IntegrityError
 from rest_framework import serializers
@@ -22,8 +23,9 @@ from .services import (
 class PriceHistorySerializer(serializers.ModelSerializer):
     """Serializador read-only para el modelo `PriceHistory`.
 
-    Incluye los campos mínimos necesarios para representar puntos del histórico
-    en las APIs públicas o internas."""
+    Incluye los campos mínimos necesarios para representar puntos del
+    histórico en las APIs públicas o internas.
+    """
 
     class Meta:
         """Meta para `PriceHistorySerializer` que define campos expuestos."""
@@ -35,9 +37,10 @@ class PriceHistorySerializer(serializers.ModelSerializer):
 class PriceAlertSerializer(serializers.ModelSerializer):
     """Serializador para crear/leer `PriceAlert`.
 
-    En creación delega en `alerts.services.crear_alerta`, la misma lógica de
-    negocio que usa el formulario web, para evitar duplicar reglas entre la
-    API REST y el frontend."""
+    En creación delega en `alerts.services.crear_alerta`, la misma
+    lógica de negocio que usa el formulario web, para evitar duplicar
+    reglas entre la API REST y el frontend.
+    """
 
     card = CardSerializer(read_only=True)
     pokemontcg_id = serializers.CharField(write_only=True)
@@ -69,7 +72,8 @@ class PriceAlertSerializer(serializers.ModelSerializer):
         un dato potencialmente desactualizado.
 
         De paso, actualiza `Card.price` con el valor fresco obtenido, para
-        que la carta quede al día sin esperar al próximo ciclo del cron."""
+        que la carta quede al día sin esperar al próximo ciclo del cron.
+        """
         card_data = fetch_card(pokemontcg_id)
         if not card_data:
             raise serializers.ValidationError(
@@ -94,7 +98,8 @@ class PriceAlertSerializer(serializers.ModelSerializer):
         return precio
 
     def create(self, validated_data):
-        """Crea una `PriceAlert` delegando en el servicio central `crear_alerta`."""
+        """Crea una `PriceAlert` delegando en el servicio central
+        `crear_alerta`."""
         pokemontcg_id = validated_data.pop("pokemontcg_id")
         discount_percentage = validated_data.pop("discount_percentage")
         user = self.context["request"].user

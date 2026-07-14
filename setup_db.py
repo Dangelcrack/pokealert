@@ -1,5 +1,4 @@
-"""
-Script de configuración inicial de la base de datos.
+"""Script de configuración inicial de la base de datos.
 
 Ejecuta migraciones y crea un superusuario admin si no existe.
 """

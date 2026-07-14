@@ -1,4 +1,5 @@
-"""Comando de administración para convertir valores textuales en relaciones de base de datos."""
+"""Comando de administración para convertir valores textuales en relaciones de
+base de datos."""
 
 from django.core.management.base import BaseCommand
 from cards.models import Card, Rarity
@@ -7,15 +8,17 @@ from cards.models import Card, Rarity
 class Command(BaseCommand):
     """Comando de administración para convertir campos de texto en relaciones.
 
-    `handle` recorre las cartas existentes y crea objetos referenciales (p. ej.
-    `Rarity`) cuando se detecta información textual previa."""
+    `handle` recorre las cartas existentes y crea objetos referenciales
+    (p. ej. `Rarity`) cuando se detecta información textual previa.
+    """
 
     help = "Convierte campos de texto en relaciones de base de datos"
 
     def handle(self, *args, **options):
         """Realiza la migración de datos textuales a relaciones.
 
-        Emitirá mensajes por stdout al completar el proceso."""
+        Emitirá mensajes por stdout al completar el proceso.
+        """
         # Procesamos las cartas existentes
         cards = Card.objects.all()
         for card in cards:

@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 # 1. Configuración global: Forzar el caché en memoria
 @pytest.fixture(autouse=True)
 def use_locmem_cache(settings):
-    """
-    Sobrescribe el backend de caché para usar memoria RAM.
-    El argumento 'settings' es el fixture proporcionado por pytest-django.
+    """Sobrescribe el backend de caché para usar memoria RAM.
+
+    El argumento 'settings' es el fixture proporcionado por pytest-
+    django.
     """
     settings.CACHES = {
         "default": {

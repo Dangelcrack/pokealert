@@ -40,7 +40,8 @@ def test_crear_alerta_con_carta_existente_calcula_target_price(test_user):
 
 @pytest.mark.django_db
 def test_crear_alerta_sin_precio_valido_lanza_error(test_user):
-    """Sin pokemontcg_id, discount_percentage o con current_price_str='N/A' debe fallar."""
+    """Sin pokemontcg_id, discount_percentage o con current_price_str='N/A'
+    debe fallar."""
     with pytest.raises(AlertaSinPrecioValidoError):
         crear_alerta(
             user=test_user,
@@ -74,7 +75,8 @@ def test_crear_alerta_sincroniza_carta_inexistente_con_la_api(test_user):
 
 @pytest.mark.django_db
 def test_crear_alerta_sin_datos_de_api_lanza_error(test_user):
-    """Si la carta no existe localmente y la API no devuelve nada, debe fallar con CartaNoEncontradaError."""
+    """Si la carta no existe localmente y la API no devuelve nada, debe fallar
+    con CartaNoEncontradaError."""
     with patch("alerts.services.fetch_card", return_value=None):
         with pytest.raises(CartaNoEncontradaError):
             crear_alerta(
@@ -87,7 +89,8 @@ def test_crear_alerta_sin_datos_de_api_lanza_error(test_user):
 
 @pytest.mark.django_db
 def test_actualizar_descuento_alerta_recalcula_target_price(test_user):
-    """Cambiar el descuento debe recalcular target_price sobre el precio actual de la carta."""
+    """Cambiar el descuento debe recalcular target_price sobre el precio actual
+    de la carta."""
     card = Card.objects.create(
         pokemontcg_id="base1-5",
         name="Blastoise",

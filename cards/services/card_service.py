@@ -1,8 +1,9 @@
 """Servicio de resolución de datos de carta: relaciones y fuentes locales.
 
-Contiene helpers para vincular (o crear) las entidades relacionadas de una
-carta (rareza, supertype, subtype, artista, especie Pokémon) y para leer
-cartas desde el JSON estático local usado como caché de respaldo."""
+Contiene helpers para vincular (o crear) las entidades relacionadas de
+una carta (rareza, supertype, subtype, artista, especie Pokémon) y para
+leer cartas desde el JSON estático local usado como caché de respaldo.
+"""
 
 import json
 import os
@@ -16,11 +17,13 @@ from cards.services.text_utils import normalize
 
 
 def resolve_card_relations(card_data: dict) -> dict:
-    """Resuelve y crea (si procede) las relaciones referenciales para una carta.
+    """Resuelve y crea (si procede) las relaciones referenciales para una
+    carta.
 
-    Retorna un dict con instancias para `rarity`, `supertype`, `subtype`,
-    `artist` y `pokemon_especie` cuando aplica. Invalida la caché de opciones
-    de filtro si se generan nuevos registros."""
+    Retorna un dict con instancias para `rarity`, `supertype`,
+    `subtype`, `artist` y `pokemon_especie` cuando aplica. Invalida la
+    caché de opciones de filtro si se generan nuevos registros.
+    """
     relations = {}
     if card_data.get("rarity"):
         rarity, created = Rarity.objects.get_or_create(
@@ -62,11 +65,13 @@ def resolve_card_relations(card_data: dict) -> dict:
 
 
 def get_local_card_by_id(card_id: str):
-    """Recupera una carta desde el archivo JSON local `todas_las_cartas_tcg.json`.
+    """Recupera una carta desde el archivo JSON local
+    `todas_las_cartas_tcg.json`.
 
-    Busca por varios identificadores posibles (`id`, `pokemontcg_id`, `card_id`).
-    Devuelve el diccionario de la carta o `None` si no existe o si el archivo
-    no puede leerse correctamente."""
+    Busca por varios identificadores posibles (`id`, `pokemontcg_id`,
+    `card_id`). Devuelve el diccionario de la carta o `None` si no
+    existe o si el archivo no puede leerse correctamente.
+    """
     json_path = os.path.join(settings.BASE_DIR, "todas_las_cartas_tcg.json")
     try:
         with open(json_path, "r", encoding="utf-8") as f:

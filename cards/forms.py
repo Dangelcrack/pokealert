@@ -8,10 +8,12 @@ class UserUpdateForm(forms.ModelForm):
     """Formulario para actualizar datos básicos del usuario.
 
     Campos expuestos: `first_name`, `last_name`, `email`.
-    Se usa en la vista de perfil para editar información pública del usuario."""
+    Se usa en la vista de perfil para editar información pública del usuario.
+    """
 
     class Meta:
-        """Meta para `UserUpdateForm` que define el modelo y los campos incluidos."""
+        """Meta para `UserUpdateForm` que define el modelo y los campos
+        incluidos."""
 
         model = User
         fields = [
