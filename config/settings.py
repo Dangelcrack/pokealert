@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-si-no-hay-env")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,pokealert.onrender.com").split(",")
 
 POKEMON_TCG_API_KEY = os.getenv("POKEMON_TCG_API_KEY", "")
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "csp",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -190,9 +192,9 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 # ===================== SECURITY =====================
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000"
-).split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "https://pokealert.onrender.com").split(
+    ","
+)
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -200,11 +202,8 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    # SECURE_HSTS_PRELOAD = True # Actívalo solo cuando estés seguro
     SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_SECURITY_POLICY = {
-        "default-src": ("'self'",),
-    }
 
 SECURE_CONTENT_SECURITY_POLICY = {
     "default-src": ("'self'",),
@@ -213,6 +212,14 @@ SECURE_CONTENT_SECURITY_POLICY = {
     "style-src": ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'"),
     "font-src": ("'self'", "https://fonts.gstatic.com"),
 }
+
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'", "https://images.pokemontcg.io", "https://wsrv.nl")
+CSP_SCRIPT_SRC = ("'self'", "https://cdn.tailwindcss.com")
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
+
 
 # ===================== LOGGING =====================
 LOGS_DIR = BASE_DIR / "logs"
@@ -281,7 +288,7 @@ INTERNAL_IPS = [
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/1"),
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "my_cache_table",
     }
 }
