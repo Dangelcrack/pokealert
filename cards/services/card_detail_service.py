@@ -6,7 +6,7 @@ y garantiza el registro histórico diario de precio bajo demanda."""
 import logging
 from django.core.cache import cache
 from django.utils import timezone
-
+from django.db import IntegrityError
 from alerts.models import PriceHistory
 from cards.models import Card
 from cards.services.card_formatter import format_card
@@ -24,17 +24,23 @@ def _cache_key(card_id: str) -> str:
 
 
 def _asegurar_historial_hoy(card_obj, precio: float) -> None:
-    """Crea un punto de `PriceHistory` para hoy si aún no existe.
-
-    No hace nada si `precio` no es positivo o si ya hay un registro hoy."""
     if not card_obj or precio <= 0:
         return
+
     hoy = timezone.now().date()
-    if not PriceHistory.objects.filter(card=card_obj, recorded_at__date=hoy).exists():
-        PriceHistory.objects.create(card=card_obj, price=precio, marketplace="tcgplayer")
-        logger.info(
-            f"[📉 CHART UPDATE] Nuevo punto histórico creado hoy para {card_obj.pokemontcg_id}: ${precio}"
+
+    try:
+        # get_or_create es atómico a nivel de aplicación,
+        # pero la restricción UNIQUE en DB es la última barrera.
+        obj, created = PriceHistory.objects.get_or_create(
+            card=card_obj, date=hoy, defaults={"price": precio, "marketplace": "tcgplayer"}
         )
+        if created:
+            logger.info(f"[📉 CHART UPDATE] Creado: {card_obj.pokemontcg_id}")
+    except IntegrityError:
+        # Si la base de datos lanza un IntegrityError, el registro ya existe
+        # (o está en medio de una transacción fallida).
+        logger.warning(f"[📉 CHART UPDATE] El registro ya existe para {card_obj.pokemontcg_id}")
 
 
 def obtener_contexto_card_detail(card_id: str) -> dict:

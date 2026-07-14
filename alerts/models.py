@@ -43,14 +43,15 @@ class PriceHistory(models.Model):
 
     recorded_at = models.DateTimeField(auto_now_add=True)
 
+    date = models.DateField(auto_now_add=True)
+
     def __str__(self):
         """Representación corta del punto de histórico: carta y precio."""
         return f"{self.card.name} - ${self.price}"
 
     class Meta:
-        """Configuración de orden y índices para consultas de `PriceHistory`."""
-
         ordering = ["-recorded_at"]
+        unique_together = ("card", "date")
         indexes = [
-            models.Index(fields=["card", "recorded_at"]),
+            models.Index(fields=["card", "date"]),
         ]

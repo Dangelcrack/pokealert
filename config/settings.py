@@ -20,6 +20,8 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-si-no-hay-env")
 
+IS_TESTING = "pytest" in sys.modules
+
 DEBUG = os.getenv("DEBUG", "False") == "True" or "pytest" in sys.modules
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,pokealert.onrender.com").split(",")
@@ -90,7 +92,7 @@ if DATABASE_URL:
         "default": dj_database_url.parse(
             DATABASE_URL,
             conn_max_age=600,
-            ssl_require=False,  # Cambiado a False si ejecutas en local para evitar fallos de certificados TLS/SSL
+            ssl_require=False,
         )
     }
 else:
@@ -98,6 +100,22 @@ else:
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+# 2. Configuración de Caché (Dinámica)
+if IS_TESTING:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "unique-test-cache",
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+            "LOCATION": "my_cache_table",
         }
     }
 
