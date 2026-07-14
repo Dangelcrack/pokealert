@@ -114,32 +114,34 @@
         {% if results %}
             <div class="cards-results-grid">
                 {% for card in results %}
-                    <a href="{% url 'card_detail' card.id %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="result-card-link">
+                    <a href="{% url 'card_detail' card.id %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="result-card-link text-blue-700 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                         
                         <div class="card-thumb-container">
-                            {% if card.image_url %}
-                                <img src="{{ card.image_url }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" width="240" height="330">
+                            {% if card.images and card.images.small %}
+                                <img src="{{ card.images.small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
+                            {% elif card.image_url_small %}
+                                <img src="{{ card.image_url_small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
+                            {% elif card.image_url %}
+                                <img src="{{ card.image_url }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
                             {% elif card.image %}
-                                <img src="{{ card.image }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" width="240" height="330">
-                            {% elif card.images and card.images.small %}
-                                <img src="{{ card.images.small }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" width="240" height="330">
+                                <img src="{{ card.image }}" alt="{{ card.name }}" class="card-thumb-img" loading="lazy" decoding="async" width="120" height="165">
                             {% else %}
-                                <div class="text-gray-500 italic text-sm py-10 text-center">Sin imagen</div>
+                                <div class="text-gray-500 dark:text-gray-400 italic text-sm py-10 text-center">Sin imagen</div>
                             {% endif %}
                         </div>
 
                         <div class="card-brief-info">
-                            <h3 class="card-brief-title">{{ card.name }}</h3>
-                            <p class="card-brief-meta">
+                            <h3 class="card-brief-title font-bold text-gray-900 dark:text-gray-100">{{ card.name }}</h3>
+                            <p class="card-brief-meta text-gray-700 dark:text-gray-300">
                                 {{ card.set_name|default:"Set desconocido" }}
                                 {% if card.artist %}
-                                    <br><span class="card-brief-artist">Artista: {{ card.artist }}</span>
+                                    <br><span class="card-brief-artist text-gray-600 dark:text-gray-400 font-medium">Artista: {{ card.artist }}</span>
                                 {% endif %}
                             </p>
                             
                             {% if card.price %}
                                 <div class="card-brief-price-row">
-                                    <p class="card-brief-price">${{ card.price|floatformat:2 }}</p>
+                                    <p class="card-brief-price text-gray-900 dark:text-gray-100 font-extrabold">${{ card.price|floatformat:2 }}</p>
                                     <span class="card-brief-market-tag">Market</span>
                                 </div>
                             {% endif %}
