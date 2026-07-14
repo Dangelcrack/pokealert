@@ -4,6 +4,7 @@ Django settings for config project.
 """
 
 import os
+import sys
 from pathlib import Path
 import dj_database_url
 from celery.schedules import crontab
@@ -19,7 +20,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-si-no-hay-env")
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "True" or "pytest" in sys.modules
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,pokealert.onrender.com").split(",")
 
