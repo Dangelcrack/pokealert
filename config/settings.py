@@ -195,13 +195,24 @@ CSRF_TRUSTED_ORIGINS = os.getenv(
 ).split(",")
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_SECURITY_POLICY = {
         "default-src": ("'self'",),
     }
+
+SECURE_CONTENT_SECURITY_POLICY = {
+    "default-src": ("'self'",),
+    "img-src": ("'self'", "https://images.pokemontcg.io", "https://wsrv.nl"),
+    "script-src": ("'self'", "https://cdn.tailwindcss.com"),
+    "style-src": ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'"),
+    "font-src": ("'self'", "https://fonts.gstatic.com"),
+}
 
 # ===================== LOGGING =====================
 LOGS_DIR = BASE_DIR / "logs"
@@ -270,7 +281,7 @@ INTERNAL_IPS = [
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "pokealert-cache",
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/1"),
     }
 }
