@@ -683,18 +683,22 @@ TCG_TERMS = {
 
 
 @retry(
-    reraise=True,
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=1, min=2, max=10),
-    retry=retry_if_exception_type((requests.exceptions.HTTPError, requests.exceptions.Timeout)),
+    retry=retry_if_exception_type(
+        (
+            requests.exceptions.Timeout,
+            requests.exceptions.ConnectionError,
+            requests.exceptions.HTTPError,
+        )
+    ),
+    reraise=True,
 )
-def _execute_api_request(url):
-    """Helper interno decorado para manejar la resiliencia de la petición
-    HTTP."""
-    response = requests.get(url, timeout=10)
+def _execute_api_request(url, params=None, headers=None):
+    """Realiza peticiones a la API con reintentos automáticos."""
+    response = requests.get(url, params=params, headers=headers, timeout=10)
 
-    # Si la API devuelve un 5xx (Server Error), forzamos el HTTPError para activar el retry.
-    # Los errores 4xx (como 404) continuarán su flujo normal sin reintentar.
+    # Esto activará el retry solo en errores 5xx
     if response.status_code >= 500:
         response.raise_for_status()
 

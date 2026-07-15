@@ -1,6 +1,8 @@
 """Servicio de gestión de opciones de filtro (catálogo)."""
 
+import os
 import logging
+from django.conf import settings
 from django.core.cache import cache
 from cards.models import Rarity, Supertype, Subtype, Artist
 from cards.services.text_utils import normalize
@@ -18,17 +20,25 @@ def invalidate_filter_options_cache() -> None:
 
 
 def sync_api_filter_values() -> None:
-    """Solicita valores a la API y persiste localmente."""
+    """Solicita valores a la API y persiste localmente de forma segura."""
+
+    # Comprobación de seguridad para archivo local (opcional si usas archivo)
+    archivo_json = os.path.join(settings.BASE_DIR, "todas_las_cartas_tcg.json")
+    if not os.path.exists(archivo_json):
+        logger.debug("Archivo JSON local no presente, operando solo vía API.")
+
     mapping = [
         (Supertype, "supertypes", "display_name"),
         (Subtype, "subtypes", "display_name"),
         (Rarity, "rarities", "display_name"),
     ]
+
     for model, filter_type, display_field in mapping:
         try:
             options = get_api_filter_options(filter_type)
             if not options:
                 continue
+
             for label in options:
                 if not label:
                     continue
@@ -42,19 +52,20 @@ def sync_api_filter_values() -> None:
 
 
 def get_filter_options(filter_name: str | None = None):
-    """Devuelve opciones de filtro, asegurando sincronización inicial."""
+    """Devuelve opciones de filtro, asegurando sincronización inicial sin bloquear."""
     filters = cache.get(CACHE_KEY)
 
     if filters is None:
-        # Verificamos si tenemos datos base en DB
-        db_has_data = Supertype.objects.exists() and Rarity.objects.exists()
+        # Verificar estado de DB de forma eficiente
+        db_ready = (
+            Supertype.objects.exists() and Subtype.objects.exists() and Rarity.objects.exists()
+        )
 
-        if not db_has_data:
-            # Sincronización inicial solo si está totalmente vacío
+        if not db_ready:
+            # Sincronización de emergencia
             sync_api_filter_values()
 
-        # Construimos el diccionario usando .values_list para ahorrar memoria
-        # No guardes objetos QuerySet en caché, guarda strings/listas simples
+        # Construcción eficiente del diccionario para caché
         filters = {
             "supertypes": list(
                 Supertype.objects.values_list("display_name", flat=True).order_by("display_name")
@@ -70,5 +81,5 @@ def get_filter_options(filter_name: str | None = None):
         cache.set(CACHE_KEY, filters, CACHE_TTL_SECONDS)
 
     if filter_name:
-        return filters.get(filter_name)
+        return filters.get(filter_name, [])
     return filters
