@@ -6,7 +6,6 @@ Django settings for config project.
 import os
 import sys
 from pathlib import Path
-import dj_database_url
 from celery.schedules import crontab
 from dotenv import load_dotenv
 
@@ -88,15 +87,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # ===================== DATABASE =====================
-if DATABASE_URL:
+if IS_TESTING:
     DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True,
-        )
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",  # Esto hace que los tests sean mucho más rápidos
+        }
     }
 else:
+    # Si estamos en testing, forzamos el uso de SQLite puro sin opciones adicionales
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
