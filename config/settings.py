@@ -7,6 +7,7 @@ import os
 import sys
 from pathlib import Path
 from celery.schedules import crontab
+import dj_database_url
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,37 +88,33 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # ===================== DATABASE =====================
+# Definimos la configuración de base de datos de manera inteligente
 if IS_TESTING:
+    # Para tests, usamos SQLite en memoria para máxima velocidad y aislamiento
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": ":memory:",  # Esto hace que los tests sean mucho más rápidos
+            "NAME": ":memory:",
         }
     }
 else:
-    # Si estamos en testing, forzamos el uso de SQLite puro sin opciones adicionales
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+    # Para producción/desarrollo, usamos la URL del entorno
+    if DATABASE_URL:
+        DATABASES = {
+            "default": dj_database_url.parse(
+                DATABASE_URL,
+                conn_max_age=600,
+                ssl_require=True,
+            )
         }
-    }
-
-# 2. Configuración de Caché (Dinámica)
-if IS_TESTING:
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-            "LOCATION": "unique-test-cache",
+    else:
+        # Fallback local por si acaso
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "db.sqlite3",
+            }
         }
-    }
-else:
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-            "LOCATION": "my_cache_table",
-        }
-    }
 
 # ===================== PASSWORD VALIDATION =====================
 AUTH_PASSWORD_VALIDATORS = [
