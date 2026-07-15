@@ -121,23 +121,16 @@
 {{ price_values|json_script:"priceValues" }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // JSON parse correcto
     const dates = JSON.parse(document.getElementById('priceDates').textContent || '[]');
     const prices = JSON.parse(document.getElementById('priceValues').textContent || '[]');
 
     if (dates.length > 0) {
         const ctx = document.getElementById('priceChart').getContext('2d');
-        const themeStyles = getComputedStyle(document.documentElement);
-        const chartAccent = themeStyles.getPropertyValue('--cyan').trim();
-        const chartLabel = themeStyles.getPropertyValue('--gray').trim();
-        function hexToRgba(hex, alpha = 1) {
-            const cleaned = hex.replace('#', '');
-            const normalized = cleaned.length === 3 ? cleaned.split('').map(c => c + c).join('') : cleaned;
-            const intVal = parseInt(normalized, 16);
-            const r = (intVal >> 16) & 255;
-            const g = (intVal >> 8) & 255;
-            const b = intVal & 255;
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
+        
+        // Uso de colores seguros (por si el CSS falla)
+        const chartAccent = '#10b981'; // Un verde esmeralda estándar
+        
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -146,42 +139,30 @@
                     label: 'Precio (USD)',
                     data: prices,
                     borderColor: chartAccent,
-                    backgroundColor: hexToRgba(chartAccent, 0.1),
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)', // Color fijo
                     borderWidth: 2,
                     fill: true,
                     tension: 0.3,
-                    pointRadius: 3,
+                    pointRadius: 4,
                     pointBackgroundColor: chartAccent
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: false, // ¡Muy importante para que respete el CSS del contenedor!
                 plugins: { legend: { display: false } },
                 scales: {
                     y: { 
-                        beginAtZero: false, 
-                        grid: {
-                            color: 'rgba(47, 59, 76, 0.3)'
-                        },
-                        ticks: { 
-                            color: chartLabel,
-                            callback: v => '$' + v.toFixed(2) 
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            color: chartLabel
-                        }
+                        beginAtZero: false,
+                        ticks: { callback: v => '$' + v.toFixed(2) }
                     }
                 }
             }
         });
     } else {
-        document.getElementById('priceChart').parentElement.innerHTML = '<div class="no-data-state"><span class="no-data-emoji">📈</span><p class="text-gray-400 text-center mt-2">Todavía no tenemos suficiente histórico para mostrar la evolución del precio.</p><p class="text-gray-400 text-center mt-1">Los datos aparecerán aquí automáticamente.</p></div>';
+        document.querySelector('.chart-panel').innerHTML = 
+            '<div class="flex flex-col items-center justify-center h-full text-gray-500">' +
+            '<span>📈</span><p class="text-sm mt-2">Esperando datos históricos...</p></div>';
     }
 </script>
 {% endblock %}

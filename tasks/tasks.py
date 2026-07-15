@@ -7,7 +7,6 @@ especies Pokémon para el modelo PokemonEspecie.
 
 import logging
 import requests
-import time
 from datetime import timedelta
 from celery import shared_task
 from django.core.mail import send_mail
@@ -28,120 +27,103 @@ TCG_API_URL = "https://api.pokemontcg.io/v2/cards"
 @shared_task
 def check_pokemon_prices():
     try:
-        tracked_cards = Card.objects.all()
-        if not tracked_cards.exists():
-            return "Sin cartas para procesar"
-
         hoy = timezone.now().date()
-        historicos_hoy = set(
-            PriceHistory.objects.filter(recorded_at__date=hoy).values_list("card_id", flat=True)
-        )
 
-        saved_count, error_count = 0, 0
-        prices_to_create, cards_to_update, updated_prices_map = [], [], {}
-        cards_dict = {c.pokemontcg_id: c for c in tracked_cards}
+        # 1. Obtenemos las cartas y filtramos las que ya tienen precio hoy para evitar duplicados
+        todas_las_cartas = Card.objects.all()
+        ids_con_precio_hoy = PriceHistory.objects.filter(recorded_at__date=hoy).values_list(
+            "card_id", flat=True
+        )
+        cards_a_procesar = todas_las_cartas.exclude(id__in=ids_con_precio_hoy)
+
+        if not cards_a_procesar.exists():
+            return "✅ Todas las cartas ya han sido procesadas hoy."
+
+        cards_dict = {c.pokemontcg_id: c for c in cards_a_procesar}
         card_ids = list(cards_dict.keys())
-        tamanio_lote = 10
+
+        # Tamaño de lote pequeño (5) para evitar Timeouts con la API
+        tamanio_lote = 5
+        saved_count, error_count = 0, 0
+        updated_prices_map = {}
+        cards_to_update = []
+        prices_to_create = []
 
         for i in range(0, len(card_ids), tamanio_lote):
             lote_ids = card_ids[i : i + tamanio_lote]
             query_string = " OR ".join([f"id:{pid}" for pid in lote_ids])
 
             try:
-                # _execute_api_request debe manejar los reintentos (ej: usando urllib3 retries)
+                # _execute_api_request con reintentos automáticos
                 response = _execute_api_request(
                     TCG_API_URL, params={"q": query_string, "pageSize": tamanio_lote}
                 )
 
-                # --- FIX: Validación robusta de respuesta ---
-                if response is None or response.status_code != 200:
-                    logger.warning(
-                        f"Error {response.status_code if response else 'No Response'} en lote {lote_ids}"
-                    )
-                    error_count += len(lote_ids)
-                    continue
+                if response and response.status_code == 200:
+                    data = response.json().get("data", [])
+                    for card_data in data:
+                        pid = card_data.get("id")
+                        card = cards_dict.get(pid)
+                        if not card:
+                            continue
 
-                if not response.content:
-                    logger.warning(f"Respuesta vacía en lote {lote_ids}")
-                    continue
+                        tcgplayer_data = card_data.get("tcgplayer", {}).get("prices", {})
+                        market_price = extract_market_price(tcgplayer_data)
 
-                data = response.json().get("data", [])
+                        if market_price:
+                            val = float(market_price)
+                            updated_prices_map[pid] = val
+                            card.price = val
+                            cards_to_update.append(card)
+                            cache.delete(f"card_detail_{pid}")
 
-                for card_data in data:
-                    pid = card_data.get("id")
-                    card = cards_dict.get(pid)
-                    if not card:
-                        continue
-
-                    tcgplayer_data = card_data.get("tcgplayer", {}).get("prices", {})
-                    market_price = extract_market_price(tcgplayer_data)
-
-                    if market_price:
-                        val = float(market_price)
-                        updated_prices_map[pid] = val
-                        card.price = val
-                        cards_to_update.append(card)
-                        cache.delete(f"card_detail_{pid}")
-
-                        if card.id not in historicos_hoy:
                             prices_to_create.append(
                                 PriceHistory(card=card, price=val, marketplace="tcgplayer")
                             )
                             saved_count += 1
-
-            except ValueError:
-                logger.error(
-                    f"El servidor devolvió un formato inválido (no JSON) para el lote {lote_ids}"
-                )
-                error_count += len(lote_ids)
+                else:
+                    error_count += len(lote_ids)
             except Exception as e:
+                logger.error(f"Error en lote {lote_ids}: {e}")
                 error_count += len(lote_ids)
-                logger.error(f"Error procesando lote {lote_ids}: {e}")
 
-            time.sleep(1.5)  # Pausa estratégica
-
-        # 2. Guardado masivo
+        # 2. Guardado masivo y atómico
         with transaction.atomic():
             if cards_to_update:
                 Card.objects.bulk_update(cards_to_update, fields=["price"], batch_size=100)
             if prices_to_create:
-                PriceHistory.objects.bulk_create(
-                    prices_to_create, ignore_conflicts=True, batch_size=100
-                )
+                PriceHistory.objects.bulk_create(prices_to_create, batch_size=100)
 
         # 3. Alertas
-        active_alerts = PriceAlert.objects.filter(is_active=True).select_related("card", "user")
-        for alert in active_alerts:
-            card = alert.card
-            if card.pokemontcg_id in updated_prices_map:
-                live_price = updated_prices_map[card.pokemontcg_id]
+        for alert in PriceAlert.objects.filter(is_active=True).select_related("card", "user"):
+            if alert.card.pokemontcg_id in updated_prices_map:
+                live_price = updated_prices_map[alert.card.pokemontcg_id]
                 target = (
                     float(alert.target_price)
                     if alert.target_price
-                    else float(card.price or 0) * (1 - (alert.discount_percentage / 100))
+                    else float(alert.card.price or 0) * 0.9
                 )
-
                 if live_price <= target:
+                    # Enviar email
                     try:
                         send_mail(
-                            f"Alerta: {card.name}",
-                            f"Precio actual: ${live_price:.2f}",
+                            f"Alerta: {alert.card.name}",
+                            f"Precio: ${live_price:.2f}",
                             settings.DEFAULT_FROM_EMAIL,
                             [alert.user.email],
                         )
                         alert.is_active = False
                         alert.save(update_fields=["is_active"])
                     except Exception as e:
-                        logger.error(f"Error email {alert.id}: {e}")
+                        logger.error(f"Error email: {e}")
 
-        # 4. Limpieza
-        deleted_count, _ = PriceHistory.objects.filter(
-            recorded_at__lt=timezone.now() - timedelta(days=90)
-        ).delete()
-        return f"✅ Completado. Guardados: {saved_count} | Errores: {error_count} | Historial purgado: {deleted_count}"
+        # 4. Limpieza de datos antiguos (>90 días)
+        PriceHistory.objects.filter(recorded_at__lt=timezone.now() - timedelta(days=90)).delete()
+
+        return f"Proceso finalizado. Nuevos precios: {saved_count} | Errores: {error_count}"
 
     except Exception as e:
-        logger.error(f"❌ Error crítico: {e}")
+        logger.error(f"Error crítico en check_pokemon_prices: {e}")
         return str(e)
 
 
