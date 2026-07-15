@@ -28,8 +28,6 @@ TCG_API_URL = "https://api.pokemontcg.io/v2/cards"
 @shared_task
 def check_pokemon_prices():
     try:
-        # 1. Preparar datos optimizando memoria
-        # Usamos iterator() para no cargar todo el queryset en memoria RAM
         tracked_cards = Card.objects.all()
         if not tracked_cards.exists():
             return "Sin cartas para procesar"
@@ -39,30 +37,37 @@ def check_pokemon_prices():
             PriceHistory.objects.filter(recorded_at__date=hoy).values_list("card_id", flat=True)
         )
 
-        saved_count = 0
-        error_count = 0
-        prices_to_create = []
-        cards_to_update = []
-        updated_prices_map = {}
-
-        # Mapeo en memoria (si tienes miles de cartas, considera usar solo un índice)
+        saved_count, error_count = 0, 0
+        prices_to_create, cards_to_update, updated_prices_map = [], [], {}
         cards_dict = {c.pokemontcg_id: c for c in tracked_cards}
         card_ids = list(cards_dict.keys())
         tamanio_lote = 10
 
-        # Procesamiento por bloques
         for i in range(0, len(card_ids), tamanio_lote):
             lote_ids = card_ids[i : i + tamanio_lote]
             query_string = " OR ".join([f"id:{pid}" for pid in lote_ids])
 
             try:
-                # Llamada resiliente con reintentos automáticos
+                # _execute_api_request debe manejar los reintentos (ej: usando urllib3 retries)
                 response = _execute_api_request(
                     TCG_API_URL, params={"q": query_string, "pageSize": tamanio_lote}
                 )
 
-                data_list = response.json().get("data", [])
-                for card_data in data_list:
+                # --- FIX: Validación robusta de respuesta ---
+                if response is None or response.status_code != 200:
+                    logger.warning(
+                        f"Error {response.status_code if response else 'No Response'} en lote {lote_ids}"
+                    )
+                    error_count += len(lote_ids)
+                    continue
+
+                if not response.content:
+                    logger.warning(f"Respuesta vacía en lote {lote_ids}")
+                    continue
+
+                data = response.json().get("data", [])
+
+                for card_data in data:
                     pid = card_data.get("id")
                     card = cards_dict.get(pid)
                     if not card:
@@ -76,7 +81,6 @@ def check_pokemon_prices():
                         updated_prices_map[pid] = val
                         card.price = val
                         cards_to_update.append(card)
-
                         cache.delete(f"card_detail_{pid}")
 
                         if card.id not in historicos_hoy:
@@ -85,11 +89,16 @@ def check_pokemon_prices():
                             )
                             saved_count += 1
 
+            except ValueError:
+                logger.error(
+                    f"El servidor devolvió un formato inválido (no JSON) para el lote {lote_ids}"
+                )
+                error_count += len(lote_ids)
             except Exception as e:
                 error_count += len(lote_ids)
-                logger.error(f"❌ Fallo tras reintentos en lote {lote_ids}: {e}")
+                logger.error(f"Error procesando lote {lote_ids}: {e}")
 
-            time.sleep(1.2)  # Pausa estratégica
+            time.sleep(1.5)  # Pausa estratégica
 
         # 2. Guardado masivo
         with transaction.atomic():

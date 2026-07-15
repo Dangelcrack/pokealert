@@ -24,7 +24,7 @@ IS_TESTING = "pytest" in sys.modules
 
 DEBUG = os.getenv("DEBUG", "False") == "True" or "pytest" in sys.modules
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,pokealert.onrender.com").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 POKEMON_TCG_API_KEY = os.getenv("POKEMON_TCG_API_KEY", "")
 
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "config.middleware.CSPNonceMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -144,7 +145,14 @@ USE_TZ = True
 # ===================== STATIC FILES =====================
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -225,15 +233,18 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
 
 
-CONTENT_SECURITY_POLICY = {
-    "DIRECTIVES": {
-        "default-src": ("'self'",),
-        "font-src": ("'self'", "https://fonts.gstatic.com"),
-        "img-src": ("'self'", "https://images.pokemontcg.io", "https://wsrv.nl"),
-        "script-src": ("'self'", "https://cdn.tailwindcss.com"),
-        "style-src": ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'"),
+def get_csp_directives(request):
+    nonce = getattr(request, "csp_nonce", "")
+    return {
+        "default-src": ["'self'"],
+        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "img-src": ["'self'", "https://images.pokemontcg.io", "https://wsrv.nl"],
+        "script-src": ["'self'", "https://cdn.tailwindcss.com", f"'nonce-{nonce}'"],
+        "style-src": ["'self'", "https://fonts.googleapis.com", f"'nonce-{nonce}'"],
     }
-}
+
+
+CSP_DIRECTIVES_PROVIDER = "config.settings.get_csp_directives"
 
 
 # ===================== LOGGING =====================
@@ -300,10 +311,3 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "localhost",
 ]
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": "my_cache_table",
-    }
-}

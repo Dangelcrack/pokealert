@@ -8,6 +8,11 @@ filtros.
 import requests
 from django.core.cache import cache
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from urllib3 import Retry
+
+from requests.adapters import HTTPAdapter
+
+from config import settings
 
 POKEMON_ES_TO_TCG = {
     # GENERACIÓN I
@@ -695,14 +700,41 @@ TCG_TERMS = {
     reraise=True,
 )
 def _execute_api_request(url, params=None, headers=None):
-    """Realiza peticiones a la API con reintentos automáticos."""
-    response = requests.get(url, params=params, headers=headers, timeout=10)
+    """Realiza peticiones con reintentos inteligentes para errores 429 y 5xx."""
 
-    # Esto activará el retry solo en errores 5xx
-    if response.status_code >= 500:
+    # 1. Preparar headers por defecto
+    if headers is None:
+        headers = {}
+
+    # Añadimos la API Key y un User-Agent identificativo
+    headers.update({"User-Agent": "PokeAlert/1.0", "X-Api-Key": settings.POKEMON_TCG_API_KEY})
+
+    # 1. Configurar la estrategia de reintento
+    retry_strategy = Retry(
+        total=3,  # Número total de reintentos
+        backoff_factor=1,  # Espera: 1s, 2s, 4s entre reintentos
+        status_forcelist=[429, 500, 502, 503, 504],  # Reintentar en estos códigos
+        allowed_methods=["GET"],  # Solo reintentar en GET
+    )
+
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+
+    # 2. Usar un Session para aplicar el adaptador
+    with requests.Session() as session:
+        session.mount("https://", adapter)
+        session.mount("http://", adapter)
+
+        # Añadir headers por defecto si no se pasan
+        if headers is None:
+            headers = {}
+        headers.setdefault("User-Agent", "PokeAlert/1.0")
+
+        response = session.get(url, params=params, headers=headers, timeout=10)
+
+        # 3. Lanzar excepción si falla tras los reintentos
         response.raise_for_status()
 
-    return response
+        return response
 
 
 def get_filter_options(filter_type):
