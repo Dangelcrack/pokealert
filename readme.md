@@ -14,6 +14,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 ![Celery](https://img.shields.io/badge/Celery-Task_Queue-37814A?style=for-the-badge&logo=celery)
 ![Redis](https://img.shields.io/badge/Redis-Cache-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![SendGrid](https://img.shields.io/badge/SendGrid-Email_API-51A9E3?style=for-the-badge&logo=twilio&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 **[🌐 Demo en vivo](https://pokealert.onrender.com)** · **[📖 Documentación](docs/PROJECT_DOCUMENTATION.md)**
@@ -78,7 +79,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 
 ✅ Autenticación de usuarios, incluyendo login con Google (OAuth vía django-allauth).
 
-✅ Notificaciones por email cuando una alerta se activa.
+✅ Notificaciones por email cuando una alerta se activa, enviadas vía API HTTPS (SendGrid) para funcionar en plataformas que bloquean SMTP saliente.
 
 ✅ API REST documentada con OpenAPI 3.0 (drf-spectacular): Swagger UI y Redoc navegables.
 
@@ -105,6 +106,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 | Tailwind CSS | Estilos de interfaz |
 | Pokémon TCG API | Fuente de datos de cartas y precios |
 | tenacity | Reintentos automáticos ante fallos de la API externa |
+| SendGrid + django-anymail | Envío de notificaciones por email vía API HTTPS (Render free tier bloquea SMTP saliente) |
 | GitHub Actions | Integración continua (lint + tests) |
 | Render | Despliegue en producción |
 
@@ -120,7 +122,7 @@ Plataforma web construida con Django para monitorizar el mercado de cartas del P
 | **Actualización de precios (Producción)** | **cron-job.org** llama cada **24 horas** a `/api/tasks/check-prices/` (Render Free no permite tareas programadas).                           |
 | **Persistencia**                          | Se almacenan los cambios en `PriceHistory` y se gestionan las `Alertas`.                                                                     |
 | **API**                                   | Django REST Framework expone los endpoints consumidos por el frontend.                                                                       |
-| **Frontend**                              | Interfaz desarrollada con **Tailwind CSS** y **Chart.js**, con envío de notificaciones por correo electrónico cuando se cumplen las alertas. |
+| **Frontend**                              | Interfaz desarrollada con **Tailwind CSS** y **Chart.js**, con envío de notificaciones por correo electrónico vía SendGrid cuando se cumplen las alertas. |
 
 El proyecto está organizado en aplicaciones Django independientes por dominio:
 
@@ -232,7 +234,8 @@ Variables de entorno principales (`.env`):
 | `DATABASE_URL` | Cadena de conexión a PostgreSQL |
 | `REDIS_URL` | Cadena de conexión a Redis |
 | `ALLOWED_HOSTS` | Hosts permitidos |
-| `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` | Credenciales SMTP para notificaciones |
+| `SENDGRID_API_KEY` | API Key de SendGrid (permiso Mail Send) para el envío de notificaciones por email |
+| `EMAIL_FROM` | Dirección remitente verificada en SendGrid vía Single Sender Verification |
 | `POKEMON_TCG_API_KEY` | Clave de la API de Pokémon TCG |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Credenciales OAuth de Google |
 | `CRON_SECRET_TOKEN` | Token que protege los endpoints `/api/tasks/*` usados por el cron externo |
@@ -254,7 +257,7 @@ El plan gratuito de Render no permite mantener un worker ni un scheduler de Cele
 GET /api/tasks/check-prices/?token=<CRON_SECRET_TOKEN>
 GET /api/tasks/update-pokedex/?token=<CRON_SECRET_TOKEN>
 
-Un cronjob gratuito en **cron-job.org** llama a `check-prices` una vez al día, disparando la actualización de precios y del histórico en producción sin necesidad de Celery Worker/Beat activos. El propio código evita duplicar entradas de histórico si la tarea se ejecutara más de una vez el mismo día.
+Un cronjob gratuito en **cron-job.org** llama a `check-prices` una vez al día, disparando la actualización de precios y del histórico en producción sin necesidad de Celery Worker/Beat activos. El propio código evita duplicar entradas de histórico si la tarea se ejecutara más de una vez el mismo día, y las alertas se evalúan siempre contra el precio actual guardado en `Card.price`, sin depender de si la carta se refrescó ese mismo día.
 
 ---
 
@@ -376,7 +379,7 @@ Desplegado en **Render** (plan gratuito) en [pokealert.onrender.com](https://pok
 - **Build command:** `pip install -r requirements.txt && python setup_db.py && python manage.py collectstatic --noinput`
 - **Start command:** `gunicorn config.wsgi:application`
 
-> **Nota:** el plan gratuito de Render no permite tener Celery Worker ni Beat corriendo en segundo plano, y además "duerme" el servicio tras ~15 minutos de inactividad (el primer request tras dormir puede tardar en responder). Para no perder la actualización periódica de precios en producción, las tareas se exponen como endpoints HTTP protegidos por token, ejecutadas en segundo plano para evitar timeouts, y se disparan mediante un cronjob externo gratuito (cron-job.org) una vez al día. Ver [Tareas Periódicas](#-tareas-periódicas) para el detalle. En local, todo el pipeline sigue funcionando con Celery Worker + Beat sin cambios.
+> **Nota:** el plan gratuito de Render no permite tener Celery Worker ni Beat corriendo en segundo plano, no permite conexiones SMTP salientes, y además "duerme" el servicio tras ~15 minutos de inactividad (el primer request tras dormir puede tardar en responder). Para no perder la actualización periódica de precios en producción, las tareas se exponen como endpoints HTTP protegidos por token, ejecutadas en segundo plano para evitar timeouts, y se disparan mediante un cronjob externo gratuito (cron-job.org) una vez al día. Para las notificaciones por email, se usa SendGrid vía API HTTPS (django-anymail) en lugar de SMTP. Ver [Tareas Periódicas](#-tareas-periódicas) para el detalle. En local, todo el pipeline sigue funcionando con Celery Worker + Beat y SMTP sin cambios.
 
 ---
 
@@ -410,6 +413,15 @@ python manage.py descargar_cartas_json
 # Debe existir en tasks/urls.py, al mismo nivel que tasks/tasks.py y tasks/views.py
 ```
 
+### `[Errno 101] Network is unreachable` al enviar emails de alerta
+```bash
+# El plan gratuito de Render bloquea las conexiones SMTP salientes
+# (puertos 25/465/587), por lo que Gmail SMTP no funciona en producción.
+# La solución es usar un proveedor de email vía API HTTPS, como SendGrid,
+# a través de django-anymail (ver EMAIL_BACKEND en settings.py).
+# Requiere verificar un remitente (Single Sender Verification) en SendGrid.
+```
+
 ### Timeout en el cronjob de `check-prices` (cron-job.org)
 ```bash
 # El plan gratuito de Render "duerme" el servicio tras inactividad.
@@ -430,6 +442,7 @@ python manage.py descargar_cartas_json
 - [x] Traducción ES→EN de nombres de cartas basada en Wikidex
 - [x] Autocompletado con soporte de prefijos en español
 - [x] Actualización de precios en producción sin Celery Worker/Beat (endpoints HTTP + cron-job.org)
+- [x] Envío de emails de alerta vía SendGrid/API HTTPS (SMTP bloqueado en Render free tier)
 - [x] Dashboard con métricas agregadas de mercado
 - [x] Documentación de API ampliada (OpenAPI con drf-spectacular)
 - [ ] Notificaciones push además de email
