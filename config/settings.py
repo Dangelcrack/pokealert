@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "csp",
+    "anymail",
 ]
 
 MIDDLEWARE = [
@@ -193,14 +194,13 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_TASK_ALWAYS_EAGER = os.getenv("CELERY_TASK_ALWAYS_EAGER", "False") == "True"
 
 # ===================== EMAIL CONFIGURATION =====================
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = f"PokeAlert <{EMAIL_HOST_USER}>"
+ANYMAIL = {
+    "SENDGRID_API_KEY": os.getenv("SENDGRID_API_KEY"),
+}
+
+DEFAULT_FROM_EMAIL = f"PokeAlert <{os.getenv('EMAIL_FROM')}>"
 
 # ===================== CELERY BEAT SCHEDULE =====================
 CELERY_BEAT_SCHEDULE = {
