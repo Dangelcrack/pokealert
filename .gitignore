@@ -126,3 +126,4 @@ Thumbs.db
 # PROJECT SPECIFIC
 # ============================================================================
 todas_las_cartas_tcg.json
+fix_alerts.py
